@@ -1,0 +1,19 @@
+SADI AS2
+
+
+
+
+############################################
+notes:
+
+.gitignore
+------------------------
+i add .gitignore so now we dont have problem with eclipse
+all files under 
+.project
+.classpath
+.settings/*
+bin/*
+will ignored by git.
+
+ 
