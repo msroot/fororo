@@ -1,0 +1,4 @@
+rmiregistry &
+java -Djava.security.policy=policy AdderImpl
+java AdderClient
+
