@@ -1,0 +1,2 @@
+how to to connect to oracle in rmit
+https://inside.cs.rmit.edu.au/support/inside:oraclehowto

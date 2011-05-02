@@ -1,0 +1,26 @@
+Server
+
+User
+Thread
+Comment
+Category
+
+
+User.login(name, password)
+
+DB.loginUser(name, password)
+
+
+User DB.findUserById()
+
+User.findById()
+
+
+DB.addPost(User, Post)
+
+Post.create()
+
+
+
+
+Client

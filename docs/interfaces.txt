@@ -1,0 +1,18 @@
+
+class DB (singleton)
+	openConnection()
+	getInstance()
+
+
+abstract class Model
+	tableName
+	dbConnection
+	
+	findById()
+	list
+	
+
+
+class User < DB
+	findBySql()
+	
