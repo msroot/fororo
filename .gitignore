@@ -26,7 +26,7 @@ Thumbs.db
 *.dmg
 *.gz
 *.iso
-*.jar
+# *.jar
 *.rar
 *.tar
 *.zip
