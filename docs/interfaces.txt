@@ -7,7 +7,6 @@ class DB (singleton)
 abstract class Model
 	tableName
 	dbConnection
-	
 	findById()
 	list
 	

@@ -1,3 +1,12 @@
+# Oracle in yallara
+server: emu.cs.rmit.edu.au
+port: 1521
+username: your SQLplus username
+password: your SQLplus password
+connection string jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL
+oracle driver oracle.jdbc.driver.OracleDriver
+
+
 Server
 
 User
@@ -19,8 +28,6 @@ User.findById()
 DB.addPost(User, Post)
 
 Post.create()
-
-
 
 
 Client

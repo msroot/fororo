@@ -1,21 +1,10 @@
-SADI AS2
+To run server:
+
+# from bin folder
+rmiregistry
+
+java -Djava.security.policy=policy Forum
 
 
-
-
-############################################
-notes:
-
-.gitignore
-------------------------
-i add .gitignore so now we dont have problem with eclipse
-all files under 
-.project
-.classpath
-.settings/*
-bin/*
-will ignored by git.
-
-http://gitready.com/beginner/2009/01/19/ignoring-files.html
-
- 
+To run server:
+java ForumClient
