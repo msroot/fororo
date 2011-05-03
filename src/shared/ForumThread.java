@@ -8,7 +8,7 @@ public class ForumThread implements java.io.Serializable{
 	public ForumThread(){};
 	
 	public ForumThread(String id, String title, String description){
-		this.name = name;
+		this.id = id;
 		this.title = title;
 		this.description = description;
 	}

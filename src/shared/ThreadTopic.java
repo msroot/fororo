@@ -11,7 +11,7 @@ public class ThreadTopic implements java.io.Serializable{
 	    this.id = id;
 	    this.name = name;
 	    this.description = description;
-	};
+	}
 	
 	public String id() { return id; }
 	public String name(){ return name; }
