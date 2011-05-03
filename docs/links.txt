@@ -1,2 +1,26 @@
 how to to connect to oracle in rmit
 https://inside.cs.rmit.edu.au/support/inside:oraclehowto
+
+
+
+
+	/*
+	 * http://www.rgagnon.com/javadetails/java-0112.html
+	 * http://infolab.stanford.edu/~ullman/fcdb/oracle/or-jdbc.html#0.1_sample
+	 * http://infolab.stanford.edu/~ullman/fcdb/oracle/SimpleJDBC.java
+	 */
+	
+	
+/*	
+ * https://inside.cs.rmit.edu.au/support/inside:oraclehowto
+ * 
+ * user: s3252905
+	pass: yA6xsuxc
+
+	# Oracle in yallara
+	server: emu.cs.rmit.edu.au
+	port: 1521
+	username: your SQLplus username
+	password: your SQLplus password
+	connection string jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL
+	oracle driver oracle.jdbc.driver.OracleDriver*/
