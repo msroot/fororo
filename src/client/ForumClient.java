@@ -1,6 +1,7 @@
 package client;
 
-import server.ForumInterface;
+import shared.ForumClientInterface;
+import shared.ForumInterface;
 import shared.User;
 import java.util.*;
 import java.rmi.*;

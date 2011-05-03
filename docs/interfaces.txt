@@ -1,17 +1,38 @@
 
-class DB (singleton)
-	openConnection()
-	getInstance()
+##########################################
+
+Class BDUser
+
+User getByName(String name);
+
+User[] getAll();
+
+User create(User user)
+
+User update(User user)
+
+##########################################
+
+Class BDThreadTopic
+
+ThreadTopic getById(String id);
+
+ThreadTopic[] getAll();
+
+ThreadTopic create(ThreadTopic topic)
+
+ThreadTopic update(ThreadTopic topic)
+
+##########################################
+
+Class BDThread
 
 
-abstract class Model
-	tableName
-	dbConnection
-	findById()
-	list
-	
+ForumThread getById(String id);
+
+ForumThread[] getAllByTopic(String topicId);
 
 
-class User < DB
-	findBySql()
-	
+
+
+
