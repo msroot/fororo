@@ -14,8 +14,6 @@ import java.awt.Dialog.ModalExclusionType;
 public class Login {
 
 	private JFrame frame;
-	private JTextField txtUserName;
-	private JPasswordField passField;
 
 	/**
 	 * Launch the application.
@@ -45,28 +43,10 @@ public class Login {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 285, 176);
+		frame.setBounds(100, 100, 288, 177);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("User Name");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel.setBounds(22, 37, 74, 14);
-		frame.getContentPane().add(lblNewLabel);
-		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPassword.setBounds(36, 62, 60, 14);
-		frame.getContentPane().add(lblPassword);
-		
-		txtUserName = new JTextField();
-		txtUserName.setBounds(106, 34, 138, 20);
-		frame.getContentPane().add(txtUserName);
-		txtUserName.setColumns(10);
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.setBounds(56, 114, 89, 23);
@@ -75,9 +55,5 @@ public class Login {
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(155, 114, 89, 23);
 		frame.getContentPane().add(btnCancel);
-		
-		passField = new JPasswordField();
-		passField.setBounds(106, 59, 138, 20);
-		frame.getContentPane().add(passField);
 	}
 }

@@ -1,7 +1,9 @@
 package server;
 
 import shared.*;
-import server.db.*;
+//import server.db.*;
+import test.DBUser;
+import server.db.DBTopic;
 
 import java.rmi.*;
 import java.rmi.server.*;
@@ -19,10 +21,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     }
 
     public User loginUser(String username, String password, ForumClientInterface client) throws RemoteException {
-    	//FIXME get user from DB
-//    	User user dbUser.getByName();
     	
-    	User user = new User(username, password, User.Type.NORMAL, true);
+    	User user = DBUser.getByName(username);
     	    	
     	if (user == null){ throw new RemoteException("Invalid username or password"); }
     	
@@ -44,14 +44,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
     
     // TOPICS
-    
-    public List<ThreadTopic> getThreadTopics() throws RemoteException {
-    	//FIXME ThreadTopic[] topics = DBThreadTopic.getAll();    	    	
-    	List<ThreadTopic> topics = new ArrayList<ThreadTopic>();
-    	topics.add(new ThreadTopic("1","Topic1","Description1",true));
-    	topics.add(new ThreadTopic("2","Topic2","Description2",true));
-    	topics.add(new ThreadTopic("3","Topic3","Description3",true));
-        return topics;
+    public List<Topic> getThreadTopics() throws RemoteException { 	    	
+        return DBTopic.getAll();
     }
     
    // public ThreadTopic activateThreadTopic(userId, topicId) throws RemoteException{

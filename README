@@ -3,8 +3,7 @@ To run server:
 # from bin folder
 rmiregistry
 
-java -Djava.security.policy=policy Forum
-
+java -Djava.security.policy=policy server.Forum
 
 To run server:
 java ForumClient
