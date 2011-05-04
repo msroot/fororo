@@ -5,12 +5,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import shared.ThreadTopic;
+import shared.Topic;
 
-public class DBThreadTopic {
+public class DBTopic {
 	static DBManager db = DBManager.getInstance();
 
-	public static ThreadTopic getById(String topicId) {
+	public static Topic getById(String topicId) {
 		String id = null;
 		String name = null;
 		String description = null;
@@ -26,7 +26,7 @@ public class DBThreadTopic {
 				isActive = Boolean.parseBoolean(set.getString("ISACTIVE"));
 				
 		 
-				return new ThreadTopic(id, name, description, isActive);
+				return new Topic(id, name, description, isActive);
 			}
 
 		} catch (SQLException e) {
@@ -36,8 +36,8 @@ public class DBThreadTopic {
 		return null;
 	}
 
-	public static List<ThreadTopic> getAll() {
-		List<ThreadTopic> topics = new ArrayList<ThreadTopic>();
+	public static List<Topic> getAll() {
+		List<Topic> topics = new ArrayList<Topic>();
 
 		String id = null;
 		String name = null;
@@ -53,7 +53,7 @@ public class DBThreadTopic {
 				isActive = Boolean.parseBoolean(set.getString("ISACTIVE"));
 				
 		 
-				topics.add(new ThreadTopic(id, name, description, isActive));
+				topics.add(new Topic(id, name, description, isActive));
 			}
 
 		} catch (SQLException e) {
