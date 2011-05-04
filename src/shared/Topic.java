@@ -1,14 +1,14 @@
 package shared;
 
-public class ThreadTopic implements java.io.Serializable{
+public class Topic implements java.io.Serializable{
 	private String id = null;
 	private String name = null;
 	private String description = null;
 	private boolean isActive = false;
 	
-	public ThreadTopic(){};
+	public Topic(){};
 	
-	public ThreadTopic(String id, String name, String description, boolean isActive){
+	public Topic(String id, String name, String description, boolean isActive){
 	    this.id = id;
 	    this.name = name;
 	    this.description = description;
