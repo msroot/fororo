@@ -3,6 +3,7 @@ package server;
 import shared.*;
 //import server.db.*;
 import test.DBUser;
+import server.db.DBTopic;
 
 import java.rmi.*;
 import java.rmi.server.*;
@@ -43,14 +44,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
     
     // TOPICS
-    
-    public List<Topic> getThreadTopics() throws RemoteException {
-    	//FIXME ThreadTopic[] topics = DBThreadTopic.getAll();    	    	
-    	List<Topic> topics = new ArrayList<Topic>();
-    	topics.add(new Topic());
-    	topics.add(new Topic());
-    	topics.add(new Topic());
-        return topics;
+    public List<Topic> getThreadTopics() throws RemoteException { 	    	
+        return DBTopic.getAll();
     }
     
    // public ThreadTopic activateThreadTopic(userId, topicId) throws RemoteException{
