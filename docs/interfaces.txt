@@ -15,9 +15,9 @@ User update(User user)
 
 Class BDThreadTopic
 
-ThreadTopic getById(String id); 
+ThreadTopic getById(String id);--DONE 
 
-ThreadTopic[] getAll(); (ArrayList) 
+ThreadTopic[] getAll(); (ArrayList) --DONE
 
 ThreadTopic create(ThreadTopic topic)
 
