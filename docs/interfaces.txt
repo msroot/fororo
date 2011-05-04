@@ -5,11 +5,11 @@ Class BDUser
 
 User getByName(String name);
 
-User[] getAll();
+list<User> getAll();
 
-User create(User user) -->if user exist return null
+list <User> create(User user) -->if user exist return null
 
-User update(User user)-->if user not exist return null
+list <User> update(User user)-->if user not exist return null
 
 ##########################################
 

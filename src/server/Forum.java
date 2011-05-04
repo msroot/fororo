@@ -1,7 +1,8 @@
 package server;
 
 import shared.*;
-import server.db.*;
+//import server.db.*;
+import test.DBUser;
 
 import java.rmi.*;
 import java.rmi.server.*;
@@ -19,10 +20,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     }
 
     public User loginUser(String username, String password, ForumClientInterface client) throws RemoteException {
-    	//FIXME get user from DB
-//    	User user dbUser.getByName();
     	
-    	User user = new User(username, password, User.Type.NORMAL, true);
+    	User user = DBUser.getByName(username);
     	    	
     	if (user == null){ throw new RemoteException("Invalid username or password"); }
     	
