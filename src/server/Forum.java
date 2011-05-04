@@ -44,8 +44,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
     
     // TOPICS
-    public List<Topic> getThreadTopics() throws RemoteException { 	    	
-        return DBTopic.getAll();
+    public List<Topic> getTopics() throws RemoteException { 	    	
+    	return DBTopic.getAll();
     }
     
    // public ThreadTopic activateThreadTopic(userId, topicId) throws RemoteException{

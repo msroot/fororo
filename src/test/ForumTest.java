@@ -52,7 +52,7 @@ public class ForumTest {
 		try{
 			ForumClient client = new ForumClient();
 			assertTrue("It should connect", client.connect());
-			client.forum.getThreadTopics();
+			client.forum.getTopics();
 		} catch (Exception e){
 			e.printStackTrace();
 			fail("Should not throw exception: " + e.getMessage());

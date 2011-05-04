@@ -9,7 +9,7 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public boolean logoutUser(String username) throws RemoteException;
    
-    public List<Topic> getThreadTopics() throws RemoteException;
+    public List<Topic> getTopics() throws RemoteException;
     
     // public ThreadTopic activateThreadTopic(String userId, String topicId) throws RemoteException;
     
