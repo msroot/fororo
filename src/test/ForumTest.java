@@ -2,6 +2,7 @@ package test;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.rmi.RemoteException;
 import server.*;
 import client.*;
 import shared.*;
@@ -94,6 +95,19 @@ public class ForumTest {
 		} catch (Exception e){
 			e.printStackTrace();
 			fail("Should not throw exception: " + e.getMessage());
+		}
+	}
+	
+	@Test
+    public void forum_exception_test() {
+		try{
+			ForumClient client = new ForumClient();
+			assertTrue("It should connect", client.connect());
+			client.forum.throwForumException();
+			fail("it should throw a ForumException");    
+		} catch (RemoteException e){
+			System.out.println("Catched RemoteException");
+			System.out.println(e.getMessage());
 		}
 	}
 }
