@@ -5,18 +5,19 @@ public class User implements java.io.Serializable{
 	private Type type = Type.NORMAL;
 	private String name = null;
 	private String password = null;
-	private boolean active = true;
+	private boolean isActive = true;
 	
 	public User(){};
 	
-	public User(String name, String password, Type type){
+	public User(String name, String password, Type type, boolean isActive){
 		this.name = name;
 		this.password = password;
 		this.type = type;
+		this.isActive = isActive;
 	}
 	
 	public Type type() { return type; }
 	public String name(){ return name; }
 	public String password(){ return password; }
-	public boolean active(){ return active; }
+	public boolean isActive(){ return isActive; }
 }

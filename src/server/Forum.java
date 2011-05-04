@@ -1,6 +1,7 @@
 package server;
 
 import shared.*;
+import server.db.*;
 
 import java.rmi.*;
 import java.rmi.server.*;
@@ -21,7 +22,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     	//FIXME get user from DB
 //    	User user dbUser.getByName();
     	
-    	User user = new User(username, password, User.Type.NORMAL);
+    	User user = new User(username, password, User.Type.NORMAL, true);
     	    	
     	if (user == null){ throw new RemoteException("Invalid username or password"); }
     	
@@ -41,10 +42,40 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         return true;
     }
     
+    
+    // TOPICS
+    
     public ThreadTopic[] getThreadTopics() throws RemoteException {
     	//FIXME ThreadTopic[] topics = DBThreadTopic.getAll();    	
     	ThreadTopic[] topics = { new ThreadTopic(), new ThreadTopic(), new ThreadTopic() };
         return topics;
+    }
+    
+//    public ThreadTopic activateThreadTopic(userId, topicId) throws RemoteException{
+//        if(!users.conteinsKey(userId)){
+//            throw new RemoteException("User is not logged in")
+//        }
+//        
+//        // FIXME get from DB
+//        ThreadTopic topic = new ThreadTopic(topicId, "", "");
+//        
+//        if(topic == null){
+//            // FIXME throw ForumExeption
+//            throw new RemoteException("Topic not found")
+//        }        
+//        
+//        User user = users.get(userId);
+//        
+//        if(user.type == User.type.ADMIN){
+//            topic.
+//        }
+//    }
+    
+    // THREADS
+    
+    public ForumThread getThreadById(String threadId) throws RemoteException{
+        // FIXME get from DB
+        return new ForumThread();
     }
     
     public ForumThread[] getThreadsByTopic(String topicId) throws RemoteException {
@@ -53,8 +84,10 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         return threads;
     }
     
-    public ForumThread getThreadById(String threadId) throws RemoteException{
-        return new ForumThread();
+    public ForumThread createThread(String title, String content, String topicId) throws RemoteException{
+        //FIXME create in database
+       ForumThread thread = new ForumThread("thread_id", title, content, topicId);
+        return thread;
     }
 
     public static void main(String args[]){

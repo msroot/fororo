@@ -8,11 +8,16 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public boolean logoutUser(String username) throws RemoteException;
     
+    // FIXME change arrays to list
     public ThreadTopic[] getThreadTopics() throws RemoteException;
+    
+//    public ThreadTopic activateThreadTopic(String userId, String topicId) throws RemoteException;
     
     public ForumThread[] getThreadsByTopic(String topicId) throws RemoteException;
     
     public ForumThread getThreadById(String threadId) throws RemoteException;
+    
+    public ForumThread createThread(String title, String content, String topicId) throws RemoteException;
     
 //    public ThreadTopic getThreadTopics() throws RemoteException;
     

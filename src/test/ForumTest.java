@@ -73,12 +73,24 @@ public class ForumTest {
 	}
 	
 	@Test
-    public void can_get_threadd_by_id() {
+    public void can_get_thread_by_id() {
 		try{
 			ForumClient client = new ForumClient();
 			assertTrue("It should connect", client.connect());
 			//TODO check if thread exists in db			
 			client.forum.getThreadById("0");
+		} catch (Exception e){
+			e.printStackTrace();
+			fail("Should not throw exception: " + e.getMessage());
+		}
+	}
+	
+	@Test
+    public void can_create_thread() {
+		try{
+			ForumClient client = new ForumClient();
+			assertTrue("It should connect", client.connect());
+			client.forum.createThread("the title", "the description", "the_topic_id");
 		} catch (Exception e){
 			e.printStackTrace();
 			fail("Should not throw exception: " + e.getMessage());
