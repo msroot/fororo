@@ -1,0 +1,72 @@
+GENERAL NOTES
+--------------------------------------------------------
+FUSER TYPE:1 is normal 2 is admin
+
+
+
+
+
+--------------------------------------------------------
+ORACLE COMMANDS
+
+
+
+#######################################################
+--FUSER
+
+create sequence fororoid start with 1 increment by 1;
+--------------------------------------------------------
+create sequence FUSER_id_seq start with 1 increment by 1;
+--------------------------------------------------------
+create or replace trigger USER_insert
+before insert on FUSER
+for each row
+begin
+    select FUSER_id_seq.nextval into :new.id from dual;
+end;
+/
+
+--------------------------------------------------------
+insert into FUSER (name, password, isactive, type) values ('Frankenstein', 'pass', 'true','admin');
+
+#######################################################
+
+
+#######################################################
+--FTOPIC
+
+ create sequence FTOPIC_id_seq start with 1 increment by 1;
+
+create or replace trigger FTOPIC_insert
+before insert on FTOPIC
+for each row
+begin
+    select FTOPIC_id_seq.nextval into :new.id from dual;
+end;
+/
+
+--------------------------------------------------------
+insert into FTOPIC (name, description, isactive) values ('topic name', 'topic desc', 'true');
+#######################################################
+
+
+#######################################################
+--FTHREAD
+
+create sequence FTHREAD_id_seq start with 1 increment by 1;
+
+create or replace trigger FTHREAD_insert
+before insert on FTHREAD
+for each row
+begin
+    select FTHREAD_id_seq.nextval into :new.id from dual;
+end;
+/
+
+--------------------------------------------------------
+insert into FTHREAD (title, description, topicid) values ('thread name', 'thread desc', '1');
+#######################################################
+
+
+
+ 
