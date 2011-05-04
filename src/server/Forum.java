@@ -45,31 +45,34 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
     // TOPICS
     
-    public ThreadTopic[] getThreadTopics() throws RemoteException {
-    	//FIXME ThreadTopic[] topics = DBThreadTopic.getAll();    	
-    	ThreadTopic[] topics = { new ThreadTopic(), new ThreadTopic(), new ThreadTopic() };
+    public List<ThreadTopic> getThreadTopics() throws RemoteException {
+    	//FIXME ThreadTopic[] topics = DBThreadTopic.getAll();    	    	
+    	List<ThreadTopic> topics = new ArrayList<ThreadTopic>();
+    	topics.add(new ThreadTopic());
+    	topics.add(new ThreadTopic());
+    	topics.add(new ThreadTopic());
         return topics;
     }
     
-//    public ThreadTopic activateThreadTopic(userId, topicId) throws RemoteException{
-//        if(!users.conteinsKey(userId)){
-//            throw new RemoteException("User is not logged in")
-//        }
-//        
-//        // FIXME get from DB
-//        ThreadTopic topic = new ThreadTopic(topicId, "", "");
-//        
-//        if(topic == null){
-//            // FIXME throw ForumExeption
-//            throw new RemoteException("Topic not found")
-//        }        
-//        
-//        User user = users.get(userId);
-//        
-//        if(user.type == User.type.ADMIN){
-//            topic.
-//        }
-//    }
+   // public ThreadTopic activateThreadTopic(userId, topicId) throws RemoteException{
+   //     if(!users.conteinsKey(userId)){
+   //         throw new RemoteException("User is not logged in")
+   //     }
+   //     
+   //     // FIXME get from DB
+   //     ThreadTopic topic = new ThreadTopic(topicId, "", "");
+   //     
+   //     if(topic == null){
+   //         // FIXME throw ForumExeption
+   //         throw new RemoteException("Topic not found")
+   //     }        
+   //     
+   //     User user = users.get(userId);
+   //     
+   //     if(user.type == User.type.ADMIN){
+   //         topic.
+   //     }
+   // }
     
     // THREADS
     
@@ -77,10 +80,13 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         // FIXME get from DB
         return new ForumThread();
     }
-    
-    public ForumThread[] getThreadsByTopic(String topicId) throws RemoteException {
+   
+    public List<ForumThread> getThreadsByTopic(String topicId) throws RemoteException {
         //FIXME get from database
-    	ForumThread[] threads = { new ForumThread(), new ForumThread(), new ForumThread() };
+    	List<ForumThread> threads = new ArrayList<ForumThread>();
+    	threads.add(new ForumThread());
+    	threads.add(new ForumThread());
+    	threads.add(new ForumThread());
         return threads;
     }
     
