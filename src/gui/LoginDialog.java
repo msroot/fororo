@@ -12,19 +12,22 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 
 public class LoginDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
+	private JTextField txtUserName;
 	private JPasswordField passwordField;
-
+	static LoginDialog dialog;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			LoginDialog dialog = new LoginDialog();
+			dialog = new LoginDialog();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -36,6 +39,7 @@ public class LoginDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public LoginDialog() {
+		setModal(true);
 		setBounds(100, 100, 285, 175);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -56,10 +60,10 @@ public class LoginDialog extends JDialog {
 			contentPanel.add(label);
 		}
 		{
-			textField = new JTextField();
-			textField.setBounds(94, 30, 129, 20);
-			textField.setColumns(10);
-			contentPanel.add(textField);
+			txtUserName = new JTextField();
+			txtUserName.setBounds(94, 30, 129, 20);
+			txtUserName.setColumns(10);
+			contentPanel.add(txtUserName);
 		}
 		{
 			passwordField = new JPasswordField();
@@ -71,13 +75,32 @@ public class LoginDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton("Login");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						String userName = txtUserName.getText();
+						String password = new String(passwordField.getPassword());
+						try {
+							Driver.forumClient.user=Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
+							MainWindow.setControls();
+							dialog.dispose();
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dialog.dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

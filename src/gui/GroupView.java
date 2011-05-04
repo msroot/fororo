@@ -18,7 +18,7 @@ public class GroupView {
 
 	private JFrame frame;
 	private JTable table;
-
+	static GroupView window;
 	/**
 	 * Launch the application.
 	 */
@@ -26,7 +26,7 @@ public class GroupView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GroupView window = new GroupView();
+					window = new GroupView();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,17 +68,10 @@ public class GroupView {
 		btnNewThread.setBounds(27, 121, 107, 23);
 		frame.getContentPane().add(btnNewThread);
 		
-		JButton btnRegister = new JButton("Register");
-		btnRegister.setBounds(144, 121, 107, 23);
-		frame.getContentPane().add(btnRegister);
-		
-		JButton btnLogin = new JButton("Login");
-		btnLogin.setBounds(261, 121, 107, 23);
-		frame.getContentPane().add(btnLogin);
-		
 		JButton btnReturn = new JButton("Go Back");
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 			}
 		});
 		btnReturn.setBounds(548, 518, 107, 23);
@@ -113,7 +106,7 @@ public class GroupView {
 		
 		JLabel lblNewLabel = new JLabel("Threads");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setBounds(42, 159, 46, 15);
+		lblNewLabel.setBounds(42, 159, 113, 15);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel lblUser = new JLabel("Author");
@@ -133,11 +126,11 @@ public class GroupView {
 		frame.getContentPane().add(lblGroupname);
 		
 		JButton btnChat = new JButton("Chat");
-		btnChat.setBounds(378, 121, 107, 23);
+		btnChat.setBounds(144, 120, 107, 23);
 		frame.getContentPane().add(btnChat);
 		
 		JButton btnDelete = new JButton("Delete");
-		btnDelete.setBounds(495, 121, 107, 23);
+		btnDelete.setBounds(261, 120, 107, 23);
 		frame.getContentPane().add(btnDelete);
 	}
 }
