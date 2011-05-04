@@ -19,5 +19,7 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public ForumThread createThread(String title, String content, String topicId) throws RemoteException;
     
+    public void throwForumException() throws RemoteException;
+    
     // public String getWelcomeMessage   
 }
