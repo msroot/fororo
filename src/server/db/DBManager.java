@@ -1,6 +1,10 @@
 package server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DBManager {
 
@@ -35,6 +39,9 @@ public class DBManager {
 	}
 
 	public ResultSet getSet(String query) {
+
+		DBManager db = DBManager.getInstance();
+
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
@@ -51,23 +58,40 @@ public class DBManager {
 		return rSet;
 
 	}
+	
+	/*INSERT, UPDATE, or DELETE statement or an SQL statement that returns nothing,*/
+	public int updateSet(String query) {
+
+		DBManager db = DBManager.getInstance();
+		int updateStatus = 0 ;
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			updateStatus = statement.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		//System.out.print(updateStatus);
+		
+		return updateStatus;
+
+	}
+
+	
+	
+	
 
 	public Connection getConnection() {
 		return connection;
 	}
 
-	public static void main(String[] args) throws SQLException {
-		DBManager db = DBManager.getInstance();
-		Connection connect = db.getConnection();
-		Statement statement = connect.createStatement();
-
-		ResultSet set = db.getSet("SELECT * FROM FUSER");
-		while (set.next()) {
-			System.out.println("User:" + set.getString("NAME") + " pass:"
-					+ set.getString("PASSWORD"));
-		}
-		statement.close();
-
-	}
+ 
 
 }
