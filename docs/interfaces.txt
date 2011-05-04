@@ -15,11 +15,11 @@ User update(User user)-->if user not exist return null
 
 Class BDThreadTopic
 
-ThreadTopic getById(String id);
+ThreadTopic getById(String id); -DONE
 
-ThreadTopic[] getAll(); (ArrayList)
+ThreadTopic[] getAll(); (ArrayList) -DONE
 
-ThreadTopic create(ThreadTopic topic)-->he must know the id(new obj)
+ThreadTopic create(ThreadTopic topic)
 
 ThreadTopic update(ThreadTopic topic)
 
@@ -32,7 +32,7 @@ ForumThread getById(String id);
 
 ForumThread[] getAllByTopic(String topicId); (ArrayList)
 
-
+ForumThread[] getThreadsByTopic(String topicId) (ArrayList)
 
 
 
