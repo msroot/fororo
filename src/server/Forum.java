@@ -48,9 +48,9 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     public List<ThreadTopic> getThreadTopics() throws RemoteException {
     	//FIXME ThreadTopic[] topics = DBThreadTopic.getAll();    	    	
     	List<ThreadTopic> topics = new ArrayList<ThreadTopic>();
-    	topics.add(new ThreadTopic());
-    	topics.add(new ThreadTopic());
-    	topics.add(new ThreadTopic());
+    	topics.add(new ThreadTopic("1","Topic1","Description1",true));
+    	topics.add(new ThreadTopic("2","Topic2","Description2",true));
+    	topics.add(new ThreadTopic("3","Topic3","Description3",true));
         return topics;
     }
     
