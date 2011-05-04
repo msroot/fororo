@@ -7,15 +7,15 @@ import java.sql.Statement;
 
 import shared.User;
 
-public class DBUser extends DBManagment {
+public class DBUser {
 
-	public DBUser() {
-		super();
-	}
+	public DBUser() {}
+
+	
 
 	public User findByName(String name) {
 
-		DBManagment connectionObj = new DBManagment();
+		DBManager connectionObj = new DBManager();
 		Connection connection = connectionObj.getConnection();
 		Statement statement = null;
 		try {
@@ -27,8 +27,11 @@ public class DBUser extends DBManagment {
 				+ name);
 
 		try {
+			User.Type type = (set.getInt("TYPE") == 1) ? User.Type.NORMAL
+					: User.Type.ADMIN;
+			
 			return new User(set.getString("NAME"), set.getString("PASSWORD"),
-					User.Type.NORMAL);
+					type);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
