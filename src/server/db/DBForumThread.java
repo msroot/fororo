@@ -62,10 +62,6 @@ public class DBForumThread {
 		return AllByTopic;
 	}
 
-	public static List<ForumThread> getThreadsByTopic(String topicId) {
-		List<ForumThread> ThreadsByTopic = new ArrayList<ForumThread>();
-		// TODO:what should i do here?this must getAllByTopic()
-		return ThreadsByTopic;
-	}
+
 
 }
