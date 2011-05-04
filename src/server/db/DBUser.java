@@ -24,12 +24,12 @@ public class DBUser {
 					+ findName + "'");
 
 			while (set.next()) {
-				type = (set.getInt("TYPE") == 1) ? User.Type.NORMAL
+				type = (set.getString("TYPE") == "NORMAL") ? User.Type.NORMAL
 						: User.Type.ADMIN;
 
 				name = set.getString("NAME");
 				pass = set.getString("PASSWORD");
-				active = set.getBoolean("ISACTIVE");
+				active = Boolean.parseBoolean(set.getString("ISACTIVE"));
 
 			}
 
@@ -40,6 +40,50 @@ public class DBUser {
 		}
 
 		return null;
+	}
+
+	public static List<User> getAll() {
+		List<User> userList = new ArrayList<User>();
+
+		try {
+
+			ResultSet set = db.getSet("SELECT * FROM FUSER");
+
+			while (set.next()) {
+
+				User user = new User(set.getString("NAME"), set
+						.getString("PASSWORD"), User.Type.valueOf(set
+						.getString("TYPE")), Boolean.parseBoolean(set
+						.getString("ISACTIVE")));
+
+				userList.add(user);
+
+			}
+
+			return userList;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static User create(User user) {
+
+		String name = user.name();
+		String pass = user.password();
+
+		int status = db.updateSet("INSERT INTO FUSER VALUES ('" + name + "', '"
+				+ pass + "','NORMAL','true')");
+
+		if (status == 1) {
+			System.out.print(status);
+			return new User(name, pass, User.Type.NORMAL, true);
+		}
+
+		return null;
+
 	}
 
 	/**
@@ -61,51 +105,6 @@ public class DBUser {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static User create(User user) {
-
-		String name = user.name();
-		String pass = user.password();
-
-		int status = db.updateSet("INSERT INTO FUSER VALUES ('" + name + "', '"
-				+ pass + "','NORMAL','true')");
-
-		if (status == 1){
-			System.out.print(status);
-			return new User(name, pass, User.Type.NORMAL, true);
-		}
-
-		return null;
-
-	}
-
-	public static List<User> getAll() {
-		List<User> userList = new ArrayList<User>();
-
-		try {
-
-			ResultSet set = db.getSet("SELECT * FROM FUSER");
-
-			// dumpResultSet(set);
-			while (set.next()) {
-
-				User user = new User(set.getString("NAME"), set
-						.getString("PASSWORD"), User.Type.valueOf(set
-						.getString("TYPE")), Boolean.parseBoolean(set
-						.getString("ISACTIVE")));
-
-				userList.add(user);
-
-			}
-
-			return userList;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 }

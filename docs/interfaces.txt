@@ -5,21 +5,21 @@ Class BDUser
 
 User getByName(String name);
 
-list<User> getAll();
+User[] getAll(); (ArrayList)
 
-list <User> create(User user) -->if user exist return null
+User create(User user) -->if user exist return null
 
-list <User> update(User user)-->if user not exist return null
+User update(User user)-->if user not exist return null
 
 ##########################################
 
 Class BDThreadTopic
 
-ThreadTopic getById(String id);
+ThreadTopic getById(String id); -DONE
 
-ThreadTopic[] getAll();
+ThreadTopic[] getAll(); (ArrayList) -DONE
 
-ThreadTopic create(ThreadTopic topic)-->he must know the id(new obj)
+ThreadTopic create(ThreadTopic topic)
 
 ThreadTopic update(ThreadTopic topic)
 
@@ -30,9 +30,9 @@ Class BDThread
 
 ForumThread getById(String id);
 
-ForumThread[] getAllByTopic(String topicId);
+ForumThread[] getAllByTopic(String topicId); (ArrayList)
 
-
+ForumThread[] getThreadsByTopic(String topicId) (ArrayList)
 
 
 
