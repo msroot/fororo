@@ -2,7 +2,8 @@ package server;
 
 import shared.*;
 //import server.db.*;
-import test.DBUser;
+// import test.DBUser;
+import server.db.DBUser;
 import server.db.DBTopic;
 
 import java.rmi.*;
