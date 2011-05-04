@@ -18,37 +18,33 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     }
 
     public User loginUser(String username, String password, ForumClientInterface client) throws RemoteException {
-        //FIXME push client to list if valid user
     	//FIXME get user from DB
 //    	User user dbUser.getByName();
+    	
     	User user = new User(username, password, User.Type.NORMAL);
     	    	
+    	if (user == null){ throw new RemoteException("Invalid username or password"); }
     	
-    	if (user == null){ return null; }
-    	
-	    users.put(user.name(), user);
-	    clients.put(user.name(), client);
-        
-	    return user;
+    	if (user.name().equals(username) && user.password().equals(password)){
+    	    users.put(user.name(), user);
+    	    clients.put(user.name(), client);
+            return user;
+    	} else{
+    	    throw new RemoteException("Invalid username or password");
+    	}
     }
     
     public boolean logoutUser(String username) throws RemoteException {
-    	System.out.println("tologout:" +username);
-    	for (String u : users.keySet()){
-    		System.out.println(u);
-    	}
-    	if (!users.containsKey(username)){
-            return false;
-        }
+    	if (!users.containsKey(username)){ return false; }
         users.remove(username);
         clients.remove(username);
         return true;
     }
     
     public ThreadTopic[] getThreadTopics() throws RemoteException {
-    	//FIXME get from database
-    	ThreadTopic[] groups = { new ThreadTopic(), new ThreadTopic(), new ThreadTopic() };
-        return groups;
+    	//FIXME ThreadTopic[] topics = DBThreadTopic.getAll();    	
+    	ThreadTopic[] topics = { new ThreadTopic(), new ThreadTopic(), new ThreadTopic() };
+        return topics;
     }
     
     public ForumThread[] getThreadsByTopic(String topicId) throws RemoteException {
