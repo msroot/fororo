@@ -23,8 +23,27 @@ public class getGeneratedKeys {
 			String SQL_INSERT = "insert into FTOPIC (NAME, DESCRIPTION, ISACTIVE) values ('"
 					+ name + "', '" + description + "','" + isActive + "')";
 
+			
+			
+//			PreparedStatement pstmt = 
+//				 con.prepareStatement("INSERT INTO acc (acc_name) " +
+//				                        "VALUES (:acc_name)", 
+//				                             new String[] { "acc_id", "acc_balance" });
+//				 
+//				pstmt.setString(1, "Red Triangle");
+//				pstmt.executeUpdate();
+//				 
+//				ResultSet rs = pstmt.getGeneratedKeys();
+//				if (rs.next()) {
+//				    System.out.println("Account Id: " + rs.getInt(1));
+//				    System.out.println("Balance: " + rs.getInt(2));
+//				}
+				
+				
+				
 			preparedStatement = connection.prepareStatement(SQL_INSERT,
-					Statement.RETURN_GENERATED_KEYS);
+					//Statement.RETURN_GENERATED_KEYS);
+					new String[] {"ID"});
 
 			int affectedRows = preparedStatement.executeUpdate();
 			if (affectedRows == 0) {
@@ -32,9 +51,12 @@ public class getGeneratedKeys {
 						"Creating user failed, no rows affected.");
 			}
 
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				String getRowID = generatedKeys.getString(1);
+			//generatedKeys = preparedStatement.getGeneratedKeys();
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			if (rs.next()) {
+				String getRowID = rs.getString(1);
+				System.out.print(getRowID+"\n -------------------\n");
+				
 				return new Topic(getRowID, name, description, isActive);
 
 			} else {
@@ -43,16 +65,15 @@ public class getGeneratedKeys {
 			}
 		} finally {
 			preparedStatement.close();
-			generatedKeys.close();
+			 
 		}
 	}
 
-	// select * from ftopic where rowid='AABg0yAAEAAAhZXAAB'
-
+ 
 	public static void main(String[] args) throws SQLException {
 
 		/* create Topic */
-		Topic top = new Topic(null, "generated keys", "topic description", true);
+		Topic top = new Topic(null, "getGenerated keys", "topic description", true);
 		Topic newTopic = create(top);
 		System.out.print("id: " + newTopic.id() + "\n" + " desc:"
 				+ newTopic.description() + "\n" + " active:"

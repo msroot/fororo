@@ -10,7 +10,7 @@ public class getThreadTest {
 
 		/* getByName get only the Thread with the id=1*/
 				
-		ForumThread t = DBForumThread.getById("1");
+		ForumThread t = DBForumThread.getById("28");
 		 System.out.print( 
 				 "Content: "+ t.content()+
 				 " id:"+ t.id() +

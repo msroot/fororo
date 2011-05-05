@@ -4,17 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import shared.Topic;
-import shared.User;
 
 public class DBTopic {
 	static DBManager db = DBManager.getInstance();
 	static Connection connection = db.getConnection();
-	
+
 	public static Topic getById(String topicId) {
 		String id = null;
 		String name = null;
@@ -47,18 +45,18 @@ public class DBTopic {
 	 * 
 	 * @return String id
 	 */
-	public static String findTopicIDByRowID(String rowID) {
+	public static String findIDByRowID(String rowID) {
 		String id = null;
 		String table = "FTOPIC";
 
 		try {
-			//select ID from ftopic where rowid='AABg0yAAEAAAhZVAAF'
+			// select ID from ftopic where rowid='AABg0yAAEAAAhZVAAF'
 			ResultSet set = db.getSet("SELECT ID FROM  " + table
 					+ "  WHERE rowid='" + rowID + "'");
 
 			while (set.next()) {
 				id = set.getString("ID");
-				
+
 				System.out.print(rowID + "-" + id);
 				return id;
 			}
@@ -100,7 +98,7 @@ public class DBTopic {
 	 * 
 	 * @param <Topic>
 	 * 
-	 * @return <Topic> or  null
+	 * @return <Topic> or null
 	 */
 	public static Topic create(Topic topic) {
 
@@ -114,37 +112,41 @@ public class DBTopic {
 		// }
 		//
 		// return null;
-		
-		
+
 		String name = topic.name();
 		String description = topic.description();
 		Boolean isActive = topic.isActive();
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
-		
-		
-		
-		try {
 
+		try {
+//http://blog.lishman.com/2009/02/auto-generated-primary-keys-in-oracle.html
 			String SQL_INSERT = "insert into FTOPIC (NAME, DESCRIPTION, ISACTIVE) values ('"
-					+ name + "', '" + description + "','" + isActive.toString() + "')";
+					+ name
+					+ "', '"
+					+ description
+					+ "','"
+					+ isActive.toString()
+					+ "')";
 
 			preparedStatement = connection.prepareStatement(SQL_INSERT,
-					Statement.RETURN_GENERATED_KEYS);
+			// Statement.RETURN_GENERATED_KEYS);
+					new String[] { "ID" });
 
 			int affectedRows = preparedStatement.executeUpdate();
 			if (affectedRows == 0) {
 				throw new SQLException("Creating  failed, no rows affected.");
 			}
-
+			String rowID = null;
 			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				String rowID = generatedKeys.getString(1);
-				String id = findTopicIDByRowID(rowID);
-				return new Topic(id, name, description, isActive);
-
+			 
+			while (generatedKeys.next()) {
+				rowID = generatedKeys.getString(1);
+				// String id = findTopicIDByRowID(rowID);
+				return new Topic(rowID, name, description, isActive);
 			}
-			return null;
+
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
