@@ -50,26 +50,27 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     	return DBTopic.getAll();
     }
     
-    // public ThreadTopic activateThreadTopic(userId, topicId) throws RemoteException{
-    //        if(!userIsLoggedIn()){
-    //            throw new RemoteException("User is not logged in");
-    //        }
-    // 
-    //            // FIXME get from DB
-    //            ThreadTopic topic = new ThreadTopic(topicId, "", "");
-    // 
-    //            if(topic == null){
-    //                // FIXME throw ForumExeption
-    //                throw new RemoteException("Topic not found")
-    //                }        
-    // 
-    //                User user         = users.get(userId);
-    // 
-    //                if(user.type == User.type.ADMIN){
-    //                    topic.
-    //                    }
-    //                }
-    //    }
+    public Topic approveTopic(String userId, String topicId) throws RemoteException{
+        if(!userIsLoggedIn(userId)){
+            throw new ForumException("User is not logged in");
+        }
+        
+        User user = users.get(userId);
+        
+        if(!user.type().equals(User.Type.ADMIN)){
+            throw new ForumException("User must be ADMIN");
+        }
+        
+        Topic topic = DBTopic.getById(topicId);
+
+        if(topic == null){
+            throw new ForumException("Topic not found");
+        }
+        
+        topic.id(topicId);
+        
+        return DBTopic.update(topic);
+    }
     
     // THREADS
     public ForumThread getThreadById(String threadId) throws RemoteException{
@@ -81,10 +82,15 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     }
     
     public ForumThread createThread(String userId, String title, String content, String topicId) throws RemoteException{
+
+        User user = users.get(userId);
         
-        return DBForumThread.create(threadId);
-       ForumThread thread = new ForumThread("thread_id", title, content, topicId);
-        return thread;
+        if (user != null && user.isActive()){
+//            return DBForumThread.create(new ForumThread("null", title, content, topicId));
+        	return new ForumThread("null", title, content, topicId);
+        } else{
+            throw new ForumException("User:" + userId +"is not logged in or is inactive"); 
+        }
     }
     
     public void throwForumException() throws ForumException{

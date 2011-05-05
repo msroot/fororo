@@ -11,7 +11,7 @@ public interface ForumInterface extends java.rmi.Remote{
    
     public List<Topic> getTopics() throws RemoteException;
     
-    // public ThreadTopic activateThreadTopic(String userId, String topicId) throws RemoteException;
+    public Topic approveTopic(String userId, String topicId) throws RemoteException;
     
     public List<ForumThread> getThreadsByTopic(String topicId) throws RemoteException;
     
