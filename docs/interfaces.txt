@@ -3,37 +3,38 @@
 
 Class BDUser
 
-User getByName(String name);--DONE
+User getByName(String name)--DONE
 
-List<User> getAll(); (ArrayList)--DONE
+User[] getAll(); (ArrayList)--DONE
 
-User create(User user) 
+User create(User user) --DONE
 
-User update(User user)
+User update(User user)--DONE
 
 ##########################################
 
-Class BDTopic
+Class BDThreadTopic
 
 Topic getById(String id);--DONE 
 
-List<Topic> getAll(); (ArrayList) --DONE
+Topic[] getAll(); (ArrayList) --DONE
+
+Topic create(Topic topic)--DONE 
+
+Topic update(Topic topic)--DONE 
+
+##########################################
+
+Class BDThread
+
+
+ForumThread getById(String id);--DONE
+
+ForumThread[] getAllByTopic(String topicId); (ArrayList)--DONE
 
 Topic create(Topic topic)
 
 Topic update(Topic topic)
-
-##########################################
-
-Class BDForumThread
-
-ForumThread getById(String id); --DONE
-
-List<ForumThread> getAllByTopic(String topicId); (ArrayList) --DONE
-
-ForumThread create(ForumThread thread);
-
-ForumThread update(ForumThread thread);
 
  
 

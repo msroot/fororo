@@ -82,7 +82,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
     public ForumThread createThread(String userId, String title, String content, String topicId) throws RemoteException{
         
-        //FIXME create in database
+        return DBForumThread.create(threadId);
        ForumThread thread = new ForumThread("thread_id", title, content, topicId);
         return thread;
     }
