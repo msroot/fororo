@@ -82,8 +82,8 @@ public class LoginDialog extends JDialog {
 						String password = new String(passwordField.getPassword());
 						try {
 							Driver.forumClient.user=Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
-							MainWindow.setControls();
 							dialog.dispose();
+							
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

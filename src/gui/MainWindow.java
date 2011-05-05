@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -19,6 +21,8 @@ import java.rmi.RemoteException;
 import java.util.*;
 import javax.swing.ListSelectionModel;
 import java.awt.ScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow {
 
@@ -61,10 +65,13 @@ public class MainWindow {
 		setControls();
 	}
 	
+	/**
+	 * Closes The Window
+	 */
 	public static void close(){
 		try {
 			window.frame.dispose();
-			//window.finalize();
+//			window.finalize();
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,7 +122,7 @@ public class MainWindow {
 		frame.getContentPane().setBackground(UIManager.getColor("Button.background"));
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 679, 580);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		
@@ -137,14 +144,14 @@ public class MainWindow {
 		frame.getContentPane().add(btnRegister);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Entered login action listener");
 				if (btnLogin.getText().equalsIgnoreCase("login")){
 					LoginDialog.main(null);
 				}else{
 					Driver.forumClient.user=null;
 					btnLogin.setText("Login");
-					setControls();
 				}
-				
+				setControls();
 			}
 		});
 		
@@ -182,6 +189,20 @@ public class MainWindow {
 		frame.getContentPane().add(btnExit);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = table.getSelectedRow();
+				//JOptionPane.showMessageDialog(null, table.getModel().getValueAt(row, 1));
+				String id = (String) table.getModel().getValueAt(row, 0);
+				String name = (String) table.getModel().getValueAt(row, 1);
+				String description = (String) table.getModel().getValueAt(row, 2);
+				String[] args = new String[]{id,name,description};
+				Driver.openGroup(args);
+//				close();
+//				GroupView.main(args);
+			}
+		});
 		table.setBorder(null);
 //		frame.getContentPane().add(table);
 		Object[][] rows = new Object[this.topics.size()][];
