@@ -22,6 +22,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 import shared.*;
+import java.awt.ScrollPane;
 public class GroupView {
 
 	private JFrame frame;
@@ -76,7 +77,7 @@ public class GroupView {
 	public static void close(){
 		try {
 			window.frame.dispose();
-			window.finalize();
+//			window.finalize();
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,21 +133,68 @@ public class GroupView {
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				close();
+				
 //				MainWindow.main(args);
-				MainWindow.setControls();
+				MainWindow.open();
+//				MainWindow.setControls();
+//				FrameTest.main(null);
 			}
 		});
 		btnReturn.setBounds(548, 518, 107, 23);
 		frame.getContentPane().add(btnReturn);
 		
+		JLabel lblNewLabel = new JLabel("Threads");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel.setBounds(42, 159, 113, 15);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JLabel lblUser = new JLabel("Author");
+		lblUser.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblUser.setBounds(475, 159, 46, 15);
+		frame.getContentPane().add(lblUser);
+		
+		JLabel lblGroupName = new JLabel(args[2]);
+		lblGroupName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblGroupName.setBackground(Color.WHITE);
+		lblGroupName.setBounds(126, 57, 511, 25);
+		frame.getContentPane().add(lblGroupName);
+		
+		btnChat.setBounds(144, 120, 107, 23);
+		frame.getContentPane().add(btnChat);
+		
+		btnDelete.setBounds(261, 120, 107, 23);
+		frame.getContentPane().add(btnDelete);
+		
+		JLabel lblGroup = new JLabel("Group Name");
+		lblGroup.setBounds(31, 64, 85, 14);
+		frame.getContentPane().add(lblGroup);
+		
+		JLabel lblDescrip = new JLabel("Description");
+		lblDescrip.setBounds(31, 92, 85, 14);
+		frame.getContentPane().add(lblDescrip);
+		
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setBounds(21, 179, 620, 315);
+		
+		frame.getContentPane().add(scrollPane);
+		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				int row = table.getSelectedRow();
+				//JOptionPane.showMessageDialog(null, table.getModel().getValueAt(row, 1));
+				String id = (String) table.getModel().getValueAt(row, 0);
+				String title = (String) table.getModel().getValueAt(row, 1);
+				String content = (String) table.getModel().getValueAt(row, 2);
+				String[] args = new String[]{id,title,content};
+//				Driver.openGroup(args);
+				close();
+				ThreadView.main(args);
 			}
 		});
-		table.setBorder(new LineBorder(new Color(0, 0, 0)));
+		table.setBorder(null);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		Object[][] rows = new Object[this.threads.size()][];
 		String[] header = new String[]{
@@ -155,7 +203,6 @@ public class GroupView {
 		for (int i=0;i<this.threads.size();i++){
 			rows[i] = new String[]{this.threads.get(i).id(),this.threads.get(i).title(),this.threads.get(i).content()};
 		}
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(new DefaultTableModel(
 				rows,
 				header
@@ -188,38 +235,13 @@ public class GroupView {
 		table.getColumnModel().getColumn(0).setMaxWidth(0);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(1).setPreferredWidth(392);
+		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(2).setPreferredWidth(136);
+//		table.getColumnModel().getColumn(3).setPreferredWidth(0);
+//		table.getColumnModel().getColumn(3).setMinWidth(0);
+//		table.getColumnModel().getColumn(3).setMaxWidth(0);
 		table.setBounds(21, 179, 634, 331);
-		frame.getContentPane().add(table);
-		
-		JLabel lblNewLabel = new JLabel("Threads");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setBounds(42, 159, 113, 15);
-		frame.getContentPane().add(lblNewLabel);
-		
-		JLabel lblUser = new JLabel("Author");
-		lblUser.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblUser.setBounds(475, 159, 46, 15);
-		frame.getContentPane().add(lblUser);
-		
-		JLabel lblGroupName = new JLabel(args[2]);
-		lblGroupName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblGroupName.setBackground(Color.WHITE);
-		lblGroupName.setBounds(126, 57, 511, 25);
-		frame.getContentPane().add(lblGroupName);
-		
-		btnChat.setBounds(144, 120, 107, 23);
-		frame.getContentPane().add(btnChat);
-		
-		btnDelete.setBounds(261, 120, 107, 23);
-		frame.getContentPane().add(btnDelete);
-		
-		JLabel lblGroup = new JLabel("Group Name");
-		lblGroup.setBounds(31, 64, 85, 14);
-		frame.getContentPane().add(lblGroup);
-		
-		JLabel lblDescrip = new JLabel("Description");
-		lblDescrip.setBounds(31, 92, 85, 14);
-		frame.getContentPane().add(lblDescrip);
+		scrollPane.add(table);
+		//frame.getContentPane().add(table);
 	}
 }

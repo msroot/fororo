@@ -46,6 +46,7 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					window = new MainWindow();
 					window.frame.setVisible(true);
 					
@@ -69,13 +70,21 @@ public class MainWindow {
 	 * Closes The Window
 	 */
 	public static void close(){
+		
 		try {
-			window.frame.dispose();
+//			window.frame.dispose();
+			window.frame.setVisible(false);
 //			window.finalize();
+//			window.close();
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void open(){
+		window.frame.setVisible(true);
+		setControls();
 	}
 	
 	/**
@@ -198,9 +207,9 @@ public class MainWindow {
 				String name = (String) table.getModel().getValueAt(row, 1);
 				String description = (String) table.getModel().getValueAt(row, 2);
 				String[] args = new String[]{id,name,description};
-				Driver.openGroup(args);
-//				close();
-//				GroupView.main(args);
+//				Driver.openGroup(args);
+				close();
+				GroupView.main(args);
 			}
 		});
 		table.setBorder(null);
