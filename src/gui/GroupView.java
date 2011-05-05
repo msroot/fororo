@@ -25,10 +25,10 @@ import shared.*;
 import java.awt.ScrollPane;
 public class GroupView {
 
-	private JFrame frame;
-	private JTable table;
+	private static JFrame frame;
+	private static JTable table;
 	static GroupView window;
-	List<ForumThread> threads;
+	static List<ForumThread> threads;
 	static String[] args;
 	static JButton btnNewThread = new JButton("New Thread");
 	static JButton btnChat = new JButton("Chat");
@@ -55,17 +55,21 @@ public class GroupView {
 	 * Create the application.
 	 */
 	public GroupView() {
+		load();
+	}
+	
+	public static void load(){
 		loadData();
 		initialize();
-		setControls();
+		setControls();	
 	}
 	
 	/**
 	 * Loads the Data From the server
 	 */
-	private void loadData(){
+	private static void loadData(){
 		try {
-			this.threads = Driver.forumClient.forum.getThreadsByTopic(args[0]);
+			threads = Driver.forumClient.forum.getThreadsByTopic(args[0]);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,7 +111,7 @@ public class GroupView {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private static void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(UIManager.getColor("Button.background"));
 		frame.setResizable(false);
@@ -125,6 +129,11 @@ public class GroupView {
 		lblDescription.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDescription.setBounds(126, 85, 511, 25);
 		frame.getContentPane().add(lblDescription);
+		btnNewThread.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NewThread.main(window.args);
+			}
+		});
 		
 		btnNewThread.setBounds(27, 121, 107, 23);
 		frame.getContentPane().add(btnNewThread);
@@ -196,12 +205,12 @@ public class GroupView {
 		table.setBorder(null);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		Object[][] rows = new Object[this.threads.size()][];
+		Object[][] rows = new Object[threads.size()][];
 		String[] header = new String[]{
 			"ID", "Title", "Content"};
 		
-		for (int i=0;i<this.threads.size();i++){
-			rows[i] = new String[]{this.threads.get(i).id(),this.threads.get(i).title(),this.threads.get(i).content()};
+		for (int i=0;i<threads.size();i++){
+			rows[i] = new String[]{threads.get(i).id(),threads.get(i).title(),threads.get(i).content()};
 		}
 		table.setModel(new DefaultTableModel(
 				rows,
