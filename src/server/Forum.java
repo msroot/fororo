@@ -91,7 +91,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     	throw new ForumException("giveMeAForumException()");
     }
     
-    private boolean userIsLoggedIn(username){
+    private boolean userIsLoggedIn(String username){
         return users.containsKey(username);
     }
 

@@ -91,7 +91,7 @@ public class ForumTest {
 		try{
 			ForumClient client = new ForumClient();
 			assertTrue("It should connect", client.connect());
-			client.forum.createThread("the title", "the description", "the_topic_id");
+			client.forum.createThread("0", "the title", "the description", "the_topic_id");
 		} catch (Exception e){
 			e.printStackTrace();
 			fail("Should not throw exception: " + e.getMessage());
