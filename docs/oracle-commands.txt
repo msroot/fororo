@@ -1,7 +1,6 @@
 GENERAL NOTES
 --------------------------------------------------------
-FUSER TYPE:1 is normal 2 is admin
-
+FUSER TYPE: 
 
 
 
@@ -27,7 +26,7 @@ end;
 /
 
 --------------------------------------------------------
-insert into FUSER (name, password, isactive, type) values ('Frankenstein', 'pass', 'true','admin');
+insert into FUSER (name, password, type, isactive) values ('Frankenstein', 'pass', 'NORMAL','true');
 
 #######################################################
 

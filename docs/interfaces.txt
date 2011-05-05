@@ -3,25 +3,25 @@
 
 Class BDUser
 
-User getByName(String name);--DONE
+User getByName(String name)--DONE
 
 User[] getAll(); (ArrayList)--DONE
 
-User create(User user) 
+User create(User user) --DONE
 
-User update(User user)
+User update(User user)--DONE
 
 ##########################################
 
 Class BDThreadTopic
 
-ThreadTopic getById(String id);--DONE 
+Topic getById(String id);--DONE 
 
-ThreadTopic[] getAll(); (ArrayList) --DONE
+Topic[] getAll(); (ArrayList) --DONE
 
-ThreadTopic create(ThreadTopic topic)
+Topic create(Topic topic) i have to return the id
 
-ThreadTopic update(ThreadTopic topic)
+Topic update(Topic topic)--DONE 
 
 ##########################################
 
@@ -32,6 +32,8 @@ ForumThread getById(String id);--DONE
 
 ForumThread[] getAllByTopic(String topicId); (ArrayList)--DONE
 
- 
+ForumThread create(ForumThread thread)  
+
+ForumThread update(ForumThread thread)
 
 

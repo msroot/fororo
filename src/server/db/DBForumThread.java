@@ -62,6 +62,25 @@ public class DBForumThread {
 		return AllByTopic;
 	}
 
+	public static ForumThread create(ForumThread thread) {
+		return null;
+	}
 
+	public static ForumThread  update(ForumThread thread) {
+		String id = thread.id();
+		String title = thread.title();
+		String description = thread.content();
+		String topicId = thread.topicId();
 
-}
+		int status = db.updateSet("UPDATE FTHREAD  SET TITLE='" + title
+				+ "' ,DESCRIPTION='" + description + "', TOPICID='"
+				+ topicId + "'  WHERE ID='" + id + "'");
+		if (status == 1) {
+			return new ForumThread(id, title, description, topicId);
+		}
+		return null;
+	}
+	
+	 
+ 
+} 
