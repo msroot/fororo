@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import shared.Comment;
 import shared.ForumThread;
 import shared.Topic;
 
@@ -143,6 +144,28 @@ public class DBTopic {
 		return null;
 	}
 
+	
+	public static Topic delete(Topic topic) {
+		try {
+
+			String id= topic.id();
+			Connection connection = DriverManager.getConnection(
+					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
+					"s3252905", "yA6xsuxc");
+			String q = "DELETE FROM FTOPIC  WHERE ID='"+id+"'";
+			Statement stmt = connection.createStatement();
+			int rowsAffected = stmt.executeUpdate(q);
+			
+			if (rowsAffected == 1) {
+				return topic;
+			}
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	private static String now(){
 		return Calendar.getInstance().getTime().toString();

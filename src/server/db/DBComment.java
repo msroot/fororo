@@ -117,6 +117,31 @@ public class DBComment {
 	}
 	 
  
+	
+	public static Comment delete(Comment comment) {
+		try {
+
+			String id= comment.id();
+			Connection connection = DriverManager.getConnection(
+					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
+					"s3252905", "yA6xsuxc");
+			String q = "DELETE FROM FCOMMENT  WHERE ID='"+id+"'";
+			Statement stmt = connection.createStatement();
+			int rowsAffected = stmt.executeUpdate(q);
+			
+			if (rowsAffected == 1) {
+				return comment;
+			}
+			stmt.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
+	
 	private static Comment mapComment(ResultSet set) throws SQLException{
  		return new Comment(
 				set.getString("ID"),
