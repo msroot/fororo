@@ -20,20 +20,23 @@ public class getThreadTest {
 
 		List<ForumThread> treads = DBForumThread.getAllByTopic("1");
 		for (ForumThread th : treads) {
-			System.out.print("\nContent:" + th.content() + " id:" + th.id()
-					+ " topicId:" + th.topicId() + " title:" + th.title());
-		}
-		System.out.print("\n getAllByTopic -------------------END");
+//			System.out.print("\nContent:" + th.content() + " id:" + th.id()
+//					+ " topicId:" + th.topicId() + " title:" + th.title());
+//		
+		System.out.println(th);}
+		System.out.print("\n getAllByTopic -------------------END\n ");
 
 		/* create a  new topic and get the current id*/
-		ForumThread tr = new ForumThread("", "yes its work", "i get the id",
+		ForumThread tr = new ForumThread("", "yes yes yes  yes yes its work hot hot baby", "i get the id",
 				"1", null, null);
 
 		ForumThread th2 = DBForumThread.create(tr);
-		System.out.print("\nContent:" + th2.content() + " ID:" + th2.id()
-				+ " topicId:" + th2.topicId() + " title:" + th2.title());
+//		System.out.print("\nContent:" + th2.content() + " ID:" + th2.id()
+//				+ " topicId:" + th2.topicId() + " title:" + th2.title());
 
-		System.out.print("\n create -------------------END");
+System.out.println(th2);		
+System.out.print("\n create -------------------END");
+
 
 	}
 }
