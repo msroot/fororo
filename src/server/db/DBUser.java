@@ -1,12 +1,16 @@
 package server.db;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import shared.ForumThread;
+import shared.Topic;
 import shared.User;
 
 public class DBUser {
@@ -129,9 +133,28 @@ public class DBUser {
 
 	}
 
+	public static User delete(User user) {
+		try {
 
+			String id = user.name();
+			Connection connection = DriverManager.getConnection(
+					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
+					"s3252905", "yA6xsuxc");
+			String q = "DELETE FROM FUSER  WHERE NAME='" + id + "'";
+			Statement stmt = connection.createStatement();
+			int rowsAffected = stmt.executeUpdate(q);
 
+			if (rowsAffected == 1) {
+				return user;
+			}
+			stmt.close();
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	private static String now(){
 		return Calendar.getInstance().getTime().toString();
 	}
