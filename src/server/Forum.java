@@ -12,8 +12,8 @@ import java.util.*;
 
 public class Forum extends UnicastRemoteObject implements ForumInterface {
 	static final long serialVersionUID = 1; // to keep the compiler happy;
-	private String host = null;
-	private String port = null;
+	private String host = "localhost";
+	private String port = "1099";
 
 	public HashMap<String, User> users = null;
 	public HashMap<String, ForumClientInterface> clients = null;
@@ -21,8 +21,6 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	public Forum() throws RemoteException {
 		clients = new HashMap<String, ForumClientInterface>();
 		users = new HashMap<String, User>();
-		this.host = "localhost";
-        this.port = "1099";
 	}
 	
 	public Forum(String host, String port) throws RemoteException {
@@ -145,13 +143,14 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		String rmiStr = "rmi://"+host+":"+port+"/Forum";
 		try {
 			Naming.rebind(rmiStr, this);
-			System.out.println("Created and registered Forum object");
+			System.out.println("Created and registered Forum object on port: "+port);
+			System.out.println("Now waiting for remote invocations");
 		} catch (RemoteException re) {
 			System.out.println("Unable to add remote object to registry");
 		} catch (MalformedURLException me) {
 			System.out.println("Incorrect address for registry");
 		} finally {
-			System.out.println("Now waiting for remote invocations");
+			
 		}
 	}
 
