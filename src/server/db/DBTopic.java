@@ -47,34 +47,6 @@ public class DBTopic {
 		return null;
 	}
 
-	/*
-	 * Returns the current row id
-	 * 
-	 * @param String rowID
-	 * 
-	 * @return String id
-	 */
-	public static String findIDByRowID(String rowID) {
-		String id = null;
-		String table = "FTOPIC";
-
-		try {
-			// select ID from ftopic where rowid='AABg0yAAEAAAhZVAAF'
-			ResultSet set = db.getSet("SELECT ID FROM  " + table
-					+ "  WHERE rowid='" + rowID + "'");
-
-			while (set.next()) {
-				id = set.getString("ID");
-
-				System.out.print(rowID + "-" + id);
-				return id;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public static List<Topic> getAll() {
 		List<Topic> topics = new ArrayList<Topic>();
 
@@ -122,7 +94,6 @@ public class DBTopic {
 		String user = topic.userName();
 		
 		try {
-
 			String q = "insert into FTOPIC (NAME, DESCRIPTION, ISACTIVE,USERID,CREATED) values ('"
 					+ name
 					+ "', '"
@@ -177,7 +148,9 @@ public class DBTopic {
 		return Calendar.getInstance().getTime().toString();
 	}
 	 private static Topic mapTopic(ResultSet set) throws SQLException{
-		return new Topic(
+	
+		 
+		 return new Topic(
 				set.getString("ID"),
 				set.getString("NAME"),
 				set.getString("DESCRIPTION"),

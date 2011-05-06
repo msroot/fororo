@@ -91,9 +91,10 @@ public class DBForumThread {
 					"s3252905", "yA6xsuxc");
 
 			String q = "insert into FTHREAD  values ('','" + title + "', '"
-					+ description + "','" + topicId + "')";
-
-			Statement stmt = connection.createStatement();
+					+ description + "','" + topicId + "', '"+user+"', '"+now()+"')";
+			
+ 			
+Statement stmt = connection.createStatement();
 
 			int rowsAffected = stmt.executeUpdate(q, new String[] { "ID" });
 			if (rowsAffected == 1) {
@@ -125,6 +126,7 @@ public class DBForumThread {
 		String description = thread.content();
 		String topicId = thread.topicId();
 
+		
 		int status = db.updateSet("UPDATE FTHREAD  SET TITLE='" + title
 				+ "' ,DESCRIPTION='" + description + "', TOPICID='" + topicId
 				+ "'  WHERE ID='" + id + "'");
@@ -141,8 +143,9 @@ public class DBForumThread {
 		return Calendar.getInstance().getTime().toString();
 	}
 	 
+	
 	private static ForumThread mapThreads(ResultSet set) throws SQLException{
-		return new ForumThread(
+ 		return new ForumThread(
 				set.getString("ID"),
 				set.getString("TITLE"),
 				set.getString("DESCRIPTION"),

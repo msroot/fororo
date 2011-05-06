@@ -116,12 +116,13 @@ public class DBComment {
 		return Calendar.getInstance().getTime().toString();
 	}
 	 
+ 
 	private static Comment mapComment(ResultSet set) throws SQLException{
-		return new Comment(
+ 		return new Comment(
 				set.getString("ID"),
 				set.getString("CONTENT"),
-				set.getString("THREADID"),
 				set.getString("USERID"),
+				set.getString("THREADID"),
 				set.getString("CREATED")
 				);
 	
