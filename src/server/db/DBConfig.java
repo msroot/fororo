@@ -1,19 +1,10 @@
 package server.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
-import shared.Comment;
 import shared.Config;
-import shared.ForumThread;
-import shared.Topic;
 
 public class DBConfig {
 	static DBManager db = DBManager.getInstance();
@@ -31,7 +22,7 @@ public class DBConfig {
 
 	public static Config get() {
 		try {
-			ResultSet set = db.getSet("SELECT * FCONFIG");
+			ResultSet set = db.getSet("SELECT * FROM FCONFIG");
 
 			set.next();
 			return mapConfig(set);
