@@ -29,7 +29,11 @@ public class DBUser {
 					+ findName + "'");
 
 			while (set.next()) {
+<<<<<<< HEAD
 				 type = (set.getString("TYPE").equalsIgnoreCase("NORMAL") ) ? User.Type.NORMAL
+=======
+				type = (set.getString("TYPE").equalsIgnoreCase("NORMAL") ) ? User.Type.NORMAL
+>>>>>>> 0c06aa16ac3899792894618b769987b239c35347
 						: User.Type.ADMIN;
 
 				name = set.getString("NAME");
