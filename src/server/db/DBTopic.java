@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import shared.ForumThread;
@@ -15,25 +16,30 @@ import shared.Topic;
 public class DBTopic {
 	static DBManager db = DBManager.getInstance();
 	static Connection connection = db.getConnection();
+	
 
 	public static Topic getById(String topicId) {
-		String id = null;
+/*		String id = null;
 		String name = null;
 		String description = null;
-		Boolean isActive = null;
+		Boolean isActive = null;*/
 		try {
 			ResultSet set = db.getSet("SELECT * FROM FTOPIC WHERE ID='"
 					+ topicId + "'");
 
-			while (set.next()) {
-				id = set.getString("ID");
-				name = set.getString("NAME");
-				description = set.getString("DESCRIPTION");
-				isActive = Boolean.parseBoolean(set.getString("ISACTIVE"));
 
-				return new Topic(id, name, description, isActive);
-			}
-
+//			while (set.next()) {
+//				id = set.getString("ID");
+//				name = set.getString("NAME");
+//				description = set.getString("DESCRIPTION");
+//				isActive = Boolean.parseBoolean(set.getString("ISACTIVE"));*/
+//
+//				public Topic(String id, String name, String description, boolean isActive, String userName, String created){
+//				return new Topic(id, name, description, isActive);
+//			}
+			set.next();			
+			return mapTopic(set);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -79,15 +85,20 @@ public class DBTopic {
 		try {
 			ResultSet set = db.getSet("SELECT * FROM FTOPIC");
 
+//			while (set.next()) {
+//				id = set.getString("ID");
+//				name = set.getString("NAME");
+//				description = set.getString("DESCRIPTION");
+//				isActive = Boolean.parseBoolean(set.getString("ISACTIVE"));
+
+				//topics.add(new Topic(id, name, description, isActive));
+				
+			//}
+
 			while (set.next()) {
-				id = set.getString("ID");
-				name = set.getString("NAME");
-				description = set.getString("DESCRIPTION");
-				isActive = Boolean.parseBoolean(set.getString("ISACTIVE"));
-
-				topics.add(new Topic(id, name, description, isActive));
+				topics.add(mapTopic(set));
 			}
-
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -108,16 +119,17 @@ public class DBTopic {
 		String name = topic.name();
 		String description = topic.description();
 		Boolean isActive = topic.isActive();
-
+		String user = topic.userName();
+		
 		try {
 
-			String q = "insert into FTOPIC (NAME, DESCRIPTION, ISACTIVE) values ('"
+			String q = "insert into FTOPIC (NAME, DESCRIPTION, ISACTIVE,USERID,CREATED) values ('"
 					+ name
 					+ "', '"
 					+ description
 					+ "','"
 					+ isActive.toString()
-					+ "')";
+					+ "','"+user+"', '"+now()+"')";
 
 			Connection connection = DriverManager.getConnection(
 					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
@@ -131,7 +143,9 @@ public class DBTopic {
 
 				while (generatedKeys.next()) {
 					String rowID = generatedKeys.getString(1);
-					return new Topic(rowID, name, description, isActive);
+					//return new Topic(rowID, name, description, isActive);
+					return getById(rowID);
+					
 				}
 			}
 			stmt.close();
@@ -147,14 +161,30 @@ public class DBTopic {
 		String name = topic.name();
 		String description = topic.description();
 		Boolean isActive = topic.isActive();
-
+		String user = topic.userName();
+ 		
 		int status = db.updateSet("UPDATE FTOPIC SET NAME='" + name
 				+ "' ,DESCRIPTION='" + description + "', ISACTIVE='"
-				+ isActive.toString() + "'  WHERE ID='" + id + "'");
+				+ isActive.toString() + "', USERID='"+user+"'  WHERE ID='" + id + "'");
 		if (status == 1) {
-			return new Topic(id, name, description, isActive);
+			return topic;
 		}
 		return null;
 	}
 
+	
+	private static String now(){
+		return Calendar.getInstance().getTime().toString();
+	}
+	 private static Topic mapTopic(ResultSet set) throws SQLException{
+		return new Topic(
+				set.getString("ID"),
+				set.getString("NAME"),
+				set.getString("DESCRIPTION"),
+				Boolean.parseBoolean(set.getString("ISACTIVE")),
+				set.getString("USERID"),
+				set.getString("CREATED")
+				);
+	
+	 }
 }
