@@ -23,6 +23,7 @@ package server.db.temp;
 import java.sql.*;
 
 import oracle.jdbc.driver.SQLUtil;
+import shared.ForumThread;
 
 public class SQLLoader
 {
@@ -38,30 +39,31 @@ public class SQLLoader
 
 		try
 		{
-		          // Get a connection from the connection factory
-			Connection con = DriverManager.getConnection(
+ 			Connection con = DriverManager.getConnection(
 					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
 					"s3252905", "yA6xsuxc");
 	
-			// Show some database/driver metadata
- 
-			// Create a Statement object so we can submit SQL statements to the driver
-			Statement stmt = con.createStatement();
+  String q="insert into TABLE1 values ('WAqssssq','Washington',null,'Olympia','West',  68192,null,null)";
 
-			// Submit the statement
-			for (int i=0; i<InsertRows.length; ++i)
-			{
-				System.out.print(InsertRows[i] + "...");
-				int rowsAffected = stmt.executeUpdate(InsertRows[i]);
-				if (rowsAffected == 1)
-					System.out.println("OK");
-			}
+ 			Statement stmt = con.createStatement();
 
-			// Close the statement
-			stmt.close();
+ 			 
+ 				int rowsAffected = stmt.executeUpdate(q, new String[] { "COLUMN1" });
+				if (rowsAffected == 1){
+ 				
+				ResultSet  generatedKeys = stmt.getGeneratedKeys();
+				while (generatedKeys.next()) {
+					String rowID = generatedKeys.getString(1);
+					System.out.println(rowID );
+					
+				}}
 
-			// Close the connection
-			con.close();
+				
+			 
+
+ 			stmt.close();
+
+ 			//con.close();
 		}
 		catch (SQLException e)
 		{

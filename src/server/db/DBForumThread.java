@@ -1,9 +1,11 @@
 package server.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,31 +71,39 @@ public class DBForumThread {
 		String title = thread.title();
 		String description = thread.content();
 		String topicId = thread.topicId();
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
 		try {
-			String SQL_INSERT = "insert into FTHREAD (TITLE, DESCRIPTION, TOPICID) values ('"
-					+ title + "', '" + description + "','" + topicId + "')";
 
-			preparedStatement = connection.prepareStatement(SQL_INSERT,
-					new String[] { "ID" });
+			/* We need to connect again. this is the only way it works 
+			 * all other statetement work with the current cunnection 
+			 * but not this :( */
+			
+			Connection connection = DriverManager.getConnection(
+					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
+					"s3252905", "yA6xsuxc");
 
-			int affectedRows = preparedStatement.executeUpdate();
-			if (affectedRows == 0) {
-				throw new SQLException("Creating  failed, no rows affected.");
+			String q = "insert into FTHREAD  values ('','" + title + "', '"
+					+ description + "','" + topicId + "')";
+
+			Statement stmt = connection.createStatement();
+
+			int rowsAffected = stmt.executeUpdate(q, new String[] { "ID" });
+			if (rowsAffected == 1) {
+				ResultSet generatedKeys = stmt.getGeneratedKeys();
+				while (generatedKeys.next()) {
+					String rowID = generatedKeys.getString(1);
+					/*
+					 * System.out.println(rowID); System.out.println(": " + q);
+					 */
+					return new ForumThread(rowID, title, description, topicId);
+
+				}
 			}
-			String rowID = null;
-			generatedKeys = preparedStatement.getGeneratedKeys();
-
-			while (generatedKeys.next()) {
-				rowID = generatedKeys.getString(1);
-				// String id = findTopicIDByRowID(rowID);
-				return new ForumThread(rowID, title, description, topicId);
-			}
+			stmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		return null;
 
 	}

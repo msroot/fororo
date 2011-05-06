@@ -36,7 +36,7 @@ public class getTopicTest {
 		System.out.print("\n create -------------------\n");
 
 		/* update Topic */
-		 Topic top1 = new Topic("18", "this is topic 18", "topic description",
+		 Topic top1 = new Topic("18", "this was topic 18", "topic description",
 		 true);
 		 System.out.print("\n update -------------------START\n");
 		 Topic newTopic1 = DBTopic.update(top1);
