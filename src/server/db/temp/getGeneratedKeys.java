@@ -57,7 +57,7 @@ public class getGeneratedKeys {
 				String getRowID = rs.getString(1);
 				System.out.print(getRowID+"\n -------------------\n");
 				
-				return new Topic(getRowID, name, description, isActive);
+				return new Topic(getRowID, name, description, isActive, getRowID, getRowID);
 
 			} else {
 				throw new SQLException(
@@ -73,7 +73,7 @@ public class getGeneratedKeys {
 	public static void main(String[] args) throws SQLException {
 
 		/* create Topic */
-		Topic top = new Topic(null, "getGenerated keys", "topic description", true);
+		Topic top = new Topic(null, "getGenerated keys", "topic description", true, null, null);
 		Topic newTopic = create(top);
 		System.out.print("id: " + newTopic.id() + "\n" + " desc:"
 				+ newTopic.description() + "\n" + " active:"
