@@ -6,10 +6,11 @@ public class User implements java.io.Serializable{
 	private String name = null;
 	private String password = null;
 	private boolean isActive = true;
+	private String created = null;
 	
 	public User(){};
 	
-	public User(String name, String password, Type type, boolean isActive){
+	public User(String name, String password, Type type, boolean isActive, String created){
 		this.name = name;
 		this.password = password;
 		this.type = type;
@@ -20,4 +21,5 @@ public class User implements java.io.Serializable{
 	public String name(){ return name; }
 	public String password(){ return password; }
 	public boolean isActive(){ return isActive; }
+	public String created() {return created;}
 }
