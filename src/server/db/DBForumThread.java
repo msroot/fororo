@@ -1,14 +1,17 @@
 package server.db;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import shared.*;
+import shared.ForumThread;
 
 public class DBForumThread {
 	static DBManager db = DBManager.getInstance();
+	static Connection connection = db.getConnection();
 
 	public static ForumThread getById(String id) {
 
@@ -63,24 +66,51 @@ public class DBForumThread {
 	}
 
 	public static ForumThread create(ForumThread thread) {
+		String title = thread.title();
+		String description = thread.content();
+		String topicId = thread.topicId();
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
+		try {
+			String SQL_INSERT = "insert into FTHREAD (TITLE, DESCRIPTION, TOPICID) values ('"
+					+ title + "', '" + description + "','" + topicId + "')";
+
+			preparedStatement = connection.prepareStatement(SQL_INSERT,
+					new String[] { "ID" });
+
+			int affectedRows = preparedStatement.executeUpdate();
+			if (affectedRows == 0) {
+				throw new SQLException("Creating  failed, no rows affected.");
+			}
+			String rowID = null;
+			generatedKeys = preparedStatement.getGeneratedKeys();
+
+			while (generatedKeys.next()) {
+				rowID = generatedKeys.getString(1);
+				// String id = findTopicIDByRowID(rowID);
+				return new ForumThread(rowID, title, description, topicId);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
+
 	}
 
-	public static ForumThread  update(ForumThread thread) {
+	public static ForumThread update(ForumThread thread) {
 		String id = thread.id();
 		String title = thread.title();
 		String description = thread.content();
 		String topicId = thread.topicId();
 
 		int status = db.updateSet("UPDATE FTHREAD  SET TITLE='" + title
-				+ "' ,DESCRIPTION='" + description + "', TOPICID='"
-				+ topicId + "'  WHERE ID='" + id + "'");
+				+ "' ,DESCRIPTION='" + description + "', TOPICID='" + topicId
+				+ "'  WHERE ID='" + id + "'");
 		if (status == 1) {
 			return new ForumThread(id, title, description, topicId);
 		}
 		return null;
 	}
-	
-	 
- 
-} 
+
+}

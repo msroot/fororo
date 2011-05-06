@@ -30,5 +30,20 @@ public class getThreadTest {
 		 }
 		 System.out.print("\n getAllByTopic -------------------");
 
+		 
+		 
+		 
+		 /* create */
+		 ForumThread tr=new  ForumThread("22", "title", "description", "1");
+	 
+		 ForumThread th2 = DBForumThread.create(tr);
+			 System.out.print( 
+					 "\nContent:"+ th2.content()+
+					 " id:"+ th2.id() +
+					 " topicId:"+ th2.topicId() +
+					 " title:" +th2.title());
+	 
+		 System.out.print("\n getAllByTopic -------------------");
+
 	}
 }
