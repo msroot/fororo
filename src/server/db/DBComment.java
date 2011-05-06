@@ -31,7 +31,6 @@ public class DBComment {
 			ResultSet set = db.getSet("SELECT * FROM FCOMMENT WHERE THREADID='"
 					+ threadId + "'");
 
-			//bug(if its only one comment hasn't next
 			while (set.next()) {
 				id = set.getString("ID");
 				content = set.getString("CONTENT");

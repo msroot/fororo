@@ -8,6 +8,19 @@ import shared.Topic;
 public class getCommentTest {
 	public static void main(String[] args) {
 
+		
+
+		 /*create comment */
+		System.out.print("\n create comment -------------------");
+		Comment comm = new Comment(null, "vic Generated comment", "1", "1");
+		Comment nc = DBComment.create(comm);
+
+		System.out.print("\nid: " + nc.id() + "\n" + " content:" + nc.content()
+				+ "\n" + " user:" + nc.userId() + "\n" + " thread:"
+				+ nc.threadId());
+		System.out.print("\n create-------------------END");
+
+		
 		/* getAll */
 		List<Comment> com = DBComment.getAll("1");
 		System.out.print("\n getAll -------------------START\n");
@@ -19,20 +32,9 @@ public class getCommentTest {
 					+ " thread:" + c.threadId());
 			System.out.print("\n -------------------");
 		}
-
-		 /*create comment */
-		System.out.print("\n create comment -------------------");
-		Comment comm = new Comment(null, "Generated comment", "John", "1");
-		Comment nc = DBComment.create(comm);
-
-		System.out.print("\n create -------------------START\n");
-
-		System.out.print("\nid: " + nc.id() + "\n" + " content:" + nc.content()
-				+ "\n" + " user:" + nc.userId() + "\n" + " thread:"
-				+ nc.threadId());
-		System.out.print("\n -------------------");
-
-		/* update Comment */
+		
+		
+		/* update Comment 
 		Comment uc = new Comment("6", "must update commnent", "JohnJohn",
 				"1");
 		
@@ -42,7 +44,7 @@ public class getCommentTest {
 				+ "\n" + " user:" + updated.userId() + "\n" + " thread:"
 				+ updated.threadId());
 		System.out.print("\n -------------------");
-
+*/
 
 	}
 }
