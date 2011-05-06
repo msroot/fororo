@@ -109,7 +109,6 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		return DBForumThread.getAllByTopic(topicId);
 	}
 
-	// TODO Test
 	public ForumThread createThread(User user, ForumThread thread)
 			throws RemoteException {
 

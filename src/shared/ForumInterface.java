@@ -8,6 +8,8 @@ public interface ForumInterface extends java.rmi.Remote{
     public User loginUser(String userName, String password, ForumClientInterface client) throws RemoteException;
     
     public boolean logoutUser(String userName) throws RemoteException;
+    
+    // public
    
     // Topics
     public List<Topic> getTopics() throws RemoteException;
