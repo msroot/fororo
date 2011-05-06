@@ -8,15 +8,15 @@ import shared.Topic;
 public class getCommentTest {
 	public static void main(String[] args) {
 
-		
+		 
 
 		 /*create comment */
 		System.out.print("\n create comment -------------------");
-		Comment comm = new Comment(null, "vic Generated comment", "1", "1");
+		Comment comm = new Comment(null, "vic Generated comment", "1", "1", null);
 		Comment nc = DBComment.create(comm);
 
 		System.out.print("\nid: " + nc.id() + "\n" + " content:" + nc.content()
-				+ "\n" + " user:" + nc.userId() + "\n" + " thread:"
+				+ "\n" + " user:" + nc.userName() + "\n" + " thread:"
 				+ nc.threadId());
 		System.out.print("\n create-------------------END");
 
@@ -28,7 +28,7 @@ public class getCommentTest {
 		
 		for (Comment c : com) {
 			System.out.print("\nid: " + c.id() + "\n" + " content:"
-					+ c.content() + "\n" + " user:" + c.userId() + "\n"
+					+ c.content() + "\n" + " user:" + c.userName() + "\n"
 					+ " thread:" + c.threadId());
 			System.out.print("\n -------------------");
 		}

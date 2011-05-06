@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import shared.Comment;
@@ -16,12 +17,16 @@ import shared.Topic;
 public class DBComment {
 	static DBManager db = DBManager.getInstance();
 	static Connection connection = db.getConnection();
+	static Calendar calendar = Calendar.getInstance();
+	static String now = calendar.getTime().toString();
 
+	
 	public static List<Comment> getAll(String threadId) {
 
 		// if (threadId==null){return null;}
 
 		List<Comment> comments = new ArrayList<Comment>();
+		// Comment(String id, String content, String userName, String threadId, String created){
 
 		String id = null;
 		String content = null;
@@ -32,12 +37,15 @@ public class DBComment {
 					+ threadId + "'");
 
 			while (set.next()) {
-				id = set.getString("ID");
-				content = set.getString("CONTENT");
-				userId = set.getString("USERID");
-				dbthreadId = set.getString("THREADID");
+//				id = set.getString("ID");
+//				content = set.getString("CONTENT");
+//				userId = set.getString("USERID");
+//				dbthreadId = set.getString("THREADID");
 				// String id, String comment, String userId, String threadId
-				comments.add(new Comment(id, content, userId, dbthreadId));
+				//comments.add(new Comment(id, content, userId, dbthreadId));
+				comments.add(mapComment(set));
+				
+				
 			}
 
 		} catch (SQLException e) {
@@ -55,13 +63,13 @@ public class DBComment {
 	 */
 	public static Comment create(Comment comment) {
 		String content = comment.content();
-		String userId = comment.userId();
+		String userName = comment.userName();
 		String threadId = comment.threadId();
 
 		try {
 
-			String q = "insert into FCOMMENT (CONTENT,THREADID, USERID) values ('"
-					+ content + "', '" + userId + "','" + threadId + "')";
+			String q = "insert into FCOMMENT (CONTENT,THREADID, USERID, CREATED) values ('"
+					+ content + "', '" + threadId + "','" + userName + "','"+now+"')";
 
 			Connection connection = DriverManager.getConnection(
 					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
@@ -75,7 +83,8 @@ public class DBComment {
 
 				while (generatedKeys.next()) {
 					String rowID = generatedKeys.getString(1);
-					return new Comment(rowID, content, userId, threadId);
+					//return new Comment(rowID, content, userId, threadId);
+					return  new Comment(rowID, content, userName, threadId, now());
 				}
 			}
 			stmt.close();
@@ -90,16 +99,33 @@ public class DBComment {
 
 		String id = comment.id();
 		String content = comment.content();
-		String userId = comment.userId();
+		String userId = comment.userName();
 		String threadId = comment.threadId();
 
 		int status = db.updateSet("UPDATE FCOMMENT SET CONTENT='" + content
 				+ "' ,THREADID='" + threadId + "', USERID='" + userId
 				+ "'  WHERE ID='" + id + "'");
 		if (status == 1) {
-			return new Comment(id, content, userId, threadId);
+			//return new Comment(id, content, userId, threadId);
+			return comment;
 		}
 		return null;
 	}
+	
+	private static String now(){
+		return Calendar.getInstance().getTime().toString();
+	}
+	 
+	private static Comment mapComment(ResultSet set) throws SQLException{
+		return new Comment(
+				set.getString("ID"),
+				set.getString("CONTENT"),
+				set.getString("THREADID"),
+				set.getString("USERID"),
+				set.getString("CREATED")
+				);
+	
+	 }
+	 
 
 }
