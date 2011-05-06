@@ -28,6 +28,9 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         this.host = host;
         this.port = port;
 	}
+	
+	
+	/******************** USERS ********************/
 
 	public User loginUser(String username, String password,
 			ForumClientInterface client) throws RemoteException, ForumException {
@@ -56,7 +59,6 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		return true;
 	}
 	
-    // TODO test
 	public User registerUser(String userName, String password) throws RemoteException, ForumException{
 	    User user = DBUser.getByName(userName);
 	    if(user != null){
@@ -65,8 +67,13 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         user = new User(userName, password, User.Type.NORMAL, true, "");
         return DBUser.create(user);
 	}
+	
+	private boolean userIsLoggedIn(String username) {
+		return users.containsKey(username);
+	}
 
-	// TOPICS
+	/******************** TOPICS ********************/
+	
 	public List<Topic> getTopics() throws RemoteException {
 		return DBTopic.getAll();
 	}
@@ -109,6 +116,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 
 		return DBTopic.update(topic);
 	}
+	
+    /******************** THREADS ********************/
 
 	public ForumThread getThreadById(String threadId) throws RemoteException {
 		return DBForumThread.getById(threadId);
@@ -131,13 +140,17 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 					+ "is not logged in or is inactive");
 		}
 	}
+	
+    /******************** CONFIG ********************/
+    public String getWelcomeMessage() throws RemoteException{
+        return DBConfig.get().message();
+    }
+    
+    
+    /******************** TEST ********************/
 
 	public void throwForumException() throws ForumException {
 		throw new ForumException("giveMeAForumException()");
-	}
-
-	private boolean userIsLoggedIn(String username) {
-		return users.containsKey(username);
 	}
 	
 	public String ping() throws RemoteException {

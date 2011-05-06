@@ -252,12 +252,23 @@ public class ForumTest {
     
     @Test
 	public void users_can_register() {
-	    String userName = "register_test"+(Math.random() * 10000000);
+	    User user = new User("register_test", "abcd1234", User.Type.NORMAL, true, "");
 		try {
 			Forum forum = new Forum();
-			assertNull(userName +" should not exist in DB", DBUser.getByName(userName));
-			assertNotNull(forum.registerUser(userName, "abcd1234"));
-			assertNotNull(DBUser.getByName(userName));		
+            DBUser.delete(user);
+			assertNull(user.name() +" should not exist in DB", DBUser.getByName(user.name()));
+			assertNotNull(forum.registerUser(user.name(), user.password()));
+			assertNotNull(DBUser.getByName(user.name()));		
+		} catch (RemoteException e) {
+			fail("it shuoldn't throw exception: " + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void can_get_welcome_message() {
+		try {
+			Forum forum = new Forum();
+            assertNotNull(forum.getWelcomeMessage());
 		} catch (RemoteException e) {
 			fail("it shuoldn't throw exception: " + e.getMessage());
 		}
