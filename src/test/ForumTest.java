@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.rmi.RemoteException;
 import java.util.*;
 import server.*;
+import server.db.*;
 import client.*;
 import shared.*;
 
@@ -248,4 +249,17 @@ public class ForumTest {
             fail("Should not throw exception: " + e.getStackTrace());
         }
     }
+    
+    @Test
+	public void users_can_register() {
+	    String userName = "register_test"+(Math.random() * 10000000);
+		try {
+			Forum forum = new Forum();
+			assertNull(userName +" should not exist in DB", DBUser.getByName(userName));
+			assertNotNull(forum.registerUser(userName, "abcd1234"));
+			assertNotNull(DBUser.getByName(userName));		
+		} catch (RemoteException e) {
+			fail("it shuoldn't throw exception: " + e.getMessage());
+		}
+	}
 }

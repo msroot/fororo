@@ -55,6 +55,16 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		clients.remove(username);
 		return true;
 	}
+	
+    // TODO test
+	public User registerUser(String userName, String password) throws RemoteException, ForumException{
+	    User user = DBUser.getByName(userName);
+	    if(user != null){
+	        throw new ForumException("User: "+userName+" already exists");
+	    }
+        user = new User(userName, password, User.Type.NORMAL, true, "");
+        return DBUser.create(user);
+	}
 
 	// TOPICS
 	public List<Topic> getTopics() throws RemoteException {
