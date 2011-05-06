@@ -27,7 +27,7 @@ public class getThreadTest {
 
 		/* create a  new topic and get the current id*/
 		ForumThread tr = new ForumThread("", "yes its work", "i get the id",
-				"1");
+				"1", null, null);
 
 		ForumThread th2 = DBForumThread.create(tr);
 		System.out.print("\nContent:" + th2.content() + " ID:" + th2.id()

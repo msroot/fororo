@@ -9,7 +9,7 @@ public class getUserTest {
 	public static void main(String[] args) {
 
 		/* create ********************************************** */
-		User cu = new User("adam2", "pass", User.Type.NORMAL, true);
+		User cu = new User("adam2", "pass", User.Type.NORMAL, true, null);
 		User user = DBUser.create(cu);
 
 		if (user != null) {
@@ -24,7 +24,7 @@ public class getUserTest {
 		System.out.print("\n create -------------------");
 
 		/* update ********************************************** */
-		User up = new User("NewUser", "12345", User.Type.ADMIN, false);
+		User up = new User("NewUser", "12345", User.Type.ADMIN, false, null);
 		User updatedUser = DBUser.update(up);
 
 		if (updatedUser != null) {
