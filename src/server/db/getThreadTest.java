@@ -9,11 +9,11 @@ public class getThreadTest {
 
 		/* getByName get only the Thread with the id=28 */
 
-		ForumThread t = DBForumThread.getById("28");
-		System.out.print("Content: " + t.content() + " id:" + t.id()
-				+ " topicId:" + t.topicId() + " title:" + t.title());
-		System.out.print("\n getByName -------------------END\n");
-
+		ForumThread t = DBForumThread.getById("101");
+//		System.out.print("Content: " + t.content() + " id:" + t.id()
+//				+ " topicId:" + t.topicId() + " title:" + t.title());
+//		System.out.print("\n getByName -------------------END\n");
+System.out.println(t);
 		/*
 		 * getAllByTopic: get all threads where topicID=1
 		 */

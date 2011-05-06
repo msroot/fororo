@@ -1,5 +1,7 @@
 package shared;
 
+import java.util.HashMap;
+
 public class ForumThread implements java.io.Serializable{
 	private String id = null;
 	private String title = null;
@@ -28,4 +30,19 @@ public class ForumThread implements java.io.Serializable{
 	public void userName(String userName) {this.userName = userName;}
 
 	public String created() {return created;}
+
+
+	
+	public String toString(){
+	    HashMap<String, String> map = new HashMap<String, String>();
+	    map.put("id", id);
+	    map.put("title", title);
+	    map.put("content", content);
+	    map.put("userName", userName);
+	    map.put("topicId", topicId);
+	    map.put("created", created);
+	    return map.toString();
+	}
+	
+
 }

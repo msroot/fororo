@@ -94,6 +94,7 @@ public class DBUser {
 						+ name + "', '" + pass + "','NORMAL','true','"+now+"')");
 		if (status == 1) {
 			//new User(name, password, type, isActive, created)
+			
 			return new User(name, pass, User.Type.NORMAL, true, now());
 			
 		}
@@ -139,6 +140,8 @@ public class DBUser {
 		
 		
  		return new User(
+ 				
+
 				set.getString("NAME"),
 				set.getString("PASSWORD"),
 				User.Type.valueOf(set.getString("TYPE")),
