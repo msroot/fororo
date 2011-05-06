@@ -204,6 +204,7 @@ public class ForumTest {
         }
     }
 
+    // There should be at a topic with Id 1 in db
     @Test
     public void can_get_thread_by_id() {
         try {
@@ -215,4 +216,36 @@ public class ForumTest {
             fail("Should not throw exception: " + e.getStackTrace());
         }
     }    
+    
+    // there should be at least 1 thread for topicId 1 in db
+    @Test
+    public void can_get_threads_by_topic() {
+        String topicId = "1";
+        try {
+            List<ForumThread> threads = (new Forum()).getThreadsByTopic(topicId);
+            assertTrue("there should be at least 1 thread", threads.size() > 0);
+            for(ForumThread thread : threads){
+                assertTrue("topicId shuold be: "+topicId+ ", but is: "+thread.topicId(), 
+                		thread.topicId().equals(topicId));
+            }
+        } catch (Exception e) {
+            fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }
+    
+    @Test
+    public void logged_user_can_create_threads() {
+        String topicId = "1";
+        try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            ForumThread newThread = new ForumThread("", "new_thread_test", "content", topicId, user.name(), "");
+            ForumThread createdThread = forum.createThread(user, newThread);
+            assertNotNull("The new thread should be created", createdThread);
+            assertNotNull("The new thread should exist", forum.getThreadById(createdThread.id()));
+        } catch (Exception e) {
+            fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }
 }

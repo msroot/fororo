@@ -100,13 +100,10 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		return DBTopic.update(topic);
 	}
 
-	// THREADS
-    // TODO test
 	public ForumThread getThreadById(String threadId) throws RemoteException {
 		return DBForumThread.getById(threadId);
 	}
     
-    // TODO test
 	public List<ForumThread> getThreadsByTopic(String topicId)
 			throws RemoteException {
 		return DBForumThread.getAllByTopic(topicId);
