@@ -33,10 +33,12 @@ public class ForumClient extends UnicastRemoteObject implements ForumClientInter
         try {
         	ForumClient client = new ForumClient();
             client.connect();
-            client.user = client.forum.loginUser("adamjones", "abcd1234", client);
-            System.out.println(client.user.name());
-            System.out.println(client.user.password());
-            System.out.println(client.user.type());
+            System.out.println(client.forum.ping());
+            ;
+            // client.user = client.forum.loginUser("adamjones", "abcd1234", client);
+//            System.out.println(client.user.name());
+//            System.out.println(client.user.password());
+//            System.out.println(client.user.type());
         }
         catch (Exception re)
         { 

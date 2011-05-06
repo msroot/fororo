@@ -26,5 +26,7 @@ public interface ForumInterface extends java.rmi.Remote{
     // Exception test
     public void throwForumException() throws RemoteException;
     
+    public String ping() throws RemoteException;
+    
     // public String getWelcomeMessage
 }

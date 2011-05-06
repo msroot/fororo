@@ -10,15 +10,15 @@ import shared.*;
 
 public class ForumTest {
 
-	// @Test
-	// public void accepts_connections() {
-	// try{
-	// ForumClient client = new ForumClient();
-	// assertTrue("It should connect", client.connect());
-	// } catch (Exception e){
-	// fail("Should not throw exception: " + e.getStackTrace());
-	// }
-	// }
+    @Test
+    public void accepts_connections() {
+        try{
+            ForumClient client = new ForumClient();
+            assertTrue("It should connect", client.connect());
+        } catch (Exception e){
+            fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }
 	//
 	// @Test
 	// public void user_can_login() {

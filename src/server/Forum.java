@@ -12,6 +12,8 @@ import java.util.*;
 
 public class Forum extends UnicastRemoteObject implements ForumInterface {
 	static final long serialVersionUID = 1; // to keep the compiler happy;
+	private String host = null;
+	private String port = null;
 
 	public HashMap<String, User> users = null;
 	public HashMap<String, ForumClientInterface> clients = null;
@@ -19,6 +21,14 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	public Forum() throws RemoteException {
 		clients = new HashMap<String, ForumClientInterface>();
 		users = new HashMap<String, User>();
+		this.host = "localhost";
+        this.port = "1099";
+	}
+	
+	public Forum(String host, String port) throws RemoteException {
+        this();
+        this.host = host;
+        this.port = port;
 	}
 
 	public User loginUser(String username, String password,
@@ -125,11 +135,16 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	private boolean userIsLoggedIn(String username) {
 		return users.containsKey(username);
 	}
+	
+	public String ping() throws RemoteException {
+	    return "pong";
+	}
 
 	public void init() {
 		System.setSecurityManager(new RMISecurityManager());
+		String rmiStr = "rmi://"+host+":"+port+"/Forum";
 		try {
-			Naming.rebind("rmi://localhost:1099/Forum", this);
+			Naming.rebind(rmiStr, this);
 			System.out.println("Created and registered Forum object");
 		} catch (RemoteException re) {
 			System.out.println("Unable to add remote object to registry");
@@ -142,8 +157,13 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 
 	public static void main(String args[]) {
         System.setSecurityManager(new RMISecurityManager());
+        Forum server = null;
         try {
-            Forum server = new Forum();
+            if(args.length > 1){
+            	server = new Forum(args[0], args[1]);
+            }else{
+                server = new Forum();
+            }
             server.init();
         } catch (Exception e) {
             e.printStackTrace();
