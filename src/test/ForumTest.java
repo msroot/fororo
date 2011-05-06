@@ -172,24 +172,47 @@ public class ForumTest {
 			forum.approveTopic(user, topic);
 			fail("it should throw a RemoteException");
 		} catch (Exception e){
-			assertTrue("Exception shuold be: shared.ForumException but is: " + e.getClass(),
+			assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
 					e instanceof ForumException);
 			assertTrue(e.getMessage().matches("User must be ADMIN"));
 		}
 	}
 
-//	@Test
-//	public void user_can_login() {
-//		try {
-//			Forum forum = new Forum();
-//			User user = forum.loginUser("vic", "abcd1234", new ForumClient());
-//
-//			assertNotNull("it shuold login => vic:abcd1234", user);
-//			assertTrue("username shuold be: vic but is: " + user.name(), user
-//					.name().equals("vic"));
-//
-//		} catch (Exception e) {
-//			fail("Should not throw exception: " + e.getStackTrace());
-//		}
-//	}
+    @Test
+    public void valid_user_can_login() {
+        try {
+            Forum forum = new Forum();
+            User user = forum.loginUser("vic", "abcd1234", new ForumClient());
+
+            assertNotNull("it should login => vic:abcd1234", user);
+            assertTrue("username shuold be: vic but is: " + user.name(), user.name().equals("vic"));
+
+        } catch (Exception e) {
+            fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }
+    
+    @Test
+    public void invalid_user_can_not_login() {
+        try {
+            (new Forum()).loginUser("idontexist", "zzzzzzzz", new ForumClient());
+            fail("it should throw a ForumException");
+        } catch (Exception e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+					e instanceof ForumException);
+			assertTrue(e.getMessage().matches("Invalid username or password"));
+        }
+    }
+
+    @Test
+    public void can_get_thread_by_id() {
+        try {
+            ForumThread thread = (new Forum()).getThreadById("1");
+            assertNotNull("it should not be null", thread);
+            assertTrue("the title should be: test_thread_1, but is: "+ thread.title(), 
+                thread.title().matches("test_thread_1"));
+        } catch (Exception e) {
+            fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }    
 }

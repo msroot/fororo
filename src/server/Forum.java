@@ -38,7 +38,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 			throw new ForumException("Invalid username or password");
 		}
 	}
-
+    
 	public boolean logoutUser(String username) throws RemoteException {
 		if (!userIsLoggedIn(username)) {
 			return false;
@@ -93,10 +93,12 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	}
 
 	// THREADS
+    // TODO test
 	public ForumThread getThreadById(String threadId) throws RemoteException {
 		return DBForumThread.getById(threadId);
 	}
-
+    
+    // TODO test
 	public List<ForumThread> getThreadsByTopic(String topicId)
 			throws RemoteException {
 		return DBForumThread.getAllByTopic(topicId);
@@ -139,18 +141,12 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	}
 
 	public static void main(String args[]) {
-		System.setSecurityManager(new RMISecurityManager());
-		try {
-			Forum server = new Forum();
-			Naming.rebind("rmi://localhost:1099/Forum", server);
-			System.out.println("Created and registered Forum object");
-		} catch (RemoteException re) {
-			System.out.println("Unable to add remote object to registry");
-		} catch (MalformedURLException me) {
-			System.out.println("Incorrect address for registry");
-		} finally {
-			System.out.println("Now waiting for remote invocations");
-		}
-
+        System.setSecurityManager(new RMISecurityManager());
+        try {
+            Forum server = new Forum();
+            server.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }    	
 	}
 }
