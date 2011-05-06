@@ -7,3 +7,9 @@ java -Djava.security.policy=policy server.Forum
 
 To run server:
 java ForumClient
+
+#############################################3
+eclipse>run configurations>arguments>VM args
+
+-Djava.security.policy="file:/${workspace_loc}/SADI2/bin/policy"
+-Djava.rmi.server.codebase="file:/${workspace_loc}/SADI2/bin/"
