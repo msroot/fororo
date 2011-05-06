@@ -68,4 +68,20 @@ insert into FTHREAD (title, description, topicid) values ('thread name', 'thread
 
 
 
- 
+
+#######################################################
+--FCOMMENT
+
+create sequence FCOMMENT_id_seq start with 1 increment by 1;
+
+create or replace trigger FCOMMENT_insert
+before insert on FCOMMENT
+for each row
+begin
+    select FCOMMENT_id_seq.nextval into :new.id from dual;
+end;
+/
+
+--------------------------------------------------------
+insert into FCOMMENT (CONTENT,THREADID, USERID) values ('this is a comment','1','John');
+####################################################### 

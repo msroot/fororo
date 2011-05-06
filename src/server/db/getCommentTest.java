@@ -1,0 +1,50 @@
+package server.db;
+
+import java.util.List;
+
+import shared.Comment;
+import shared.Topic;
+
+public class getCommentTest {
+	public static void main(String[] args) {
+
+		
+
+		 /*create comment */
+		System.out.print("\n create comment -------------------");
+		Comment comm = new Comment(null, "vic Generated comment", "1", "1");
+		Comment nc = DBComment.create(comm);
+
+		System.out.print("\nid: " + nc.id() + "\n" + " content:" + nc.content()
+				+ "\n" + " user:" + nc.userId() + "\n" + " thread:"
+				+ nc.threadId());
+		System.out.print("\n create-------------------END");
+
+		
+		/* getAll */
+		List<Comment> com = DBComment.getAll("1");
+		System.out.print("\n getAll -------------------START\n");
+		System.out.print("total: "+com.size());
+		
+		for (Comment c : com) {
+			System.out.print("\nid: " + c.id() + "\n" + " content:"
+					+ c.content() + "\n" + " user:" + c.userId() + "\n"
+					+ " thread:" + c.threadId());
+			System.out.print("\n -------------------");
+		}
+		
+		
+		/* update Comment 
+		Comment uc = new Comment("6", "must update commnent", "JohnJohn",
+				"1");
+		
+		Comment updated = DBComment.update(uc);
+		System.out.print("\n update -------------------START\n");
+		System.out.print("\nid: " + updated.id() + "\n" + " content:" + updated.content()
+				+ "\n" + " user:" + updated.userId() + "\n" + " thread:"
+				+ updated.threadId());
+		System.out.print("\n -------------------");
+*/
+
+	}
+}

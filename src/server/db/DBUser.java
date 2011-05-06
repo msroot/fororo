@@ -2,15 +2,16 @@ package server.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import shared.User;
 
 public class DBUser {
 	static DBManager db = DBManager.getInstance();
 
-	public DBUser() {}
-	
+	public DBUser() {
+	}
 
 	/**
 	 * Find and returns a user from db
@@ -29,7 +30,8 @@ public class DBUser {
 					+ findName + "'");
 
 			while (set.next()) {
-				type = (set.getString("TYPE").equalsIgnoreCase("NORMAL") ) ? User.Type.NORMAL
+
+				type = (set.getString("TYPE").equalsIgnoreCase("NORMAL")) ? User.Type.NORMAL
 						: User.Type.ADMIN;
 
 				name = set.getString("NAME");

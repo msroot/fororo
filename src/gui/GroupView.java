@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -13,12 +16,24 @@ import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.util.*;
 
+import shared.*;
+import java.awt.ScrollPane;
 public class GroupView {
 
 	private JFrame frame;
 	private JTable table;
 	static GroupView window;
+	List<ForumThread> threads;
+	static String[] args;
+	static JButton btnNewThread = new JButton("New Thread");
+	static JButton btnChat = new JButton("Chat");
+	static JButton btnDelete = new JButton("Delete");
+	
 	/**
 	 * Launch the application.
 	 */
@@ -33,15 +48,62 @@ public class GroupView {
 				}
 			}
 		});
+		window.args = args;
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public GroupView() {
+		loadData();
 		initialize();
+		setControls();
 	}
-
+	
+	/**
+	 * Loads the Data From the server
+	 */
+	private void loadData(){
+		try {
+			this.threads = Driver.forumClient.forum.getThreadsByTopic(args[0]);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * Closes The Window
+	 */
+	public static void close(){
+		try {
+			window.frame.dispose();
+//			window.finalize();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Configure the appearance and enables/disables controls depending on 
+	 * status (User logged in, Admin User Logged In, etc)
+	 */
+	public static void setControls(){
+		if (Driver.forumClient.user==null){ //user is not Logged in
+			btnNewThread.setEnabled(false);
+			btnChat.setEnabled(false);
+			btnDelete.setVisible(false);
+		}else{								//User is logged in
+			btnNewThread.setEnabled(true);
+			btnChat.setEnabled(true);
+			if (Driver.forumClient.user.type()==Driver.forumClient.user.type().ADMIN){ //If user is an Admin
+				btnDelete.setVisible(true);
+			}else{
+				btnDelete.setVisible(false);
+			}
+		}
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -58,51 +120,28 @@ public class GroupView {
 		lblAppName.setBounds(21, 21, 134, 25);
 		frame.getContentPane().add(lblAppName);
 		
-		JLabel lblDescription = new JLabel("Group Description");
+		JLabel lblDescription = new JLabel(args[1]);
 		lblDescription.setBackground(Color.WHITE);
 		lblDescription.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblDescription.setBounds(53, 84, 542, 25);
+		lblDescription.setBounds(126, 85, 511, 25);
 		frame.getContentPane().add(lblDescription);
 		
-		JButton btnNewThread = new JButton("New Thread");
 		btnNewThread.setBounds(27, 121, 107, 23);
 		frame.getContentPane().add(btnNewThread);
 		
 		JButton btnReturn = new JButton("Go Back");
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				close();
 				
+//				MainWindow.main(args);
+				MainWindow.open();
+//				MainWindow.setControls();
+//				FrameTest.main(null);
 			}
 		});
 		btnReturn.setBounds(548, 518, 107, 23);
 		frame.getContentPane().add(btnReturn);
-		
-		table = new JTable();
-		table.setBorder(new LineBorder(new Color(0, 0, 0)));
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, "Group Test", "User1", "Today"},
-			},
-			new String[] {
-				"ID", "Group", "User", "Date"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				true, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-		table.getColumnModel().getColumn(0).setMinWidth(0);
-		table.getColumnModel().getColumn(0).setMaxWidth(0);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(392);
-		table.getColumnModel().getColumn(2).setPreferredWidth(136);
-		table.getColumnModel().getColumn(3).setPreferredWidth(95);
-		table.setBounds(21, 179, 634, 331);
-		frame.getContentPane().add(table);
 		
 		JLabel lblNewLabel = new JLabel("Threads");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -111,26 +150,98 @@ public class GroupView {
 		
 		JLabel lblUser = new JLabel("Author");
 		lblUser.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblUser.setBounds(459, 159, 46, 15);
+		lblUser.setBounds(475, 159, 46, 15);
 		frame.getContentPane().add(lblUser);
 		
-		JLabel lblDate = new JLabel("Date");
-		lblDate.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblDate.setBounds(580, 159, 46, 15);
-		frame.getContentPane().add(lblDate);
+		JLabel lblGroupName = new JLabel(args[2]);
+		lblGroupName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblGroupName.setBackground(Color.WHITE);
+		lblGroupName.setBounds(126, 57, 511, 25);
+		frame.getContentPane().add(lblGroupName);
 		
-		JLabel lblGroupname = new JLabel("GroupName");
-		lblGroupname.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblGroupname.setBackground(Color.WHITE);
-		lblGroupname.setBounds(53, 57, 542, 25);
-		frame.getContentPane().add(lblGroupname);
-		
-		JButton btnChat = new JButton("Chat");
 		btnChat.setBounds(144, 120, 107, 23);
 		frame.getContentPane().add(btnChat);
 		
-		JButton btnDelete = new JButton("Delete");
 		btnDelete.setBounds(261, 120, 107, 23);
 		frame.getContentPane().add(btnDelete);
+		
+		JLabel lblGroup = new JLabel("Group Name");
+		lblGroup.setBounds(31, 64, 85, 14);
+		frame.getContentPane().add(lblGroup);
+		
+		JLabel lblDescrip = new JLabel("Description");
+		lblDescrip.setBounds(31, 92, 85, 14);
+		frame.getContentPane().add(lblDescrip);
+		
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setBounds(21, 179, 620, 315);
+		
+		frame.getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = table.getSelectedRow();
+				//JOptionPane.showMessageDialog(null, table.getModel().getValueAt(row, 1));
+				String id = (String) table.getModel().getValueAt(row, 0);
+				String title = (String) table.getModel().getValueAt(row, 1);
+				String content = (String) table.getModel().getValueAt(row, 2);
+				String[] args = new String[]{id,title,content};
+//				Driver.openGroup(args);
+				close();
+				ThreadView.main(args);
+			}
+		});
+		table.setBorder(null);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		Object[][] rows = new Object[this.threads.size()][];
+		String[] header = new String[]{
+			"ID", "Title", "Content"};
+		
+		for (int i=0;i<this.threads.size();i++){
+			rows[i] = new String[]{this.threads.get(i).id(),this.threads.get(i).title(),this.threads.get(i).content()};
+		}
+		table.setModel(new DefaultTableModel(
+				rows,
+				header
+			) {
+			boolean[] columnEditables = new boolean[] {
+				true, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		
+//		table.setModel(new DefaultTableModel(
+//			new Object[][] {
+//				{null, "Group Test", "User1"},
+//			},
+//			new String[] {
+//				"ID", "Group", "User"
+//			}
+//		) {
+//			boolean[] columnEditables = new boolean[] {
+//				true, false, false
+//			};
+//			public boolean isCellEditable(int row, int column) {
+//				return columnEditables[column];
+//			}
+//		});
+		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+		table.getColumnModel().getColumn(0).setMinWidth(0);
+		table.getColumnModel().getColumn(0).setMaxWidth(0);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(392);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(2).setPreferredWidth(136);
+//		table.getColumnModel().getColumn(3).setPreferredWidth(0);
+//		table.getColumnModel().getColumn(3).setMinWidth(0);
+//		table.getColumnModel().getColumn(3).setMaxWidth(0);
+		table.setBounds(21, 179, 634, 331);
+		scrollPane.add(table);
+		//frame.getContentPane().add(table);
 	}
 }

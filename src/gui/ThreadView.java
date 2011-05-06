@@ -70,14 +70,6 @@ public class ThreadView {
 		btnReply.setBounds(29, 215, 107, 23);
 		frame.getContentPane().add(btnReply);
 		
-		JButton btnRegister = new JButton("Register");
-		btnRegister.setBounds(146, 215, 107, 23);
-		frame.getContentPane().add(btnRegister);
-		
-		JButton btnLogin = new JButton("Login");
-		btnLogin.setBounds(263, 215, 107, 23);
-		frame.getContentPane().add(btnLogin);
-		
 		JButton btnReturn = new JButton("Go Back");
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -96,13 +88,8 @@ public class ThreadView {
 		lblUser.setBounds(44, 275, 46, 15);
 		frame.getContentPane().add(lblUser);
 		
-		JLabel lblDate = new JLabel("Date");
-		lblDate.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblDate.setBounds(44, 301, 46, 15);
-		frame.getContentPane().add(lblDate);
-		
 		JButton btnDelete = new JButton("Delete");
-		btnDelete.setBounds(380, 215, 107, 23);
+		btnDelete.setBounds(146, 215, 107, 23);
 		frame.getContentPane().add(btnDelete);
 		
 		table = new JTable();
@@ -113,16 +100,12 @@ public class ThreadView {
 		lblThreadTitle.setBounds(109, 250, 378, 14);
 		frame.getContentPane().add(lblThreadTitle);
 		
-		JLabel label = new JLabel("Thread Title");
-		label.setBounds(109, 275, 201, 14);
-		frame.getContentPane().add(label);
-		
-		JLabel label_1 = new JLabel("Thread Title");
-		label_1.setBounds(109, 302, 115, 14);
-		frame.getContentPane().add(label_1);
+		JLabel lblThreadAuthor = new JLabel("Thread Title");
+		lblThreadAuthor.setBounds(109, 275, 201, 14);
+		frame.getContentPane().add(lblThreadAuthor);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(21, 335, 634, 172);
+		textArea.setBounds(28, 312, 620, 172);
 		frame.getContentPane().add(textArea);
 	}
 }

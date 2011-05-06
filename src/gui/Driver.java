@@ -13,5 +13,10 @@ public class Driver {
 			e.printStackTrace();
 		}
 		MainWindow.main(null);
+//		FrameTest.main(null);
+	}
+	public static void openGroup(String[] args){
+//		MainWindow.window.close();
+		GroupView.main(args);
 	}
 }

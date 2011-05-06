@@ -9,7 +9,7 @@ public class getUserTest {
 	public static void main(String[] args) {
 
 		/* create ********************************************** */
-		User cu = new User("NewUser", "pass", User.Type.NORMAL, true);
+		User cu = new User("adam2", "pass", User.Type.NORMAL, true);
 		User user = DBUser.create(cu);
 
 		if (user != null) {
