@@ -266,9 +266,11 @@ public class ForumTest {
 	
 	@Test
 	public void can_get_welcome_message() {
+		String msg = "Welcome message test";
 		try {
 			Forum forum = new Forum();
-            assertNotNull(forum.getWelcomeMessage());
+			DBConfig.update(new Config(msg));
+            assertTrue(forum.getWelcomeMessage().equals(msg));
 		} catch (RemoteException e) {
 			fail("it shuoldn't throw exception: " + e.getMessage());
 		}

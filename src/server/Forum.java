@@ -1,10 +1,7 @@
 package server;
 
 import shared.*;
-import server.db.DBUser;
-import server.db.DBTopic;
-import server.db.DBForumThread;
-
+import server.db.*;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.net.MalformedURLException;
