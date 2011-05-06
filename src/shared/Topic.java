@@ -18,7 +18,7 @@ public class Topic implements java.io.Serializable{
 	    this.description = description;
 	    this.isActive = isActive;
 	    this.userName = userName;
-	    this.created = userName;
+	    this.created = created;
 	}
 	
 	public String id() { return id; }
