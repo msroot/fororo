@@ -19,7 +19,7 @@ Topic getById(String id);--DONE
 
 Topic[] getAll(); (ArrayList) --DONE
 
-Topic create(Topic topic) <--TODO i have to return the id
+Topic create(Topic topic) --DONE
 
 Topic update(Topic topic)--DONE 
 
@@ -30,10 +30,18 @@ Class BDThread
 
 ForumThread getById(String id);--DONE
 
-ForumThread[] getAllByTopic(String topicId); (ArrayList)--DONE
+ForumThread[] getAllByTopic(String topicId); --DONE
 
-ForumThread create(ForumThread thread) <--TODO i have to return the id
+ForumThread create(ForumThread thread) --DONE
 
 ForumThread update(ForumThread thread)--DONE 
 
+##########################################
 
+Class Chat
+
+Chat broadCast(User user)
+
+Chat update(User user, Topic topic) 
+
+##########################################
