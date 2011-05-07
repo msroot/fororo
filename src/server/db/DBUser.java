@@ -95,11 +95,11 @@ public class DBUser {
 		String pass = user.password();
 		int status = db
 				.updateSet("insert into FUSER (NAME, PASSWORD, TYPE, ISACTIVE, CREATED) values ('"
-						+ name + "', '" + pass + "','NORMAL','true','"+now+"')");
+						+ name + "', '" + pass + "','NORMAL','" + user.isActive() + "','"+now+"')");
 		if (status == 1) {
 			//new User(name, password, type, isActive, created)
 			
-			return new User(name, pass, User.Type.NORMAL, true, now());
+			return new User(name, pass, User.Type.NORMAL, user.isActive(), now());
 			
 		}
 

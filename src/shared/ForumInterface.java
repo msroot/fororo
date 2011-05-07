@@ -12,6 +12,8 @@ public interface ForumInterface extends java.rmi.Remote{
     public User registerUser(String userName, String password) throws RemoteException;
     
     public User updateUser(User adminUser, User userToUpdate) throws RemoteException;
+    
+    public User deleteUser(User adminUser, User userToDelete) throws RemoteException;
    
     // Topics
     public List<Topic> getTopics() throws RemoteException;
@@ -29,7 +31,7 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public ForumThread createThread(User user, ForumThread thread) throws RemoteException;
     
-//    public ForumThread deleteThread(User user, ForumThread thread) throws RemoteException;
+    // public User deleteThread(User adminUser, ForumThread threadToDelete) throws RemoteException;
     
     // Config
     public String getWelcomeMessage() throws RemoteException;

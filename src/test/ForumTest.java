@@ -41,7 +41,7 @@ public class ForumTest {
     }
 
     @Test
-    public void admin_user_can_approve_topic() {
+    public void admins_can_approve_topic() {
         try {
             Forum forum = new Forum();
             User user = new User("john", "abcd1234", User.Type.ADMIN, true, "");
@@ -57,7 +57,7 @@ public class ForumTest {
     }
 
     @Test
-    public void normal_user_can_not_approve_topic() {
+    public void normal_users_can_not_approve_topic() {
         try {
             Forum forum = new Forum();
             User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
@@ -97,6 +97,21 @@ public class ForumTest {
             assertTrue(e.getMessage().matches("Invalid username or password"));
         }
     }
+    
+    @Test
+    public void inactive_users_can_not_login() {
+        try {
+            User inactiveUser = new User("inactive_user", "abcd1234", User.Type.ADMIN, false, "");
+            DBUser.delete(inactiveUser);
+            System.out.println(DBUser.create(inactiveUser).isActive());
+            (new Forum()).loginUser(inactiveUser.name(), inactiveUser.password(), new ForumClient());
+            fail("it should throw a ForumException");
+        } catch (Exception e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User is inactive, can't login"));
+        }
+    }
 
     // There should be at a topic with Id 1 in db
     @Test
@@ -109,7 +124,7 @@ public class ForumTest {
         } catch (Exception e) {
             fail("Should not throw exception: " + e.getStackTrace());
         }
-    }    
+    }
 
     // there should be at least 1 thread for topicId 1 in db
     @Test
@@ -201,7 +216,7 @@ public class ForumTest {
     }
     
     @Test
-    public void admins_update_users() {
+    public void admins_can_update_users() {
     	try {
             Forum forum = new Forum();
             User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
@@ -214,6 +229,40 @@ public class ForumTest {
             assertFalse("isActive() should have changed to false", userToUpdate.isActive());
         } catch (RemoteException e) {
             fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+    
+    @Test
+    public void admins_can_delete_users() {
+    	try {
+            Forum forum = new Forum();
+            User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(admin.name(), admin); // fake login
+            DBUser.create(userToDelete); //make sure it exist
+            assertNotNull(DBUser.getByName(userToDelete.name()));
+            forum.deleteUser(admin, userToDelete);
+            assertNull("User shuold be null now", DBUser.getByName(userToDelete.name()));
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+    
+    @Test
+    public void normal_users_can_not_delete_users() {
+    	try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            DBUser.create(userToDelete); //make sure it exist
+            assertNotNull(DBUser.getByName(userToDelete.name()));
+            forum.deleteUser(user, userToDelete);
+            fail("it shuold throw exception");
+        } catch (RemoteException e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                    e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User must be ADMIN"));
         }
     }
 }
