@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
 
 public class MainWindow {
 
-	private JFrame frame;
+	private JFrame frmMainWindow;
 	private static MainWindow window;
 	private List<Topic> topics;
 	JLabel lblAppName = new JLabel("AppName");
@@ -39,6 +39,7 @@ public class MainWindow {
 	static JButton btnRequests = new JButton("Requests");
 	private final JScrollPane scrollPane_1 = new JScrollPane();
 	private final JTable table = new JTable();
+	private final JButton button = new JButton("New button");
 
 	/**
 	 * Launch the application.
@@ -49,7 +50,7 @@ public class MainWindow {
 				try {
 
 					window = new MainWindow();
-					window.frame.setVisible(true);
+					window.frmMainWindow.setVisible(true);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -74,7 +75,7 @@ public class MainWindow {
 
 		try {
 			// window.frame.dispose();
-			window.frame.setVisible(false);
+			window.frmMainWindow.setVisible(false);
 			// window.finalize();
 			// window.close();
 		} catch (Throwable e) {
@@ -84,7 +85,7 @@ public class MainWindow {
 	}
 
 	public static void open() {
-		window.frame.setVisible(true);
+		window.frmMainWindow.setVisible(true);
 		setControls();
 	}
 
@@ -129,28 +130,39 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(
+		frmMainWindow = new JFrame();
+		frmMainWindow.setTitle("Main Window");
+		frmMainWindow.getContentPane().setBackground(
 				UIManager.getColor("Button.background"));
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 679, 580);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmMainWindow.setResizable(false);
+		frmMainWindow.setBounds(100, 100, 679, 580);
+		frmMainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmMainWindow.getContentPane().setLayout(null);
 
 		lblAppName.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAppName.setBounds(21, 21, 134, 25);
-		frame.getContentPane().add(lblAppName);
+		frmMainWindow.getContentPane().add(lblAppName);
 
 		lblWelcomeMsg.setBackground(Color.WHITE);
 		lblWelcomeMsg.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblWelcomeMsg.setBounds(53, 57, 542, 52);
-		frame.getContentPane().add(lblWelcomeMsg);
+		frmMainWindow.getContentPane().add(lblWelcomeMsg);
+		btnNewGroup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NewGroup.main(null);
+			}
+		});
 
 		btnNewGroup.setBounds(27, 121, 107, 23);
-		frame.getContentPane().add(btnNewGroup);
+		frmMainWindow.getContentPane().add(btnNewGroup);
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				RegisterView.main(null);
+			}
+		});
 
 		btnRegister.setBounds(144, 121, 107, 23);
-		frame.getContentPane().add(btnRegister);
+		frmMainWindow.getContentPane().add(btnRegister);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Entered login action listener");
@@ -165,7 +177,7 @@ public class MainWindow {
 		});
 
 		btnLogin.setBounds(261, 121, 107, 23);
-		frame.getContentPane().add(btnLogin);
+		frmMainWindow.getContentPane().add(btnLogin);
 		btnAccounts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AccountsView.main(null);
@@ -173,10 +185,15 @@ public class MainWindow {
 		});
 
 		btnAccounts.setBounds(378, 121, 107, 23);
-		frame.getContentPane().add(btnAccounts);
+		frmMainWindow.getContentPane().add(btnAccounts);
+		btnRequests.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				RequestsView.main(null);
+			}
+		});
 
 		btnRequests.setBounds(495, 121, 107, 23);
-		frame.getContentPane().add(btnRequests);
+		frmMainWindow.getContentPane().add(btnRequests);
 
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
@@ -185,17 +202,22 @@ public class MainWindow {
 			}
 		});
 		btnExit.setBounds(548, 521, 107, 23);
-		frame.getContentPane().add(btnExit);
+		frmMainWindow.getContentPane().add(btnExit);
 		// frame.getContentPane().add(table);
-		Object[][] rows = new Object[this.topics.size()][];
+		List<Topic> activeTopics = new ArrayList<Topic>();
+		for (Topic t:this.topics){
+			if (t.isActive()){
+				activeTopics.add(t);
+			}
+		}
+		
+		Object[][] rows = new Object[activeTopics.size()][];
 		String[] header = new String[] { "ID", "Group", "Description" };
 
-		for (int i = 0; i < this.topics.size(); i++) {
-			if (topics.get(i).isActive() == true) {
-				rows[i] = new String[] { this.topics.get(i).id(),
-						this.topics.get(i).name(),
-						this.topics.get(i).description() };
-			}
+		for (int i = 0; i < activeTopics.size(); i++) {
+				rows[i] = new String[] { activeTopics.get(i).id(),
+						activeTopics.get(i).name(),
+						activeTopics.get(i).description() };
 		}
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(new DefaultTableModel(rows, header) {
@@ -214,9 +236,9 @@ public class MainWindow {
 			String name = (String) table.getModel().getValueAt(row, 1);
 			String description = (String) table.getModel().getValueAt(row, 2);
 			String[] args = new String[]{id,name,description};
-			// Driver.openGroup(args);
-			close();
-			GroupView.main(args);
+			Driver.openGroup(args);
+//			close();
+//			GroupView.main(args);
 			}
 			});
 		table.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -228,9 +250,18 @@ public class MainWindow {
 		table.getColumnModel().getColumn(2).setPreferredWidth(470);
 		scrollPane_1.setBounds(21, 163, 611, 331);
 
-		frame.getContentPane().add(scrollPane_1);
+		frmMainWindow.getContentPane().add(scrollPane_1);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		scrollPane_1.setViewportView(table);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String[] args = new String[]{"146"};
+				Driver.openGroup(args);
+			}
+		});
+		button.setBounds(527, 11, 89, 23);
+		
+		frmMainWindow.getContentPane().add(button);
 	}
 }

@@ -17,6 +17,10 @@ public class Driver {
 	}
 	public static void openGroup(String[] args){
 //		MainWindow.window.close();
-		GroupView.main(args);
+//		GroupView.main(args);
+		GroupView groupView = new GroupView(args);
+	}
+	public static void close(){
+
 	}
 }
