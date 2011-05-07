@@ -32,13 +32,10 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     public User loginUser(String username, String password, ForumClientInterface client) throws ForumException {
 
         User user = DBUser.getByName(username);
-        
-        System.out.println(user);
 
         if (user == null) {
             throw new ForumException("Invalid username or password");
         }
-        System.out.println(user.isActive());
         
         if (!user.isActive()){
             throw new ForumException("User is inactive, can't login");
@@ -159,9 +156,10 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         }
     }
     
-    // public User deleteThread(User adminUser, User userToDelete) throws ForumException{
-    //     
-    // }
+    public ForumThread deleteThread(User adminUser, ForumThread thread) throws RemoteException {
+        requireAdmin(adminUser);
+        return DBForumThread.delete(thread);
+    }
 
     //    public ForumThread deleteThread(User user, ForumThread thread) throws RemoteException;
 

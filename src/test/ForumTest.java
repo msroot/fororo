@@ -103,7 +103,7 @@ public class ForumTest {
         try {
             User inactiveUser = new User("inactive_user", "abcd1234", User.Type.ADMIN, false, "");
             DBUser.delete(inactiveUser);
-            System.out.println(DBUser.create(inactiveUser).isActive());
+            DBUser.create(inactiveUser);
             (new Forum()).loginUser(inactiveUser.name(), inactiveUser.password(), new ForumClient());
             fail("it should throw a ForumException");
         } catch (Exception e) {
@@ -141,7 +141,7 @@ public class ForumTest {
             fail("Should not throw exception: " + e.getStackTrace());
         }
     }
-
+    
     @Test
     public void logged_user_can_create_threads() {
         String topicId = "1";
@@ -153,6 +153,22 @@ public class ForumTest {
             ForumThread createdThread = forum.createThread(user, newThread);
             assertNotNull("The new thread should be created", createdThread);
             assertNotNull("The new thread should exist", forum.getThreadById(createdThread.id()));
+        } catch (Exception e) {
+            fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }
+    
+    @Test
+    public void admins_can_delete_threads() {
+        String topicId = "1";
+        User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+        ForumThread thread = new ForumThread("", "delete_thread_test", "content", topicId, admin.name(), "");
+        try {
+            thread = DBForumThread.create(thread);
+            Forum forum = new Forum();
+            forum.users.put(admin.name(), admin); // fake login
+            forum.deleteThread(admin, thread);
+            assertNull("It should delete the thread", DBForumThread.getById(thread.id()));
         } catch (Exception e) {
             fail("Should not throw exception: " + e.getStackTrace());
         }

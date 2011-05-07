@@ -31,7 +31,7 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public ForumThread createThread(User user, ForumThread thread) throws RemoteException;
     
-    // public User deleteThread(User adminUser, ForumThread threadToDelete) throws RemoteException;
+    public ForumThread deleteThread(User adminUser, ForumThread threadToDelete) throws RemoteException;
     
     // Config
     public String getWelcomeMessage() throws RemoteException;
