@@ -12,7 +12,7 @@ java ForumClient host port
 ############## ECLIPSE ################################################
 eclipse>run configurations>arguments>VM args
 
--Djava.security.policy="file:/${workspace_loc}/SADI2/bin/policy"
+-Djava.security.policy="file:/${workspace_loc}/SADI2/policy"
 -Djava.rmi.server.codebase="file:/${workspace_loc}/SADI2/bin/"
 
 
