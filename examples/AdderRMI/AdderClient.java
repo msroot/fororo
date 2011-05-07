@@ -19,7 +19,14 @@ public class AdderClient
       try {
          // Attempt to obtain a reference to remote object
          Adder a  = (Adder) Naming.lookup("rmi://localhost:1099/AdderImpl");
-         System.out.println("sum of "+ x + " and " + y + " = " + a.add(x,y));
+         //System.out.println("sum of "+ x + " and " + y + " = " + a.add(x,y));
+         
+         for(int i=0; i<10;i++){
+        	 System.out.println(a.pong("client" +i));
+         }
+        
+         System.out.println("sum of "+ x + " and " + y + " = " + a.add(x,y) +" client");
+
       }
       catch (Exception re)
       { 

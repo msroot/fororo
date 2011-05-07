@@ -6,10 +6,13 @@
  */
 
 import java.rmi.*;
+import java.rmi.server.ServerNotActiveException;
 
 public interface Adder extends java.rmi.Remote
 {
    int add(int x, int y) throws RemoteException;
+
+String pong(String string)throws RemoteException, ServerNotActiveException;
 }
 
 
