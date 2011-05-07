@@ -24,6 +24,7 @@ public class User implements java.io.Serializable{
     public String name(){ return name; }
     public String password(){ return password; }
     public boolean isActive(){ return isActive; }
+    public void isActive(boolean isActive){ this.isActive = isActive; }
     public String created() {return created;}
 
     public String toString(){

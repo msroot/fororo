@@ -14,6 +14,13 @@ eclipse>run configurations>arguments>VM args
 -Djava.security.policy="file:/${workspace_loc}/SADI2/bin/policy"
 -Djava.rmi.server.codebase="file:/${workspace_loc}/SADI2/bin/"
 
+
+*new policy location*
+-Djava.security.policy="file:/${workspace_loc}/SADI2/policy"
+
+
 on mac
 
 -Djava.security.policy=/Users/vic/rmit/sadi/code/forum/bin/policy
+
+-Djava.security.policy=/Users/vic/rmit/sadi/code/forum/policy

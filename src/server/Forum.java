@@ -64,9 +64,28 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         user = new User(userName, password, User.Type.NORMAL, true, "");
         return DBUser.create(user);
 	}
+		
+    public User updateUser(User adminUser, User userToUpdate) throws RemoteException {
+        requireAdmin(adminUser);
+        return DBUser.update(userToUpdate);
+    }
 	
 	private boolean userIsLoggedIn(String username) {
 		return users.containsKey(username);
+	}
+	
+	private void requireLogin(User user) throws ForumException {
+        if (!userIsLoggedIn(user.name())) {
+            throw new ForumException("User is not logged in");
+        }
+	}
+	
+	private void requireAdmin(User user) throws ForumException {
+		requireLogin(user);
+		User loggedUser = users.get(user.name());
+		if (!loggedUser.type().equals(User.Type.ADMIN)) {
+			throw new ForumException("User must be ADMIN");
+		}
 	}
 
 	/******************** TOPICS ********************/
@@ -93,7 +112,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		return DBTopic.create(topic);
 	}
 
-	public Topic approveTopic(User user, Topic topic) throws RemoteException {
+	public Topic approveTopic(User user, Topic topic) throws RemoteException, ForumException {
 
 		if (!userIsLoggedIn(user.name())) {
 			throw new ForumException("User is not logged in");
@@ -112,6 +131,22 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		topic.isActive(true);
 
 		return DBTopic.update(topic);
+	}
+	
+	    public Topic deleteTopic(User user, Topic topic) throws RemoteException, ForumException { 
+            
+        // TODO refactor, make requireAdmin method
+		if (!userIsLoggedIn(user.name())) {
+			throw new ForumException("User is not logged in");
+		}
+
+		User loggedUser = users.get(user.name());
+
+		if (!loggedUser.type().equals(User.Type.ADMIN)) {
+			throw new ForumException("User must be ADMIN");
+		}
+		
+		return DBTopic.delete(topic);
 	}
 	
     /******************** THREADS ********************/
@@ -137,6 +172,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 					+ "is not logged in or is inactive");
 		}
 	}
+	
+//    public ForumThread deleteThread(User user, ForumThread thread) throws RemoteException;
 	
     /******************** CONFIG ********************/
     public String getWelcomeMessage() throws RemoteException{
