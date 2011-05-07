@@ -6,6 +6,10 @@ public class Config implements java.io.Serializable{
 	private String message = null;
 	public Config(){};
 		
+	
+
+ 
+		
 	public Config(String message){
 	    this.message = message;
 	    }
