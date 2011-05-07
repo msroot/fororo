@@ -1,0 +1,21 @@
+Not logged in
+* read a welcome instructional message (the latest copy of which always resides on the server).
+* view the current list of topics and their descriptions.
+* read discussions within any interest groups.
+* create a new user account.
+* login to an existing account with their username and password.
+
+Logged in:
+* request a new interest group be created, by providing a group name and brief description.
+* post messages to any forum group.
+* monitor and participate in a live chat for any forum group.
+* logout.
+
+Administrators:
+* There should always be one default administrator account on the system.
+* add new administrator accounts.
+* remove new administrator accounts.
+* review group requests and grant or deny activation of a new group.
+* delete selected messages from a forum.
+* delete an interest group.
+* suspend users by preventing them from logging in.

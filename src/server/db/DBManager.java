@@ -87,9 +87,7 @@ public class DBManager {
 			Statement stmt = con.createStatement();
 			int rowsAffected = stmt.executeUpdate(query);
 
-			if (rowsAffected == 1) {
-				System.out.println("OK" + rowsAffected);
-			}
+			// if (rowsAffected == 1) {}
 
 			stmt.close();
 			con.close();
@@ -101,8 +99,6 @@ public class DBManager {
 		return 0;
 
 	}
-
-
 
 	public Connection getConnection() {
 		return connection;

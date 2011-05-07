@@ -3,7 +3,17 @@ To run server:
 # from bin folder
 rmiregistry
 
-java -Djava.security.policy=policy server.Forum
+java -cp bin:lib/ojdbc14.jar -Djava.security.policy=bin/policy server.Forum localhost 55555
 
-To run server:
-java ForumClient
+To run client:
+java ForumClient host port
+
+#############################################3
+eclipse>run configurations>arguments>VM args
+
+-Djava.security.policy="file:/${workspace_loc}/SADI2/bin/policy"
+-Djava.rmi.server.codebase="file:/${workspace_loc}/SADI2/bin/"
+
+on mac
+
+-Djava.security.policy=/Users/vic/rmit/sadi/code/forum/bin/policy

@@ -12,12 +12,20 @@ public class ForumClient extends UnicastRemoteObject implements ForumClientInter
 	
     public User user = null;
     public ForumInterface forum = null;
+	private String host = "localhost";
+	private String port = "1099";
 	
 	public ForumClient() throws RemoteException {};
 	
+	public ForumClient(String host, String port) throws RemoteException {
+	    this.host = host;
+	    this.port = port;
+	};
+	
 	public boolean connect(){
+		String rmiStr = "rmi://"+host+":"+port+"/Forum";
 		try{
-			forum  = (ForumInterface) Naming.lookup("rmi://localhost:1099/Forum");
+			forum  = (ForumInterface) Naming.lookup(rmiStr);
 			return true;
 		}catch (Exception e){
 			e.printStackTrace();
@@ -30,13 +38,19 @@ public class ForumClient extends UnicastRemoteObject implements ForumClientInter
 	}
 
     public static void main(String args[]){
+        ForumClient client = null;
         try {
-        	ForumClient client = new ForumClient();
+            if(args.length > 1){
+            	client = new ForumClient(args[0], args[1]);
+            }else{
+                client = new ForumClient();
+            }
             client.connect();
-            client.user = client.forum.loginUser("adamjones", "abcd1234", client);
-            System.out.println(client.user.name());
-            System.out.println(client.user.password());
-            System.out.println(client.user.type());
+            System.out.println(client.forum.ping());
+            // client.user = client.forum.loginUser("adamjones", "abcd1234", client);
+//            System.out.println(client.user.name());
+//            System.out.println(client.user.password());
+//            System.out.println(client.user.type());
         }
         catch (Exception re)
         { 

@@ -6,7 +6,11 @@ public class Driver {
 	public static ForumClient forumClient;
 	public static void main(String[] args) {
 		try {
-			forumClient = new ForumClient();
+		    if(args.length > 1){
+            	forumClient = new ForumClient(args[0], args[1]);
+            }else{
+                forumClient = new ForumClient();
+            }
 			forumClient.connect();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block

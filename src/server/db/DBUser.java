@@ -1,16 +1,25 @@
 package server.db;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
+import shared.ForumThread;
+import shared.Topic;
 import shared.User;
 
 public class DBUser {
 	static DBManager db = DBManager.getInstance();
+	static Calendar calendar = Calendar.getInstance();
+	static String now = calendar.getTime().toString();
 
-	public DBUser() {}
-	
+	public DBUser() {
+	}
 
 	/**
 	 * Find and returns a user from db
@@ -29,14 +38,15 @@ public class DBUser {
 					+ findName + "'");
 
 			while (set.next()) {
-				type = (set.getString("TYPE").equalsIgnoreCase("NORMAL") ) ? User.Type.NORMAL
-						: User.Type.ADMIN;
-
-				name = set.getString("NAME");
-				pass = set.getString("PASSWORD");
-				active = Boolean.parseBoolean(set.getString("ISACTIVE"));
+//
+//				type = (set.getString("TYPE").equalsIgnoreCase("NORMAL")) ? User.Type.NORMAL
+//						: User.Type.ADMIN;
+//				name = set.getString("NAME");
+//				pass = set.getString("PASSWORD");
+//				active = Boolean.parseBoolean(set.getString("ISACTIVE"));
+			return mapUsers(set);
 			}
-			return new User(name, pass, type, active);
+			//return new User(name, pass, type, active);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -56,11 +66,12 @@ public class DBUser {
 			ResultSet set = db.getSet("SELECT * FROM FUSER");
 			while (set.next()) {
 
-				User user = new User(set.getString("NAME"), set
-						.getString("PASSWORD"), User.Type.valueOf(set
-						.getString("TYPE")), Boolean.parseBoolean(set
-						.getString("ISACTIVE")));
-				userList.add(user);
+//				User user = new User(set.getString("NAME"), set
+//						.getString("PASSWORD"), User.Type.valueOf(set
+//						.getString("TYPE")), Boolean.parseBoolean(set
+//						.getString("ISACTIVE")));
+//				userList.add(user);
+				userList.add(mapUsers(set));
 			}
 			return userList;
 		} catch (SQLException e) {
@@ -78,13 +89,18 @@ public class DBUser {
 	 * @return <User>
 	 */
 	public static User create(User user) {
+
+		
 		String name = user.name();
 		String pass = user.password();
 		int status = db
-				.updateSet("insert into FUSER (NAME, PASSWORD, TYPE, ISACTIVE) values ('"
-						+ name + "', '" + pass + "','NORMAL','true')");
+				.updateSet("insert into FUSER (NAME, PASSWORD, TYPE, ISACTIVE, CREATED) values ('"
+						+ name + "', '" + pass + "','NORMAL','true','"+now+"')");
 		if (status == 1) {
-			return new User(name, pass, User.Type.NORMAL, true);
+			//new User(name, password, type, isActive, created)
+			
+			return new User(name, pass, User.Type.NORMAL, true, now());
+			
 		}
 
 		return null;
@@ -109,32 +125,52 @@ public class DBUser {
 				+ isActive.toString() + "' ,TYPE='" + type.toString()
 				+ "', PASSWORD='" + pass + "'  WHERE NAME='" + name + "'");
 		if (status == 1) {
-			return new User(name, pass, type, isActive);
+			//return new User(name, pass, type, isActive);
+			return user;
 		}
 
 		return null;
 
 	}
 
-	/**
-	 * prints all the information in the rows from a SesultSet usefull for
-	 * testing a debugging
-	 * 
-	 * @param rset
-	 */
-	public static void dumpResultSet(ResultSet rSet) {
+	public static User delete(User user) {
 		try {
-			// rSet.beforeFirst();
-			while (rSet.next()) {
-				for (int i = 1; i <= rSet.getMetaData().getColumnCount(); i++) {
-					System.out.print(rSet.getString(i) + ", ");
-				}
-				System.out.println();
+
+			String id = user.name();
+			Connection connection = DriverManager.getConnection(
+					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
+					"s3252905", "yA6xsuxc");
+			String q = "DELETE FROM FUSER  WHERE NAME='" + id + "'";
+			Statement stmt = connection.createStatement();
+			int rowsAffected = stmt.executeUpdate(q);
+
+			if (rowsAffected == 1) {
+				return user;
 			}
-			// rset.close();
+			stmt.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
+	
+	private static String now(){
+		return Calendar.getInstance().getTime().toString();
+	}
+	 
+	private static User mapUsers(ResultSet set) throws SQLException{
+		
+		
+ 		return new User(
+ 				
 
-}
+				set.getString("NAME"),
+				set.getString("PASSWORD"),
+				User.Type.valueOf(set.getString("TYPE")),
+				Boolean.parseBoolean(set.getString("ISACTIVE")),
+				set.getString("CREATED")
+				);
+
+
+}}
