@@ -14,6 +14,8 @@ public interface ForumInterface extends java.rmi.Remote{
     public User updateUser(User adminUser, User userToUpdate) throws RemoteException;
     
     public User deleteUser(User adminUser, User userToDelete) throws RemoteException;
+    
+    public List<User> getUsers() throws RemoteException;
    
     // Topics
     public List<Topic> getTopics() throws RemoteException;

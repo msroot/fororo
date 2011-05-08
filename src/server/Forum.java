@@ -25,8 +25,21 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         this.host = host;
         this.port = port;
     }
-
-
+    
+    public void init() {
+        System.setSecurityManager(new RMISecurityManager());
+        String rmiStr = "rmi://"+host+":"+port+"/Forum";
+        try {
+            Naming.rebind(rmiStr, this);
+            System.out.println("Created and registered Forum object on port: "+port);
+            System.out.println("Now waiting for remote invocations");
+        } catch (RemoteException re) {
+            System.out.println("Unable to add remote object to registry");
+        } catch (MalformedURLException me) {
+            System.out.println("Incorrect address for registry");
+        }
+    }
+    
     /******************** USERS ********************/
 
     public User loginUser(String username, String password, ForumClientInterface client) throws ForumException {
@@ -76,6 +89,10 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     public User deleteUser(User adminUser, User userToDelete) throws RemoteException{
         requireAdmin(adminUser);
         return DBUser.delete(userToDelete);
+    }
+    
+    public List<User> getUsers() throws RemoteException{
+        return DBUser.getAll();
     }
     
     private boolean userIsLoggedIn(String username) {
@@ -161,9 +178,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         return DBForumThread.delete(thread);
     }
 
-    //    public ForumThread deleteThread(User user, ForumThread thread) throws RemoteException;
-
     /******************** CONFIG ********************/
+    
     public String getWelcomeMessage() throws RemoteException{
         return DBConfig.get().message();
     }
@@ -179,20 +195,9 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         return "pong";
     }
 
-    public void init() {
-        System.setSecurityManager(new RMISecurityManager());
-        String rmiStr = "rmi://"+host+":"+port+"/Forum";
-        try {
-            Naming.rebind(rmiStr, this);
-            System.out.println("Created and registered Forum object on port: "+port);
-            System.out.println("Now waiting for remote invocations");
-        } catch (RemoteException re) {
-            System.out.println("Unable to add remote object to registry");
-        } catch (MalformedURLException me) {
-            System.out.println("Incorrect address for registry");
-        }
-    }
 
+    /******************** RUNNER ********************/
+    
     public static void main(String args[]) {
         Forum server = null;
         try {
