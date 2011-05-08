@@ -118,7 +118,8 @@ public class ForumTest {
             assertTrue("username shuold be: vic but is: " + user.name(), user.name().equals("vic"));
 
         } catch (Exception e) {
-            fail("Should not throw exception: " + e.getStackTrace());
+             e.printStackTrace();
+            fail("Should not throw exception: ");
         }
     }
 

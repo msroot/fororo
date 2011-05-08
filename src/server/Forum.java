@@ -11,7 +11,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     static final long serialVersionUID = 1; // to keep the compiler happy;
     private String host = "localhost";
     private String port = "1099";
-    private Chat chat = null;
+//    private Chat chat = null;
 
     public HashMap<String, User> users = null;
     // public HashMap<String, ForumClientInterface> clients = null;
@@ -19,7 +19,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     public Forum() throws RemoteException {
 //        clients = new HashMap<String, ForumClientInterface>();
         users = new HashMap<String, User>();
-        chat = new Chat();
+//        chat = new Chat();
     }
 
     public Forum(String host, String port) throws RemoteException {
@@ -59,7 +59,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         if (user.name().equals(username) && user.password().equals(password)) {
             users.put(user.name(), user);
             // clients.put(user.name(), client);
-            chat.addClient(user.name(), client);
+//            chat.addClient(user.name(), client);
             return user;
         } else {
             throw new ForumException("Invalid username or password");
@@ -72,7 +72,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
         }
         users.remove(username);
         // clients.remove(username);
-        chat.removeClient(user.name(), client);
+//        chat.removeClient(user.name(), client);
         return true;
     }
 
@@ -191,10 +191,10 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
     /******************** CHAT ********************/
     
-    public void sendChatMessage(User user, String message){
-        requireLogin(user);
-        chat.broadcast(user.id() , message);
-    }
+//    public void sendChatMessage(User user, String message){
+//        requireLogin(user);
+//        chat.broadcast(user.name() , message);
+//    }
 
     /******************** TEST ********************/
 
