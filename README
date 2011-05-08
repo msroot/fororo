@@ -6,8 +6,21 @@ rmiregistry
 
 java -cp bin:lib/ojdbc14.jar -Djava.security.policy=bin/policy server.Forum localhost 55555
 
-To run client:
+# To run client:
+
 java ForumClient host port
+
+
+# To run tests Setting the classpath:
+
+export CLASSPATH=bin:lib/junit-4.8.2.jar:lib/ojdbc14.jar
+
+java org.junit.runner.JUnitCore test.ForumTest
+
+
+# To run tests passing the classpath directly:
+
+java -cp bin:lib/junit-4.8.2.jar:lib/ojdbc14.jar org.junit.runner.JUnitCore test.ForumTest
 
 ############## ECLIPSE  ################################################
 eclipse>run configurations>arguments>VM args
@@ -35,3 +48,4 @@ git config --global https.proxy bproxy.rmit.edu.au:8080
 
 #remove
 git config --unset --global http.proxy
+
