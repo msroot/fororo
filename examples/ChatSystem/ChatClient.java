@@ -18,17 +18,6 @@ public class ChatClient extends UnicastRemoteObject {
    private int clientType;
     
    public TextArea getMessageBox() { return messageBox; }
-   
-   public static void main(String[] args) {
-		try {
-			ChatClient dialog = new ChatClient();
-//			ChatClient.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-   
    public ChatClient() throws java.rmi.RemoteException {
       createFrame();
       try {
