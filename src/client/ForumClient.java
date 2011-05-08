@@ -37,7 +37,7 @@ public class ForumClient extends UnicastRemoteObject implements ForumClientInter
 		return "it works";
 	}
 	
-	public void updateChat(String messages){
+	public void updateChat(String message){
 	    System.out.println(message);
 	}
 
