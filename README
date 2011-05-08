@@ -9,7 +9,7 @@ java -cp bin:lib/ojdbc14.jar -Djava.security.policy=bin/policy server.Forum loca
 To run client:
 java ForumClient host port
 
-############## ECLIPSE ################################################
+############## ECLIPSE  ################################################
 eclipse>run configurations>arguments>VM args
 
 -Djava.security.policy="file:/${workspace_loc}/SADI2/policy"

@@ -17,7 +17,11 @@ import shared.Topic;
 public class DBTopic {
 	static DBManager db = DBManager.getInstance();
 	static Connection connection = db.getConnection();
-	
+ 	static String db_user = db.db_user;
+	static String db_pass = db.db_pass;
+	static String db_server = db.db_server;
+	static String db_database = db.db_database;
+	static String db_port = db.db_port;
 
 	public static Topic getById(String topicId) {
 /*		String id = null;
@@ -51,10 +55,10 @@ public class DBTopic {
 	public static List<Topic> getAll() {
 		List<Topic> topics = new ArrayList<Topic>();
 
-		String id = null;
+/*		String id = null;
 		String name = null;
 		String description = null;
-		Boolean isActive = null;
+		Boolean isActive = null;*/
 		try {
 			ResultSet set = db.getSet("SELECT * FROM FTOPIC");
 
@@ -104,8 +108,9 @@ public class DBTopic {
 					+ "','"+user+"', '"+now()+"')";
 
 			Connection connection = DriverManager.getConnection(
-					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
-					"s3252905", "yA6xsuxc");
+					"jdbc:oracle:thin:@" + db_server + ":" + db_port + ":"
+					+ db_database + "", db_user, db_pass);
+
 
 			Statement stmt = connection.createStatement();
 
@@ -150,8 +155,9 @@ public class DBTopic {
 
 			String id= topic.id();
 			Connection connection = DriverManager.getConnection(
-					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
-					"s3252905", "yA6xsuxc");
+					"jdbc:oracle:thin:@" + db_server + ":" + db_port + ":"
+					+ db_database + "", db_user, db_pass);
+
 			String q = "DELETE FROM FTOPIC  WHERE ID='"+id+"'";
 			Statement stmt = connection.createStatement();
 			int rowsAffected = stmt.executeUpdate(q);

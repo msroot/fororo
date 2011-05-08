@@ -6,9 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import shared.Topic;
+import server.utils.DBPreferences;
 
 public class DBManager {
+
+	public DBPreferences prefs = new DBPreferences();
+	public String db_user = prefs.user;
+	public String db_pass = prefs.pass;
+	public String db_server = prefs.server;
+	public String db_database = prefs.database;
+	public String db_port = prefs.port;
 
 	public Connection connection = null;
 	private static DBManager instance = null;
@@ -20,8 +27,9 @@ public class DBManager {
 
 			try {
 				this.connection = DriverManager.getConnection(
-						"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
-						"s3252905", "yA6xsuxc");
+						"jdbc:oracle:thin:@" + db_server + ":" + db_port + ":"
+								+ db_database + "", db_user, db_pass);
+
 				connection.setAutoCommit(false);
 
 			} catch (SQLException e) {
@@ -81,14 +89,11 @@ public class DBManager {
 		try {
 
 			// WE need new connection for update
-			Connection con = DriverManager.getConnection(
-					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
-					"s3252905", "yA6xsuxc");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@"
+					+ db_server + ":" + db_port + ":" + db_database + "", db_user, db_pass);
+
 			Statement stmt = con.createStatement();
 			int rowsAffected = stmt.executeUpdate(query);
-
-			// if (rowsAffected == 1) {}
-
 			stmt.close();
 			con.close();
 			return rowsAffected;
