@@ -11,6 +11,8 @@ import shared.*;
 
 public class ForumTest {
 
+    /******************** TOPICS ********************/
+
     @Test
     public void can_get_topics() {
         try {
@@ -72,6 +74,40 @@ public class ForumTest {
         }
     }
 
+
+    @Test
+    public void admins_can_delete_topics() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            forum.users.put(user.name(), user); // fake login
+            Topic topic = new Topic("", "delete_topic_test", "the description", true, user.name(), "");
+            Topic newTopic = forum.createTopic(user, topic);
+            assertNotNull(forum.deleteTopic(user, newTopic));
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void normal_users_can_not_delete_topics() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            Topic topic = new Topic("", "delete_topic_test", "the description", true, user.name(), "");
+            Topic newTopic = forum.createTopic(user, topic);
+            forum.deleteTopic(user, newTopic);
+            fail("it shuold throw exception");
+        } catch (RemoteException e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User must be ADMIN"));
+        }
+    }
+
+    /******************** USERS ********************/
+
     @Test
     public void valid_user_can_login() {
         try {
@@ -97,7 +133,7 @@ public class ForumTest {
             assertTrue(e.getMessage().matches("Invalid username or password"));
         }
     }
-    
+
     @Test
     public void inactive_users_can_not_login() {
         try {
@@ -112,6 +148,83 @@ public class ForumTest {
             assertTrue(e.getMessage().matches("User is inactive, can't login"));
         }
     }
+
+    @Test
+    public void users_can_register() {
+        User user = new User("register_test", "abcd1234", User.Type.NORMAL, true, "");
+        try {
+            Forum forum = new Forum();
+            DBUser.delete(user);
+            assertNull(user.name() +" should not exist in DB", DBUser.getByName(user.name()));
+            assertNotNull(forum.registerUser(user.name(), user.password()));
+            assertNotNull(DBUser.getByName(user.name()));		
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void admins_can_update_users() {
+        try {
+            Forum forum = new Forum();
+            User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            User userToUpdate = new User("user_to_update", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(admin.name(), admin); // fake login
+            DBUser.delete(userToUpdate); //make sure it doesn't exist
+            assertNotNull(DBUser.create(userToUpdate));
+            userToUpdate.isActive(false);
+            userToUpdate = DBUser.update(userToUpdate);
+            assertFalse("isActive() should have changed to false", userToUpdate.isActive());
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void admins_can_delete_users() {
+        try {
+            Forum forum = new Forum();
+            User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(admin.name(), admin); // fake login
+            DBUser.create(userToDelete); //make sure it exist
+            assertNotNull(DBUser.getByName(userToDelete.name()));
+            forum.deleteUser(admin, userToDelete);
+            assertNull("User shuold be null now", DBUser.getByName(userToDelete.name()));
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void normal_users_can_not_delete_users() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            DBUser.create(userToDelete); //make sure it exist
+            assertNotNull(DBUser.getByName(userToDelete.name()));
+            forum.deleteUser(user, userToDelete);
+            fail("it shuold throw exception");
+        } catch (RemoteException e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User must be ADMIN"));
+        }
+    }
+
+    @Test
+    public void can_get_users() {
+        try {
+            Forum forum = new Forum();
+            assertTrue(forum.getUsers().size() == DBUser.getAll().size());
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    /******************** THREADS ********************/
 
     // There should be at a topic with Id 1 in db
     @Test
@@ -141,7 +254,7 @@ public class ForumTest {
             fail("Should not throw exception: " + e.getStackTrace());
         }
     }
-    
+
     @Test
     public void logged_user_can_create_threads() {
         String topicId = "1";
@@ -157,7 +270,7 @@ public class ForumTest {
             fail("Should not throw exception: " + e.getStackTrace());
         }
     }
-    
+
     @Test
     public void admins_can_delete_threads() {
         String topicId = "1";
@@ -174,19 +287,7 @@ public class ForumTest {
         }
     }
 
-    @Test
-    public void users_can_register() {
-        User user = new User("register_test", "abcd1234", User.Type.NORMAL, true, "");
-        try {
-            Forum forum = new Forum();
-            DBUser.delete(user);
-            assertNull(user.name() +" should not exist in DB", DBUser.getByName(user.name()));
-            assertNotNull(forum.registerUser(user.name(), user.password()));
-            assertNotNull(DBUser.getByName(user.name()));		
-        } catch (RemoteException e) {
-            fail("it shuoldn't throw exception: " + e.getMessage());
-        }
-    }
+    /******************** CONFIG ********************/
 
     @Test
     public void can_get_welcome_message() {
@@ -197,88 +298,6 @@ public class ForumTest {
             assertTrue(forum.getWelcomeMessage().equals(msg));
         } catch (RemoteException e) {
             fail("it shuoldn't throw exception: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void admins_can_delete_topics() {
-        try {
-            Forum forum = new Forum();
-            User user = new User("john", "abcd1234", User.Type.ADMIN, true, "");
-            forum.users.put(user.name(), user); // fake login
-            Topic topic = new Topic("", "delete_topic_test", "the description", true, user.name(), "");
-            Topic newTopic = forum.createTopic(user, topic);
-            assertNotNull(forum.deleteTopic(user, newTopic));
-        } catch (RemoteException e) {
-            fail("it shuoldn't throw exception: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void normal_users_can_not_delete_topics() {
-        try {
-            Forum forum = new Forum();
-            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
-            forum.users.put(user.name(), user); // fake login
-            Topic topic = new Topic("", "delete_topic_test", "the description", true, user.name(), "");
-            Topic newTopic = forum.createTopic(user, topic);
-            forum.deleteTopic(user, newTopic);
-            fail("it shuold throw exception");
-        } catch (RemoteException e) {
-            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
-                e instanceof ForumException);
-            assertTrue(e.getMessage().matches("User must be ADMIN"));
-        }
-    }
-    
-    @Test
-    public void admins_can_update_users() {
-    	try {
-            Forum forum = new Forum();
-            User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
-            User userToUpdate = new User("user_to_update", "abcd1234", User.Type.NORMAL, true, "");
-            forum.users.put(admin.name(), admin); // fake login
-            DBUser.delete(userToUpdate); //make sure it doesn't exist
-            assertNotNull(DBUser.create(userToUpdate));
-            userToUpdate.isActive(false);
-            userToUpdate = DBUser.update(userToUpdate);
-            assertFalse("isActive() should have changed to false", userToUpdate.isActive());
-        } catch (RemoteException e) {
-            fail("it shuoldn't throw exception: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void admins_can_delete_users() {
-    	try {
-            Forum forum = new Forum();
-            User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
-            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
-            forum.users.put(admin.name(), admin); // fake login
-            DBUser.create(userToDelete); //make sure it exist
-            assertNotNull(DBUser.getByName(userToDelete.name()));
-            forum.deleteUser(admin, userToDelete);
-            assertNull("User shuold be null now", DBUser.getByName(userToDelete.name()));
-        } catch (RemoteException e) {
-            fail("it shuoldn't throw exception: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void normal_users_can_not_delete_users() {
-    	try {
-            Forum forum = new Forum();
-            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
-            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
-            forum.users.put(user.name(), user); // fake login
-            DBUser.create(userToDelete); //make sure it exist
-            assertNotNull(DBUser.getByName(userToDelete.name()));
-            forum.deleteUser(user, userToDelete);
-            fail("it shuold throw exception");
-        } catch (RemoteException e) {
-            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
-                    e instanceof ForumException);
-            assertTrue(e.getMessage().matches("User must be ADMIN"));
         }
     }
 }

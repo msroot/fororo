@@ -14,6 +14,8 @@ public interface ForumInterface extends java.rmi.Remote{
     public User updateUser(User adminUser, User userToUpdate) throws RemoteException;
     
     public User deleteUser(User adminUser, User userToDelete) throws RemoteException;
+    
+    public List<User> getUsers() throws RemoteException;
    
     // Topics
     public List<Topic> getTopics() throws RemoteException;
@@ -35,6 +37,11 @@ public interface ForumInterface extends java.rmi.Remote{
     
     // Config
     public String getWelcomeMessage() throws RemoteException;
+    
+    
+    // CHAT
+    
+    public void sendChatMessage(String userId, String message);
     
     // Exception test
     public void throwForumException() throws RemoteException;
