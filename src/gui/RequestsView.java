@@ -93,7 +93,7 @@ public class RequestsView extends JDialog implements ActionListener{
 				for (int i = 0; i < activeTopics.size(); i++) {
 						rows[i] = new Object[] { activeTopics.get(i).id(),
 								activeTopics.get(i).name(),
-								activeTopics.get(i).description(),activeTopics.get(i).isActive(), activeTopics.get(i)};
+								activeTopics.get(i).userName(),activeTopics.get(i).isActive(), activeTopics.get(i)};
 				}
 				
 				table = new JTable();
@@ -153,7 +153,7 @@ public class RequestsView extends JDialog implements ActionListener{
 			{
 				JButton okButton = new JButton("Save");
 				okButton.addActionListener(this);
-				okButton.setActionCommand("OK");
+				okButton.setActionCommand("save");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
@@ -169,9 +169,21 @@ public class RequestsView extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		if (ev.getActionCommand().equalsIgnoreCase("save")){
-			for (int i=0;i<table.getModel().getColumnCount();i++){
+			for (int i=0;i<table.getModel().getRowCount();i++){
 				String id = (String) table.getModel().getValueAt(i, 0);
-				Driver.forumClient.forum.approveTopic(Driver.forumClient.user, topic)
+				Topic topic = (Topic) table.getModel().getValueAt(i, 4);
+				
+				if ((Boolean)table.getModel().getValueAt(i, 3)){
+					try {
+						System.out.println("ID = " +id);
+						Topic top = Driver.forumClient.forum.approveTopic(Driver.forumClient.user, topic);
+						System.out.println(top);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
 			}
 			this.dispose();
 		}

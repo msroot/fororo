@@ -17,20 +17,21 @@ import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 import shared.*;
 
-public class NewThread extends JDialog {
+public class NewThread extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
-	private static JTextField txtTitle;
+	private JTextField txtTitle;
 	static NewThread dialog;
 	JTextArea txtContent = new JTextArea();
 	String[] args;
+	Topic topic;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
 			
-			dialog = new NewThread();
+//			dialog = new NewThread(args);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.args = args;
 			dialog.setVisible(true);
@@ -39,11 +40,15 @@ public class NewThread extends JDialog {
 		}
 		
 	}
-
+	public static void open(Topic topic){
+		new NewThread(topic);
+	}
 	/**
 	 * Create the dialog.
 	 */
-	public NewThread() {
+	public NewThread(Topic topic) {
+		this.topic = topic;
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Create new Thread");
 		setResizable(false);
 		setModal(true);
@@ -85,25 +90,8 @@ public class NewThread extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Save");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						//String userId, String title, String content, String topicId
-						String topicId = dialog.args[0];
-						String title = txtTitle.getText();
-						String content = txtContent.getText();
-//						String userId = Driver.forumClient.user.id();
-						try {
-//							Driver.forumClient.forum.createThread("1", title, content, topicId);
-							Driver.forumClient.forum.createThread(Driver.forumClient.user, new ForumThread("",title,content,topicId,Driver.forumClient.user.name(),""));
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						//GroupView.load();
-						dialog.dispose();
-					}
-				});
-				okButton.setActionCommand("OK");
+				okButton.addActionListener(this);
+				okButton.setActionCommand("save");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
@@ -117,6 +105,25 @@ public class NewThread extends JDialog {
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+		}
+		this.setVisible(true);
+	}
+	public void actionPerformed(ActionEvent ev) {
+		// TODO Auto-generated method stub
+		if (ev.getActionCommand().equalsIgnoreCase("save")){
+			String topicId = topic.id();
+			String title = txtTitle.getText();
+			String content = txtContent.getText();
+//			String userId = Driver.forumClient.user.id();
+			try {
+//				Driver.forumClient.forum.createThread("1", title, content, topicId);
+				Driver.forumClient.forum.createThread(Driver.forumClient.user, new ForumThread("",title,content,topicId,Driver.forumClient.user.name(),""));
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//GroupView.load();
+			this.dispose();
 		}
 	}
 
