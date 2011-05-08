@@ -11,14 +11,20 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     static final long serialVersionUID = 1; // to keep the compiler happy;
     private String host = "localhost";
     private String port = "1099";
-    private Chat chat = null;
+
 
     public HashMap<String, User> users = null;
+    //CategoryID - Chat
+    public HashMap<String, Chat> chats= null;
+    public HashMap<String, ForumClientInterface> clients= null;
+    public HashMap<String, String>  userInTopic= null;
 
 	public Forum() throws RemoteException {
 		users = new HashMap<String, User>();
-		chat = new Chat();
-    }
+		chats = new HashMap<String, Chat>();
+		userInTopic = new HashMap<String, String>();
+		clients= new HashMap<String, ForumClientInterface>();
+	}
 
     public Forum(String host, String port) throws RemoteException {
         this();
@@ -56,7 +62,10 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 
         if (user.name().equals(username) && user.password().equals(password)) {
             users.put(user.name(), user);
-            chat.addClient(user.name(), client);
+            clients.put(user.name(), client);
+            
+            
+            //FIXME:chat.addClient(user.name(), client);
              
             return user;
         } else {
@@ -69,7 +78,15 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
             return false;
         }
         users.remove(username);
-        chat.removeClient(username);
+        clients.remove(username);
+        
+        try {chats.get(userInTopic.get(username)).removeClient(username);
+        }
+        catch (Exception e) {
+					}
+   
+        
+      //FIXME:chat.removeClient(username);
         return true;
     }
 
@@ -190,10 +207,31 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
      public void sendChatMessage(User user, String message)throws ForumException{
          requireLogin(user);
-         chat.broadcast(user.name(), message);
+       //FIXME:chat.broadcast(user.name(), message);
+         try {chats.get(userInTopic.get(user.name())).broadcast(user.name(), message);
+         }
+         catch (Exception e) {
+					}
      }
+   
      
-     
+     public void setChatTopic(User user, Topic topic)throws RemoteException{
+
+		String currentTopic = userInTopic.get(user.name());
+		if (currentTopic != null) {
+			chats.get(currentTopic).removeClient(user.name());
+		}
+
+		userInTopic.put(user.name(), topic.id());
+
+		if (chats.get(topic.id()) == null) {
+			chats.put(topic.id(), new Chat());
+		}
+
+		
+		chats.get(topic.id()).addClient(user.name(), clients.get(user.name()));
+ 
+	}     
 
     /******************** TEST ********************/
 

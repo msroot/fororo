@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import shared.ForumClientInterface;
 
@@ -35,12 +36,24 @@ public class Chat {
 			message = user.concat(" says:" + message);
 		}
 
-		for (ForumClientInterface client : clients.values()) {
+		
+		for (String userId : clients.keySet()) {
 			try {
-				client.updateChat(message);
+				clients.get(userId).updateChat(message);
+				
+				System.out.println("from:" + user + " to " + userId + "" +message);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
+			
+			
+		/*for (ForumClientInterface client : clients.values()) {
+			try {
+				client.updateChat(message);
+				System.out.println("from:" + user + " to " + client);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}*/
 
 		}
 	}
