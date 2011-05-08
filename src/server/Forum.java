@@ -11,10 +11,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     static final long serialVersionUID = 1; // to keep the compiler happy;
     private String host = "localhost";
     private String port = "1099";
-
-
     public HashMap<String, User> users = null;
-    //CategoryID - Chat
     public HashMap<String, Chat> chats= null;
     public HashMap<String, ForumClientInterface> clients= null;
     public HashMap<String, String>  userInTopic= null;
@@ -49,7 +46,6 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     /******************** USERS ********************/
 
     public User loginUser(String username, String password, ForumClientInterface client) throws ForumException {
-
         User user = DBUser.getByName(username);
 
         if (user == null) {
@@ -62,31 +58,22 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 
         if (user.name().equals(username) && user.password().equals(password)) {
             users.put(user.name(), user);
-            clients.put(user.name(), client);
-            
-            
-            //FIXME:chat.addClient(user.name(), client);
-             
+            clients.put(user.name(), client);             
             return user;
         } else {
             throw new ForumException("Invalid username or password");
         }
     }
 
-    public boolean logoutUser(String username) throws RemoteException {
-        if (!userIsLoggedIn(username)) {
+    public boolean logoutUser(User user) throws RemoteException {
+        if (!userIsLoggedIn(user.name())) {
             return false;
         }
-        users.remove(username);
-        clients.remove(username);
+        users.remove(user.name());
+        clients.remove(user.name());
         
-        try {chats.get(userInTopic.get(username)).removeClient(username);
-        }
-        catch (Exception e) {
-					}
-   
-        
-      //FIXME:chat.removeClient(username);
+        try { chats.get(userInTopic.get(user.name())).removeClient(user.name()); }
+        catch (Exception e) {}
         return true;
     }
 
@@ -207,11 +194,8 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
     
      public void sendChatMessage(User user, String message)throws ForumException{
          requireLogin(user);
-       //FIXME:chat.broadcast(user.name(), message);
-         try {chats.get(userInTopic.get(user.name())).broadcast(user.name(), message);
-         }
-         catch (Exception e) {
-					}
+         try { chats.get(userInTopic.get(user.name())).broadcast(user.name(), message); }
+         catch (Exception e) {}
      }
    
      

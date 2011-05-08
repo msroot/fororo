@@ -35,7 +35,7 @@ public class ChatTest {
 			c2.forum.setChatTopic(u2, new Topic("id1", "", "", true, "", ""));
 			c2.forum.sendChatMessage(u2, "offcourse re malaka!");
 			
-			c2.forum.logoutUser(u2.name());
+			c2.forum.logoutUser(u2);
 			
 
 		} catch (RemoteException e) {

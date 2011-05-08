@@ -5,9 +5,10 @@ import java.util.*;
 
 public interface ForumInterface extends java.rmi.Remote{
 
+    // Users
     public User loginUser(String userName, String password, ForumClientInterface client) throws RemoteException;
     
-    public boolean logoutUser(String userName) throws RemoteException;
+    public boolean logoutUser(User user) throws RemoteException;
     
     public User registerUser(String userName, String password) throws RemoteException;
     
@@ -40,10 +41,8 @@ public interface ForumInterface extends java.rmi.Remote{
     
     
     // CHAT
-    
-     
-    public void sendChatMessage(User user, String message)throws RemoteException;
-    public void setChatTopic(User user, Topic topic)throws RemoteException;
+    public void sendChatMessage(User user, String message) throws RemoteException;
+    public void setChatTopic(User user, Topic topic) throws RemoteException;
     
     // Exception test
     public void throwForumException() throws RemoteException;
