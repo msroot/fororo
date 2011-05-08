@@ -16,34 +16,34 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 
-public class LoginDialog extends JDialog implements ActionListener {
+public class RegisterView extends JDialog implements ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUserName;
 	private JPasswordField passwordField;
-	static LoginDialog dialog;
+	private RegisterView dialog;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			dialog = new LoginDialog();
+			RegisterView dialog  = new RegisterView();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 	public static void open(){
-		new LoginDialog();
+		new RegisterView();
 	}
+
 	/**
 	 * Create the dialog.
 	 */
-	public LoginDialog() {
+	public RegisterView() {
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setTitle("Login");
+		setTitle("Register");
 		setResizable(false);
 		setModal(true);
 		setBounds(100, 100, 285, 175);
@@ -81,17 +81,17 @@ public class LoginDialog extends JDialog implements ActionListener {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Login");
-				okButton.addActionListener(this);
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				JButton btnRegister = new JButton("Register");
+				btnRegister.addActionListener(this);
+				btnRegister.setActionCommand("OK");
+				buttonPane.add(btnRegister);
+				getRootPane().setDefaultButton(btnRegister);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(this);
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				JButton btnCancel = new JButton("Cancel");
+				btnCancel.addActionListener(this);
+				btnCancel.setActionCommand("Cancel");
+				buttonPane.add(btnCancel);
 			}
 		}
 		this.setVisible(true);
@@ -103,7 +103,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 			String userName = txtUserName.getText();
 			String password = new String(passwordField.getPassword());
 			try {
-				Driver.forumClient.user=Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
+				Driver.forumClient.forum.registerUser(userName, password);
 				this.dispose();
 				
 			} catch (RemoteException e) {

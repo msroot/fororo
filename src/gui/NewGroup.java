@@ -11,23 +11,23 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 
-public class LoginDialog extends JDialog implements ActionListener {
+import shared.*;
+public class NewGroup extends JDialog implements ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtUserName;
-	private JPasswordField passwordField;
-	static LoginDialog dialog;
+	private JTextField txtName;
+	JTextArea txtDescription = new JTextArea();
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			dialog = new LoginDialog();
+			NewGroup dialog = new NewGroup();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -36,52 +36,54 @@ public class LoginDialog extends JDialog implements ActionListener {
 	}
 	
 	public static void open(){
-		new LoginDialog();
+		new NewGroup();
 	}
 	/**
 	 * Create the dialog.
 	 */
-	public LoginDialog() {
+	public NewGroup() {
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setTitle("Login");
-		setResizable(false);
+		setTitle("Request Group Creation");
 		setModal(true);
-		setBounds(100, 100, 285, 175);
+		setResizable(false);
+		setBounds(100, 100, 500, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
-			JLabel label = new JLabel("User Name");
-			label.setBounds(23, 33, 61, 14);
-			label.setHorizontalAlignment(SwingConstants.RIGHT);
-			label.setFont(new Font("Tahoma", Font.BOLD, 11));
-			contentPanel.add(label);
+			JLabel lblName = new JLabel("Name");
+			lblName.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblName.setFont(new Font("Tahoma", Font.BOLD, 11));
+			lblName.setBounds(35, 11, 60, 14);
+			contentPanel.add(lblName);
 		}
 		{
-			JLabel label = new JLabel("Password");
-			label.setBounds(23, 58, 54, 14);
-			label.setHorizontalAlignment(SwingConstants.RIGHT);
-			label.setFont(new Font("Tahoma", Font.BOLD, 11));
-			contentPanel.add(label);
+			JLabel lblDescription = new JLabel("Description");
+			lblDescription.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblDescription.setFont(new Font("Tahoma", Font.BOLD, 11));
+			lblDescription.setBounds(10, 36, 85, 14);
+			contentPanel.add(lblDescription);
 		}
 		{
-			txtUserName = new JTextField();
-			txtUserName.setBounds(94, 30, 129, 20);
-			txtUserName.setColumns(10);
-			contentPanel.add(txtUserName);
+			txtName = new JTextField();
+			txtName.setBounds(115, 8, 255, 20);
+			contentPanel.add(txtName);
+			txtName.setColumns(10);
 		}
 		{
-			passwordField = new JPasswordField();
-			passwordField.setBounds(94, 55, 129, 20);
-			contentPanel.add(passwordField);
+			
+			txtDescription.setRows(10);
+			txtDescription.setLineWrap(true);
+			txtDescription.setBounds(115, 36, 332, 166);
+			contentPanel.add(txtDescription);
 		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Login");
+				JButton okButton = new JButton("Request");
 				okButton.addActionListener(this);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
@@ -89,7 +91,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(this);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -97,22 +98,19 @@ public class LoginDialog extends JDialog implements ActionListener {
 		this.setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent ev) {
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (ev.getActionCommand().equalsIgnoreCase("ok")){
-			String userName = txtUserName.getText();
-			String password = new String(passwordField.getPassword());
+		if (e.getActionCommand().equalsIgnoreCase("ok")){
+			User user = Driver.forumClient.user;
+			//String id, String name, String description, boolean isActive, String userName, String created
+			Topic topic = new Topic("1",txtName.getText(),txtDescription.getText(),false,"","");
 			try {
-				Driver.forumClient.user=Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
+				Driver.forumClient.forum.createTopic(user, topic);
 				this.dispose();
-				
-			} catch (RemoteException e) {
+			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
-		}
-		if (ev.getActionCommand().equalsIgnoreCase("cancel")){
-			this.dispose();
 		}
 	}
 
