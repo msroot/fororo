@@ -91,6 +91,7 @@ public class NewGroup extends JDialog implements ActionListener{
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(this);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -98,9 +99,9 @@ public class NewGroup extends JDialog implements ActionListener{
 		this.setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
-		if (e.getActionCommand().equalsIgnoreCase("ok")){
+		if (ev.getActionCommand().equalsIgnoreCase("ok")){
 			User user = Driver.forumClient.user;
 			//String id, String name, String description, boolean isActive, String userName, String created
 			Topic topic = new Topic("1",txtName.getText(),txtDescription.getText(),false,"","");
@@ -111,6 +112,9 @@ public class NewGroup extends JDialog implements ActionListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		if(ev.getActionCommand().equalsIgnoreCase("cancel")){
+			this.dispose();
 		}
 	}
 

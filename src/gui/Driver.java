@@ -18,13 +18,21 @@ public class Driver{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		MainWindow.main(null);
+		//FIXME Just For Testing Delete this lines
+		try {
+			forumClient.user = forumClient.forum.loginUser("edd", "abcd1234", forumClient);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MainWindow.open();
+//		MainWindow.main(null);
 //		FrameTest.main(null);
 	}
 	public static void openGroup(String[] args){
 //		MainWindow.window.close();
 //		GroupView.main(args);
-		GroupView groupView = new GroupView(args);
+//		GroupView groupView = new GroupView(args);
 	}
 	public static void close(){
 

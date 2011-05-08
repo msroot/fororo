@@ -34,8 +34,8 @@ public class GroupView implements ActionListener{
 	JButton btnNewThread = new JButton("New Thread");
 	JButton btnChat = new JButton("Chat");
 	JButton btnDelete = new JButton("Delete");
-	static JTable table;
-
+	JTable table;
+	Topic topic;
 	/**
 	 * Launch the application.
 	 */
@@ -54,11 +54,18 @@ public class GroupView implements ActionListener{
 //		window.args = args;
 	}
 
+	public static void open(Topic topic){
+		new GroupView(topic);
+	}
 	/**
 	 * Create the application.
 	 */
-	public GroupView(String[] args) {
-		this.args = args;
+	public GroupView(Topic topic) {
+		this.topic = topic;
+//		loadData();
+//		initialize();
+//		setControls();
+//		frmGroup.setVisible(true);
 		load();
 	}
 
@@ -74,7 +81,7 @@ public class GroupView implements ActionListener{
 	 */
 	private void loadData() {
 		try {
-			threads = Driver.forumClient.forum.getThreadsByTopic(args[0]);
+			threads = Driver.forumClient.forum.getThreadsByTopic(topic.id());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,17 +140,11 @@ public class GroupView implements ActionListener{
 		lblAppName.setBounds(21, 21, 134, 25);
 		frmGroup.getContentPane().add(lblAppName);
 
-		JLabel lblDescription = new JLabel(args[2]);
+		JLabel lblDescription = new JLabel(topic.description());
 		lblDescription.setBackground(Color.WHITE);
 		lblDescription.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDescription.setBounds(126, 85, 511, 25);
 		frmGroup.getContentPane().add(lblDescription);
-//		btnNewThread.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				NewThread.main();
-//			}
-//		});
-		
 		btnNewThread.addActionListener(this);
 
 		btnNewThread.setBounds(27, 121, 107, 23);
@@ -164,7 +165,7 @@ public class GroupView implements ActionListener{
 		btnReturn.setBounds(548, 518, 107, 23);
 		frmGroup.getContentPane().add(btnReturn);
 
-		JLabel lblGroupName = new JLabel(args[1]);
+		JLabel lblGroupName = new JLabel(topic.name());
 		lblGroupName.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblGroupName.setBackground(Color.WHITE);
 		lblGroupName.setBounds(126, 57, 511, 25);
@@ -177,6 +178,8 @@ public class GroupView implements ActionListener{
 
 		btnChat.setBounds(144, 120, 107, 23);
 		frmGroup.getContentPane().add(btnChat);
+		btnDelete.setActionCommand("delete");
+		btnDelete.addActionListener(this);
 
 		btnDelete.setBounds(261, 120, 107, 23);
 		frmGroup.getContentPane().add(btnDelete);
@@ -188,27 +191,12 @@ public class GroupView implements ActionListener{
 		JLabel lblDescrip = new JLabel("Description");
 		lblDescrip.setBounds(31, 92, 85, 14);
 		frmGroup.getContentPane().add(lblDescrip);
-
-		Object[][] rows = new Object[threads.size()][];
-		String[] header = new String[] { "ID", "Title", "Content" };
-
-		for (int i = 0; i < threads.size(); i++) {
-			rows[i] = new String[] { threads.get(i).id(),
-					threads.get(i).title(), threads.get(i).content() };
-		}
-
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(27, 168, 616, 311);
 		frmGroup.getContentPane().add(scrollPane);
 
 		table = new JTable();
-		table.setModel(new DefaultTableModel(rows, header) {
-			boolean[] columnEditables = new boolean[] { true, false, false };
-
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+		loadTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -224,6 +212,27 @@ public class GroupView implements ActionListener{
 				ThreadView.main(args);
 			}
 		});
+		
+
+		scrollPane.setViewportView(table);
+		// frame.getContentPane().add(table);
+	}
+
+	private void loadTable(){
+		Object[][] rows = new Object[threads.size()][];
+		String[] header = new String[] { "ID", "Title", "Content" };
+
+		for (int i = 0; i < threads.size(); i++) {
+			rows[i] = new String[] { threads.get(i).id(),
+					threads.get(i).title(), threads.get(i).content() };
+		}
+		table.setModel(new DefaultTableModel(rows, header) {
+			boolean[] columnEditables = new boolean[] { true, false, false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(0);
 		table.getColumnModel().getColumn(0).setMinWidth(0);
 		table.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -232,14 +241,31 @@ public class GroupView implements ActionListener{
 		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(2).setPreferredWidth(400);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		scrollPane.setViewportView(table);
-		// frame.getContentPane().add(table);
 	}
-
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		System.out.print("Test");
+		if(ev.getActionCommand().equalsIgnoreCase("new thread")){
+			NewThread.open(topic);
+			loadData();
+			loadTable();
+		}
+		if(ev.getActionCommand().equalsIgnoreCase("delete")){
+			try {
+				Driver.forumClient.forum.deleteTopic(Driver.forumClient.user, topic);
+				frmGroup.dispose();
+				MainWindow.open();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(ev.getActionCommand().equalsIgnoreCase("go back")){
+			frmGroup.dispose();
+			MainWindow.open();
+		}
+		
 		
 	}
 }
