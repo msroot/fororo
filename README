@@ -1,3 +1,4 @@
+############## FROM UNI ################################################
 To run server:
 
 # from bin folder
@@ -8,12 +9,29 @@ java -cp bin:lib/ojdbc14.jar -Djava.security.policy=bin/policy server.Forum loca
 To run client:
 java ForumClient host port
 
-#############################################3
+############## ECLIPSE  ################################################
 eclipse>run configurations>arguments>VM args
 
--Djava.security.policy="file:/${workspace_loc}/SADI2/bin/policy"
+-Djava.security.policy="file:/${workspace_loc}/SADI2/policy"
 -Djava.rmi.server.codebase="file:/${workspace_loc}/SADI2/bin/"
+
+
+*new policy location*
+-Djava.security.policy="file:/${workspace_loc}/SADI2/policy"
+
 
 on mac
 
--Djava.security.policy=/Users/vic/rmit/sadi/code/forum/bin/policy
+-Djava.security.policy=/Users/vic/rmit/sadi/code/forum/policy
+
+############## GIT ################################################
+#view proxy
+git config --get http.proxy
+
+#set proxy
+git config --global http.proxy bproxy.rmit.edu.au:8080
+git config --global https.proxy bproxy.rmit.edu.au:8080
+
+
+#remove
+git config --unset --global http.proxy

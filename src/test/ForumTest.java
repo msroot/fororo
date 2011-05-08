@@ -5,178 +5,72 @@ import static org.junit.Assert.*;
 import java.rmi.RemoteException;
 import java.util.*;
 import server.*;
+import server.db.*;
 import client.*;
 import shared.*;
 
 public class ForumTest {
 
     @Test
-    public void accepts_connections() {
-        try{
-            ForumClient client = new ForumClient();
-            assertTrue("It should connect", client.connect());
-        } catch (Exception e){
-            fail("Should not throw exception: " + e.getStackTrace());
+    public void can_get_topics() {
+        try {
+            Forum forum = new Forum();
+            List<Topic> topics = forum.getTopics();
+            for (Topic topic : topics) {
+            }
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
         }
     }
-	//
-	// @Test
-	// public void user_can_login() {
-	// try{
-	// ForumClient client = new ForumClient();
-	//
-	// assertTrue("It should connect", client.connect());
-	//
-	// User user = client.forum.loginUser("testuser", "abcd1234", client);
-	//
-	// assertTrue("it shuold login => testuser:abcd1234", user instanceof User
-	// );
-	// assertTrue("username shuold be: testuser but is: " +user.name(),
-	// "testuser".equals(user.name()));
-	// assertTrue("password shuold be: abcd1234 but is: " +user.password(),
-	// "abcd1234".equals(user.password()));
-	// } catch (Exception e){
-	// fail("Should not throw exception: " + e.getStackTrace());
-	// }
-	// }
-	//
-	// @Test
-	// public void user_can_logout() {
-	// try{
-	// ForumClient client = new ForumClient();
-	// assertTrue("It should connect", client.connect());
-	// User user = client.forum.loginUser("testuser", "abcd1234", client);
-	// assertTrue(client.forum.logoutUser(user.name()));
-	// } catch (Exception e){
-	// fail("Should not throw exception: " + e.getMessage());
-	// }
-	// }
-	//
-	// @Test
-	// public void can_get_topic_list() {
-	// try{
-	// ForumClient client = new ForumClient();
-	// assertTrue("It should connect", client.connect());
-	// client.forum.getTopics();
-	// } catch (Exception e){
-	// e.printStackTrace();
-	// fail("Should not throw exception: " + e.getMessage());
-	// }
-	// }
-	//
-	// @Test
-	// public void can_get_threads_by_topic() {
-	// try{
-	// ForumClient client = new ForumClient();
-	// assertTrue("It should connect", client.connect());
-	// //TODO check threads are correct
-	// client.forum.getThreadsByTopic("0");
-	// } catch (Exception e){
-	// e.printStackTrace();
-	// fail("Should not throw exception: " + e.getMessage());
-	// }
-	// }
-	//
-	// @Test
-	// public void can_get_thread_by_id() {
-	// try{
-	// ForumClient client = new ForumClient();
-	// assertTrue("It should connect", client.connect());
-	// //TODO check if thread exists in db
-	// client.forum.getThreadById("0");
-	// } catch (Exception e){
-	// e.printStackTrace();
-	// fail("Should not throw exception: " + e.getMessage());
-	// }
-	// }
-	//
-	// @Test
-	// public void can_create_thread() {
-	// try{
-	// ForumClient client = new ForumClient();
-	// assertTrue("It should connect", client.connect());
-	// client.forum.createThread("0", "the title", "the description",
-	// "the_topic_id");
-	// } catch (Exception e){
-	// e.printStackTrace();
-	// fail("Should not throw exception: " + e.getMessage());
-	// }
-	// }
-	//
-	// @Test
-	// public void forum_exception_test() {
-	// try{
-	// ForumClient client = new ForumClient();
-	// assertTrue("It should connect", client.connect());
-	// client.forum.throwForumException();
-	// fail("it should throw a ForumException");
-	// } catch (RemoteException e){
-	// System.out.println("Catched RemoteException");
-	// System.out.println(e.getMessage());
-	// }
-	// }
 
-	@Test
-	public void can_get_topics() {
-		try {
-			Forum forum = new Forum();
-			List<Topic> topics = forum.getTopics();
-			for (Topic topic : topics) {
-				// System.out.println(topic);
-			}
-		} catch (RemoteException e) {
-			fail("it shuoldn't throw exception: " + e.getMessage());
-		}
-	}
+    @Test
+    public void can_create_topic() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            Topic topic = new Topic("", "test topic", "the description", true,
+                user.name(), "");
+            Topic newTopic = forum.createTopic(user, topic);
+            assertNotNull("it should not be null", newTopic);
+            assertTrue("new Topic name shuold be: " + topic.name() + ", but is: " + topic.name(),
+                topic.name().equals(newTopic.name()));
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
 
-	@Test
-	public void can_create_topic() {
-		try {
-			Forum forum = new Forum();
-			User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
-			forum.users.put(user.name(), user); // fake login
-			Topic topic = new Topic("", "test topic", "the description", true,
-					user.name(), "");
-			Topic newTopic = forum.createTopic(user, topic);
-			assertNotNull("it should not be null", newTopic);
-			assertTrue("new Topic name shuold be: " + topic.name() + ", but is: " + topic.name(),
-					topic.name().equals(newTopic.name()));
-		} catch (RemoteException e) {
-			fail("it shuoldn't throw exception: " + e.getMessage());
-		}
-	}
-	
-	@Test
-	public void admin_user_can_approve_topic() {
-		try {
-			Forum forum = new Forum();
-			User user = new User("john", "abcd1234", User.Type.ADMIN, true, "");
-			forum.users.put(user.name(), user); // fake login
-			Topic topic = forum.createTopic(user, new Topic("", "approve me", "to be approved", false, user.name(), ""));
-			Topic aprovedTopic = forum.approveTopic(user, topic);
-			assertNotNull("topic shouldn't be null", aprovedTopic);
-			assertTrue("topic.isActive() should be: true, but is: "+aprovedTopic.isActive(),
-					aprovedTopic.isActive()); 
-		} catch (RemoteException e) {
-			fail("it shuoldn't throw exception: " + e.getMessage());
-		}
-	}
-	
-	@Test
-	public void normal_user_can_not_approve_topic() {
-		try {
-			Forum forum = new Forum();
-			User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
-			forum.users.put(user.name(), user); // fake login
-			Topic topic = forum.createTopic(user, new Topic("", "approve me", "to be approved", false, user.name(), ""));
-			forum.approveTopic(user, topic);
-			fail("it should throw a RemoteException");
-		} catch (Exception e){
-			assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
-					e instanceof ForumException);
-			assertTrue(e.getMessage().matches("User must be ADMIN"));
-		}
-	}
+    @Test
+    public void admins_can_approve_topic() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            forum.users.put(user.name(), user); // fake login
+            Topic topic = forum.createTopic(user, new Topic("", "approve me", "to be approved", false, user.name(), ""));
+            Topic aprovedTopic = forum.approveTopic(user, topic);
+            assertNotNull("topic shouldn't be null", aprovedTopic);
+            assertTrue("topic.isActive() should be: true, but is: "+aprovedTopic.isActive(),
+                aprovedTopic.isActive()); 
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void normal_users_can_not_approve_topic() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            Topic topic = forum.createTopic(user, new Topic("", "approve me", "to be approved", false, user.name(), ""));
+            forum.approveTopic(user, topic);
+            fail("it should throw a RemoteException");
+        } catch (Exception e){
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User must be ADMIN"));
+        }
+    }
 
     @Test
     public void valid_user_can_login() {
@@ -191,7 +85,7 @@ public class ForumTest {
             fail("Should not throw exception: " + e.getStackTrace());
         }
     }
-    
+
     @Test
     public void invalid_user_can_not_login() {
         try {
@@ -199,8 +93,23 @@ public class ForumTest {
             fail("it should throw a ForumException");
         } catch (Exception e) {
             assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
-					e instanceof ForumException);
-			assertTrue(e.getMessage().matches("Invalid username or password"));
+                e instanceof ForumException);
+            assertTrue(e.getMessage().matches("Invalid username or password"));
+        }
+    }
+    
+    @Test
+    public void inactive_users_can_not_login() {
+        try {
+            User inactiveUser = new User("inactive_user", "abcd1234", User.Type.ADMIN, false, "");
+            DBUser.delete(inactiveUser);
+            DBUser.create(inactiveUser);
+            (new Forum()).loginUser(inactiveUser.name(), inactiveUser.password(), new ForumClient());
+            fail("it should throw a ForumException");
+        } catch (Exception e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User is inactive, can't login"));
         }
     }
 
@@ -215,8 +124,8 @@ public class ForumTest {
         } catch (Exception e) {
             fail("Should not throw exception: " + e.getStackTrace());
         }
-    }    
-    
+    }
+
     // there should be at least 1 thread for topicId 1 in db
     @Test
     public void can_get_threads_by_topic() {
@@ -226,7 +135,7 @@ public class ForumTest {
             assertTrue("there should be at least 1 thread", threads.size() > 0);
             for(ForumThread thread : threads){
                 assertTrue("topicId shuold be: "+topicId+ ", but is: "+thread.topicId(), 
-                		thread.topicId().equals(topicId));
+                    thread.topicId().equals(topicId));
             }
         } catch (Exception e) {
             fail("Should not throw exception: " + e.getStackTrace());
@@ -246,6 +155,130 @@ public class ForumTest {
             assertNotNull("The new thread should exist", forum.getThreadById(createdThread.id()));
         } catch (Exception e) {
             fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }
+    
+    @Test
+    public void admins_can_delete_threads() {
+        String topicId = "1";
+        User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+        ForumThread thread = new ForumThread("", "delete_thread_test", "content", topicId, admin.name(), "");
+        try {
+            thread = DBForumThread.create(thread);
+            Forum forum = new Forum();
+            forum.users.put(admin.name(), admin); // fake login
+            forum.deleteThread(admin, thread);
+            assertNull("It should delete the thread", DBForumThread.getById(thread.id()));
+        } catch (Exception e) {
+            fail("Should not throw exception: " + e.getStackTrace());
+        }
+    }
+
+    @Test
+    public void users_can_register() {
+        User user = new User("register_test", "abcd1234", User.Type.NORMAL, true, "");
+        try {
+            Forum forum = new Forum();
+            DBUser.delete(user);
+            assertNull(user.name() +" should not exist in DB", DBUser.getByName(user.name()));
+            assertNotNull(forum.registerUser(user.name(), user.password()));
+            assertNotNull(DBUser.getByName(user.name()));		
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void can_get_welcome_message() {
+        String msg = "Welcome message test";
+        try {
+            Forum forum = new Forum();
+            DBConfig.update(new Config(msg));
+            assertTrue(forum.getWelcomeMessage().equals(msg));
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void admins_can_delete_topics() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            forum.users.put(user.name(), user); // fake login
+            Topic topic = new Topic("", "delete_topic_test", "the description", true, user.name(), "");
+            Topic newTopic = forum.createTopic(user, topic);
+            assertNotNull(forum.deleteTopic(user, newTopic));
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+    
+    @Test
+    public void normal_users_can_not_delete_topics() {
+        try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            Topic topic = new Topic("", "delete_topic_test", "the description", true, user.name(), "");
+            Topic newTopic = forum.createTopic(user, topic);
+            forum.deleteTopic(user, newTopic);
+            fail("it shuold throw exception");
+        } catch (RemoteException e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User must be ADMIN"));
+        }
+    }
+    
+    @Test
+    public void admins_can_update_users() {
+    	try {
+            Forum forum = new Forum();
+            User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            User userToUpdate = new User("user_to_update", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(admin.name(), admin); // fake login
+            DBUser.delete(userToUpdate); //make sure it doesn't exist
+            assertNotNull(DBUser.create(userToUpdate));
+            userToUpdate.isActive(false);
+            userToUpdate = DBUser.update(userToUpdate);
+            assertFalse("isActive() should have changed to false", userToUpdate.isActive());
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+    
+    @Test
+    public void admins_can_delete_users() {
+    	try {
+            Forum forum = new Forum();
+            User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(admin.name(), admin); // fake login
+            DBUser.create(userToDelete); //make sure it exist
+            assertNotNull(DBUser.getByName(userToDelete.name()));
+            forum.deleteUser(admin, userToDelete);
+            assertNull("User shuold be null now", DBUser.getByName(userToDelete.name()));
+        } catch (RemoteException e) {
+            fail("it shuoldn't throw exception: " + e.getMessage());
+        }
+    }
+    
+    @Test
+    public void normal_users_can_not_delete_users() {
+    	try {
+            Forum forum = new Forum();
+            User user = new User("vic", "abcd1234", User.Type.NORMAL, true, "");
+            User userToDelete = new User("user_to_delete", "abcd1234", User.Type.NORMAL, true, "");
+            forum.users.put(user.name(), user); // fake login
+            DBUser.create(userToDelete); //make sure it exist
+            assertNotNull(DBUser.getByName(userToDelete.name()));
+            forum.deleteUser(user, userToDelete);
+            fail("it shuold throw exception");
+        } catch (RemoteException e) {
+            assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
+                    e instanceof ForumException);
+            assertTrue(e.getMessage().matches("User must be ADMIN"));
         }
     }
 }

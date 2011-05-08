@@ -11,9 +11,18 @@ public class AdderImpl extends UnicastRemoteObject implements Adder
 {
    public AdderImpl() throws RemoteException {}
 
+   
+ 
+   public  String pong(String s) throws RemoteException, ServerNotActiveException {
+	    
+	   System.out.println("Print in server: " +s);
+	   
+	   return s.concat(" from:"+getClientHost()).toString();
+   }
+   
    public int add(int x, int y) throws RemoteException
    {
-      System.out.println( x + " + " + y + " = " + (x+y) );
+      System.out.println( x + " + " + y + " = " + (x+y)+ " print in server" );
       return x + y;
    }
 
@@ -38,4 +47,6 @@ public class AdderImpl extends UnicastRemoteObject implements Adder
          System.out.println("Now waiting for remote invocations");
       }
    }
+
+
 }         

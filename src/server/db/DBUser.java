@@ -15,9 +15,11 @@ import shared.User;
 
 public class DBUser {
 	static DBManager db = DBManager.getInstance();
-	static Calendar calendar = Calendar.getInstance();
-	static String now = calendar.getTime().toString();
-
+ 	static String db_user = db.db_user;
+	static String db_pass = db.db_pass;
+	static String db_server = db.db_server;
+	static String db_database = db.db_database;
+	static String db_port = db.db_port;
 	public DBUser() {
 	}
 
@@ -95,11 +97,11 @@ public class DBUser {
 		String pass = user.password();
 		int status = db
 				.updateSet("insert into FUSER (NAME, PASSWORD, TYPE, ISACTIVE, CREATED) values ('"
-						+ name + "', '" + pass + "','NORMAL','true','"+now+"')");
+						+ name + "', '" + pass + "','NORMAL','" + user.isActive() + "','"+now()+"')");
 		if (status == 1) {
 			//new User(name, password, type, isActive, created)
 			
-			return new User(name, pass, User.Type.NORMAL, true, now());
+			return new User(name, pass, User.Type.NORMAL, user.isActive(), now());
 			
 		}
 
@@ -138,8 +140,8 @@ public class DBUser {
 
 			String id = user.name();
 			Connection connection = DriverManager.getConnection(
-					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
-					"s3252905", "yA6xsuxc");
+					"jdbc:oracle:thin:@" + db_server + ":" + db_port + ":"
+					+ db_database + "", db_user, db_pass);
 			String q = "DELETE FROM FUSER  WHERE NAME='" + id + "'";
 			Statement stmt = connection.createStatement();
 			int rowsAffected = stmt.executeUpdate(q);

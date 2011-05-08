@@ -15,19 +15,23 @@ import shared.ForumThread;
 import shared.Topic;
 
 public class DBForumThread {
+
 	static DBManager db = DBManager.getInstance();
 	static Connection connection = db.getConnection();
-	static Calendar calendar = Calendar.getInstance();
-	static String now = calendar.getTime().toString();
-
+ 	static String db_user = db.db_user;
+	static String db_pass = db.db_pass;
+	static String db_server = db.db_server;
+	static String db_database = db.db_database;
+	static String db_port = db.db_port;
+	
 	public static ForumThread getById(String id) {
 
 		try {
 
-			String dbId = null;
+		/*	String dbId = null;
 			String title = null;
 			String description = null;
-			String topicId = null;
+			String topicId = null;*/
 
 			ResultSet set = db.getSet("SELECT * FROM FTHREAD WHERE ID='" + id
 					+ "'");
@@ -51,9 +55,9 @@ public class DBForumThread {
 	public static List<ForumThread> getAllByTopic(String topicId) {
 		List<ForumThread> AllByTopic = new ArrayList<ForumThread>();
 
-		String title = null;
+	/*	String title = null;
 		String description = null;
-		String threadId = null;
+		String threadId = null;*/
 		try {
 			ResultSet set = db.getSet("SELECT * FROM FTHREAD WHERE TOPICID='"
 					+ topicId + "'");
@@ -86,10 +90,10 @@ public class DBForumThread {
 			 * We need to connect again. this is the only way it works all other
 			 * statetement work with the current cunnection but not this :(
 			 */
-
 			Connection connection = DriverManager.getConnection(
-					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
-					"s3252905", "yA6xsuxc");
+			"jdbc:oracle:thin:@" + db_server + ":" + db_port + ":"
+			+ db_database + "", db_user, db_pass);
+			
 
 			String q = "insert into FTHREAD  values ('','" + title + "', '"
 					+ description + "','" + topicId + "', '" + user + "', '"
@@ -126,8 +130,10 @@ public class DBForumThread {
 
 			String id= thread.id();
 			Connection connection = DriverManager.getConnection(
-					"jdbc:oracle:thin:@emu.cs.rmit.edu.au:1521:GENERAL",
-					"s3252905", "yA6xsuxc");
+					"jdbc:oracle:thin:@" + db_server + ":" + db_port + ":"
+					+ db_database + "", db_user, db_pass);
+			
+			
 			String q = "DELETE FROM FTHREAD  WHERE ID='"+id+"'";
 			Statement stmt = connection.createStatement();
 			int rowsAffected = stmt.executeUpdate(q);
