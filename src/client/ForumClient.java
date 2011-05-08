@@ -36,6 +36,10 @@ public class ForumClient extends UnicastRemoteObject implements ForumClientInter
     public String test() throws RemoteException {
 		return "it works";
 	}
+	
+	public void updateChat(String messages){
+	    System.out.println(message);
+	}
 
     public static void main(String args[]){
         ForumClient client = null;
