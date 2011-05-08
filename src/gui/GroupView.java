@@ -25,12 +25,12 @@ import shared.*;
 import java.awt.ScrollPane;
 import javax.swing.JScrollPane;
 
-public class GroupView {
+public class GroupView implements ActionListener{
 
 	private JFrame frmGroup;
 	GroupView window;
 	List<ForumThread> threads;
-	String[] args;
+	static String[] args;
 	JButton btnNewThread = new JButton("New Thread");
 	JButton btnChat = new JButton("Chat");
 	JButton btnDelete = new JButton("Delete");
@@ -138,11 +138,13 @@ public class GroupView {
 		lblDescription.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDescription.setBounds(126, 85, 511, 25);
 		frmGroup.getContentPane().add(lblDescription);
-		btnNewThread.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-//				NewThread.main(this.window.args);
-			}
-		});
+//		btnNewThread.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				NewThread.main();
+//			}
+//		});
+		
+		btnNewThread.addActionListener(this);
 
 		btnNewThread.setBounds(27, 121, 107, 23);
 		frmGroup.getContentPane().add(btnNewThread);
@@ -233,5 +235,11 @@ public class GroupView {
 
 		scrollPane.setViewportView(table);
 		// frame.getContentPane().add(table);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		System.out.print("Test");
+		
 	}
 }

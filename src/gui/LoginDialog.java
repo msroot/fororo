@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 
-public class LoginDialog extends JDialog {
+public class LoginDialog extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUserName;
@@ -34,11 +34,15 @@ public class LoginDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static void open(){
+		new LoginDialog();
+	}
 	/**
 	 * Create the dialog.
 	 */
 	public LoginDialog() {
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Login");
 		setResizable(false);
 		setModal(true);
@@ -78,34 +82,37 @@ public class LoginDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Login");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						String userName = txtUserName.getText();
-						String password = new String(passwordField.getPassword());
-						try {
-							Driver.forumClient.user=Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
-							dialog.dispose();
-							
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				});
+				okButton.addActionListener(this);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						dialog.dispose();
-					}
-				});
+				cancelButton.addActionListener(this);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+		}
+		this.setVisible(true);
+	}
+
+	public void actionPerformed(ActionEvent ev) {
+		// TODO Auto-generated method stub
+		if (ev.getActionCommand().equalsIgnoreCase("ok")){
+			String userName = txtUserName.getText();
+			String password = new String(passwordField.getPassword());
+			try {
+				Driver.forumClient.user=Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
+				this.dispose();
+				
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (ev.getActionCommand().equalsIgnoreCase("cancel")){
+			this.dispose();
 		}
 	}
 

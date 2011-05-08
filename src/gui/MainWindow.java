@@ -25,7 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
 
-public class MainWindow {
+public class MainWindow implements ActionListener{
 
 	private JFrame frmMainWindow;
 	private static MainWindow window;
@@ -39,7 +39,6 @@ public class MainWindow {
 	static JButton btnRequests = new JButton("Requests");
 	private final JScrollPane scrollPane_1 = new JScrollPane();
 	private final JTable table = new JTable();
-	private final JButton button = new JButton("New button");
 
 	/**
 	 * Launch the application.
@@ -147,34 +146,21 @@ public class MainWindow {
 		lblWelcomeMsg.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblWelcomeMsg.setBounds(53, 57, 542, 52);
 		frmMainWindow.getContentPane().add(lblWelcomeMsg);
-		btnNewGroup.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				NewGroup.main(null);
-			}
-		});
+//		btnNewGroup.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				NewGroup.main(null);
+//			}
+//		});
+		btnNewGroup.addActionListener(this);
 
 		btnNewGroup.setBounds(27, 121, 107, 23);
 		frmMainWindow.getContentPane().add(btnNewGroup);
-		btnRegister.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				RegisterView.main(null);
-			}
-		});
+		btnRegister.setActionCommand("Register");
+		btnRegister.addActionListener(this);
 
 		btnRegister.setBounds(144, 121, 107, 23);
 		frmMainWindow.getContentPane().add(btnRegister);
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Entered login action listener");
-				if (btnLogin.getText().equalsIgnoreCase("login")) {
-					LoginDialog.main(null);
-				} else {
-					Driver.forumClient.user = null;
-					btnLogin.setText("Login");
-				}
-				setControls();
-			}
-		});
+		btnLogin.addActionListener(this);
 
 		btnLogin.setBounds(261, 121, 107, 23);
 		frmMainWindow.getContentPane().add(btnLogin);
@@ -186,11 +172,8 @@ public class MainWindow {
 
 		btnAccounts.setBounds(378, 121, 107, 23);
 		frmMainWindow.getContentPane().add(btnAccounts);
-		btnRequests.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				RequestsView.main(null);
-			}
-		});
+		btnRequests.setActionCommand("requests");
+		btnRequests.addActionListener(this);
 
 		btnRequests.setBounds(495, 121, 107, 23);
 		frmMainWindow.getContentPane().add(btnRequests);
@@ -254,14 +237,27 @@ public class MainWindow {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		scrollPane_1.setViewportView(table);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String[] args = new String[]{"146"};
-				Driver.openGroup(args);
-			}
-		});
-		button.setBounds(527, 11, 89, 23);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println(e);
+		if (e.getActionCommand().equalsIgnoreCase("new group")){
+			NewGroup.open();
+		}
+		if (e.getActionCommand().equalsIgnoreCase("register")){
+			RegisterView.open();
+		}
+		if (e.getActionCommand().equalsIgnoreCase("login")){
+			LoginDialog.open();
+			setControls();
+		}
+		if (e.getActionCommand().equalsIgnoreCase("accounts")){
+			AccountsView.open();
+		}
+		if (e.getActionCommand().equalsIgnoreCase("requests")){
+			RequestsView.open();
+		}
 		
-		frmMainWindow.getContentPane().add(button);
 	}
 }

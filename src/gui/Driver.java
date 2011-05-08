@@ -1,8 +1,10 @@
 package gui;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 import client.*;
-public class Driver {
+public class Driver{
 	public static ForumClient forumClient;
 	public static void main(String[] args) {
 		try {
@@ -27,4 +29,5 @@ public class Driver {
 	public static void close(){
 
 	}
+
 }
