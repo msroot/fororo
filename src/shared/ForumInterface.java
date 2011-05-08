@@ -41,8 +41,8 @@ public interface ForumInterface extends java.rmi.Remote{
     
     // CHAT
     
-//    public void sendChatMessage(String userId, String message);
-    
+     
+    public void sendChatMessage(User user, String message)throws RemoteException;
     // Exception test
     public void throwForumException() throws RemoteException;
     
