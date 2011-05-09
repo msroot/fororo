@@ -20,7 +20,9 @@ public class DBManager {
 	public Connection connection = null;
 	private static DBManager instance = null;
 
-	/* singleton contructor */
+	/**
+	 * Singleton constructor for DBManager
+	 */
 	protected DBManager() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -42,7 +44,9 @@ public class DBManager {
 
 	}
 
-	/* @return the instance of DBManager object */
+	/**
+	 * @return the instance of DBManager object 	
+	 */
 	public static DBManager getInstance() {
 		if (instance == null) {
 			instance = new DBManager();
@@ -79,9 +83,9 @@ public class DBManager {
 	}
 
 	/*
-	 * function for INSERT, UPDATE, or DELETE statement or an SQL statement that
-	 * returns nothing
-	 * 
+	 * General function for INSERT, UPDATE, or DELETE 
+	 * statement or an SQL statement that
+	 * @return int rowsAffected
 	 * @param String query
 	 */
 	public int updateSet(String query) {

@@ -16,8 +16,9 @@ public class DBPreferences {
 	public File f = null;
 
 	/**
-	 * Read a file from disk and and adds values to user,pass etc file must
-	 * have a single line and example: server:port:database:user:pass
+	 * <DBPreferences> Class is responsible to read a file from disk and and
+	 * adds values to user,pass etc File must have a single line with 5 values
+	 * Example: server:port:database:user:pass
 	 */
 	public DBPreferences() {
 		this.f = new File("passwords");
@@ -25,7 +26,7 @@ public class DBPreferences {
 	}
 
 	/**
-	 * Same as above overloading for reading difrent file
+	 * Same as above overloading for reading different file
 	 * 
 	 * @param path
 	 */
@@ -34,6 +35,11 @@ public class DBPreferences {
 		exec();
 	}
 
+	/**
+	 * Read the given file and split it to 5 values. 
+	 * After adds each value to
+	 * user,pass server etc
+	 */
 	public void exec() {
 		FileReader fr = null;
 		try {
@@ -71,23 +77,6 @@ public class DBPreferences {
 			user = info[3];
 			pass = info[4];
 		}
-	}
-
-	public static void main(String[] argv) {
-		DBPreferences p = new DBPreferences();
-		System.out.println(p.user);
-		System.out.println(p.pass);
-		System.out.println(p.database);
-		System.out.println(p.port);
-		System.out.println(p.server);
-
-		DBPreferences p2 = new DBPreferences("passwords2");
-		System.out.println(p2.user);
-		System.out.println(p2.pass);
-		System.out.println(p2.database);
-		System.out.println(p2.port);
-		System.out.println(p2.server);
-
 	}
 
 }
