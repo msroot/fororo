@@ -6,6 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+
+/**
+ * <{@link DBPreferences} Class is responsible to read a file from disk and and
+ * adds values to user,pass etc File must have a single line with 5 values
+ * Example: server:port:database:user:pass
+ */
 public class DBPreferences {
 
 	public String server = "";
@@ -15,10 +21,9 @@ public class DBPreferences {
 	public String pass = "";
 	public File f = null;
 
+
 	/**
-	 * <DBPreferences> Class is responsible to read a file from disk and and
-	 * adds values to user,pass etc File must have a single line with 5 values
-	 * Example: server:port:database:user:pass
+	 * Accepts and reads a file
 	 */
 	public DBPreferences() {
 		this.f = new File("passwords");

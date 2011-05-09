@@ -5,15 +5,18 @@ import java.util.HashMap;
 
 import shared.ForumClientInterface;
 
+/**
+ * Chat Class accepts client objects and broadcast messages back. The track of
+ * "clients in current topic" are holding in forum class. Each topic have a chat
+ * object in <Forum> and chat object hold all the clients must broadcast the
+ * message
+ */
 public class Chat {
 
 	public HashMap<String, ForumClientInterface> clients = null;
 
 	/**
-	 * Chat Class accepts client objects and broadcast messages back. 
-	 * The track of "clients in current topic" are holding in forum class.
-	 * Each topic have a chat object in <Forum> 
-	 * and chat object hold all the clients must broadcast the message
+	 * Chat contractor creates a new {@link HashMap} with clients
 	 */
 	public Chat() {
 		clients = new HashMap<String, ForumClientInterface>();
@@ -60,7 +63,7 @@ public class Chat {
 
 				System.out.println("from:" + user + " to " + userId + ""
 						+ message);
-				
+
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}

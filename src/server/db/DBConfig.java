@@ -10,7 +10,7 @@ import java.util.Set;
 import shared.Config;
 
 /**
- * DBConfig Class responsible for the Database Connection Credential and update
+ * DBConfig Class responsible for the Database Connection credential and update
  * basic form informations like "Welcome Message" and get all server stats like
  * total posts,users,threads etc
  * 

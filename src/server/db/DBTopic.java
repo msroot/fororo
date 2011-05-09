@@ -14,6 +14,12 @@ import shared.Comment;
 import shared.ForumThread;
 import shared.Topic;
 
+/**
+ * Responsible all c.r.u.i.d. functionality of the {@link Topic}
+ * 
+ * @author yannis
+ * 
+ */
 public class DBTopic {
 	static DBManager db = DBManager.getInstance();
 	static Connection connection = db.getConnection();
@@ -23,8 +29,13 @@ public class DBTopic {
 	static String db_database = db.db_database;
 	static String db_port = db.db_port;
 
+	/**
+	 * Finds all topics with the given id
+	 * 
+	 * @param topicId
+	 * @return <Topic>
+	 */
 	public static Topic getById(String topicId) {
-
 		try {
 			ResultSet set = db.getSet("SELECT * FROM FTOPIC WHERE ID='"
 					+ topicId + "'");
@@ -38,6 +49,11 @@ public class DBTopic {
 		return null;
 	}
 
+	/**
+	 * Collects all topics exist in db
+	 * 
+	 * @return List
+	 */
 	public static List<Topic> getAll() {
 		List<Topic> topics = new ArrayList<Topic>();
 		try {
@@ -101,6 +117,12 @@ public class DBTopic {
 
 	}
 
+	/**
+	 * Updates a give topic
+	 * 
+	 * @param <Topic>
+	 * @return <Topic>
+	 */
 	public static Topic update(Topic topic) {
 		String id = topic.id();
 		String name = topic.name();
@@ -118,6 +140,12 @@ public class DBTopic {
 		return null;
 	}
 
+	/**
+	 * Deletes a given <Topic>
+	 * 
+	 * @param topic
+	 * @return
+	 */
 	public static Topic delete(Topic topic) {
 		try {
 
