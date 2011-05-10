@@ -8,6 +8,15 @@ import java.sql.Statement;
 
 import server.utils.DBPreferences;
 
+/**
+ * Static Class responsible for the db connection and 
+ * update, select statements. Database connection informations passed from the 
+ * {@link DBPreferences} object. Used static to get the current 
+ * static db getInstance, connection.
+ * 
+ * @author yannis
+ *
+ */
 public class DBManager {
 
 	public DBPreferences prefs = new DBPreferences();
@@ -20,7 +29,10 @@ public class DBManager {
 	public Connection connection = null;
 	private static DBManager instance = null;
 
-	/* singleton contructor */
+
+    /**
+     * Protected constructor for DBManager 
+     */
 	protected DBManager() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -42,7 +54,9 @@ public class DBManager {
 
 	}
 
-	/* @return the instance of DBManager object */
+	/**
+	 * @return the instance of DBManager object 	
+	 */
 	public static DBManager getInstance() {
 		if (instance == null) {
 			instance = new DBManager();
@@ -79,9 +93,9 @@ public class DBManager {
 	}
 
 	/*
-	 * function for INSERT, UPDATE, or DELETE statement or an SQL statement that
-	 * returns nothing
-	 * 
+	 * General function for INSERT, UPDATE, or DELETE 
+	 * statement or an SQL statement that
+	 * @return int rowsAffected
 	 * @param String query
 	 */
 	public int updateSet(String query) {
