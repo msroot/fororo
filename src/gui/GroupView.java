@@ -126,6 +126,9 @@ public class GroupView implements ActionListener{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		if (Driver.forumClient.user!=null){
+			Driver.setChatTopic(topic);
+		}
 		frmGroup = new JFrame();
 		frmGroup.setTitle("View Group");
 		frmGroup.getContentPane().setBackground(
@@ -170,12 +173,8 @@ public class GroupView implements ActionListener{
 		lblGroupName.setBackground(Color.WHITE);
 		lblGroupName.setBounds(126, 57, 511, 25);
 		frmGroup.getContentPane().add(lblGroupName);
-		btnChat.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ChatView.main(null);
-			}
-		});
-
+		btnChat.addActionListener(this);
+		btnChat.setActionCommand("chat");
 		btnChat.setBounds(144, 120, 107, 23);
 		frmGroup.getContentPane().add(btnChat);
 		btnDelete.setActionCommand("delete");
@@ -264,6 +263,10 @@ public class GroupView implements ActionListener{
 		if(ev.getActionCommand().equalsIgnoreCase("go back")){
 			frmGroup.dispose();
 			MainWindow.open();
+		}
+		if(ev.getActionCommand().equalsIgnoreCase("chat")){
+			System.out.print("chat");
+			Driver.openChat(topic);
 		}
 		
 		

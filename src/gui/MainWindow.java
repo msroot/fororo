@@ -206,6 +206,7 @@ public class MainWindow implements ActionListener{
 
 		btnRegister.setBounds(144, 121, 107, 23);
 		frmMainWindow.getContentPane().add(btnRegister);
+		btnLogin.setActionCommand("login");
 		btnLogin.addActionListener(this);
 
 		btnLogin.setBounds(261, 121, 107, 23);

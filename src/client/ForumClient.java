@@ -3,6 +3,8 @@ package client;
 import shared.ForumClientInterface;
 import shared.ForumInterface;
 import shared.User;
+import gui.Driver;
+
 import java.util.*;
 import java.rmi.*;
 import java.rmi.server.*;
@@ -39,6 +41,7 @@ public class ForumClient extends UnicastRemoteObject implements ForumClientInter
 	
 	public void updateChat(String message){
 	    System.out.println(message);
+	    Driver.chat.newMessage(message);
 	}
 
     public static void main(String args[]){
