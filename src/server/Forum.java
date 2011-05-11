@@ -12,7 +12,7 @@ import java.util.*;
  * objects via RMI. Assign {@link Chat} to clients and with current thread,
  * create and manage {@link User}, {@link ForumThread},{@link Topic} etc
  * 
- * @author Victon Nava
+ * @author Victor Nava
  * 
  */
 public class Forum extends UnicastRemoteObject implements ForumInterface {
