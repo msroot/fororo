@@ -14,7 +14,7 @@ import shared.ForumThread;
 /**
  * Responsible all c.r.u.i.d. functionality of the {@link ForumThread}
  * 
- * @author yannis
+ * @author John Kolovos
  * 
  */
 public class DBForumThread {

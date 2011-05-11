@@ -9,13 +9,12 @@ import java.sql.Statement;
 import server.utils.DBPreferences;
 
 /**
- * Static Class responsible for the db connection and 
- * update, select statements. Database connection informations passed from the 
- * {@link DBPreferences} object. Used static to get the current 
- * static db getInstance, connection.
+ * Static Class responsible for the db connection and update, select statements.
+ * Database connection informations passed from the {@link DBPreferences}
+ * object. Used static to get the current static db getInstance, connection.
  * 
- * @author yannis
- *
+ * @author John Kolovos
+ * 
  */
 public class DBManager {
 
@@ -29,10 +28,9 @@ public class DBManager {
 	public Connection connection = null;
 	private static DBManager instance = null;
 
-
-    /**
-     * Protected constructor for DBManager 
-     */
+	/**
+	 * Protected constructor for DBManager
+	 */
 	protected DBManager() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -55,7 +53,7 @@ public class DBManager {
 	}
 
 	/**
-	 * @return the instance of DBManager object 	
+	 * @return the instance of DBManager object
 	 */
 	public static DBManager getInstance() {
 		if (instance == null) {
@@ -93,18 +91,20 @@ public class DBManager {
 	}
 
 	/*
-	 * General function for INSERT, UPDATE, or DELETE 
-	 * statement or an SQL statement that
+	 * General function for INSERT, UPDATE, or DELETE statement or an SQL
+	 * statement that
+	 * 
 	 * @return int rowsAffected
+	 * 
 	 * @param String query
 	 */
 	public int updateSet(String query) {
 
 		try {
 
-			// WE need new connection for update
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@"
-					+ db_server + ":" + db_port + ":" + db_database + "", db_user, db_pass);
+					+ db_server + ":" + db_port + ":" + db_database + "",
+					db_user, db_pass);
 
 			Statement stmt = con.createStatement();
 			int rowsAffected = stmt.executeUpdate(query);

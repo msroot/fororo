@@ -17,7 +17,7 @@ import shared.Topic;
 /**
  * Responsible all c.r.u.i.d. functionality of the {@link Topic}
  * 
- * @author yannis
+ * @author John Kolovos
  * 
  */
 public class DBTopic {

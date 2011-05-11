@@ -1,7 +1,12 @@
 package shared;
 
 import java.util.HashMap;
-
+/**
+ * Main <{@link ForumThread} Class. Server/Client common class for RMI
+ * 
+ * @author Victor Nava
+ * 
+ */
 public class ForumThread implements java.io.Serializable{
 	private String id = null;
 	private String title = null;
@@ -12,6 +17,15 @@ public class ForumThread implements java.io.Serializable{
 	
 	public ForumThread(){};
 	
+	/**
+	 * ForumThread contractor
+	 * @param id
+	 * @param title
+	 * @param content
+	 * @param topicId
+	 * @param userName
+	 * @param created
+	 */
 	public ForumThread(String id, String title, String content, String topicId, String userName, String created){
 		this.id = id;
 		this.title = title;

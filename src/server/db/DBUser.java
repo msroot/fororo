@@ -16,7 +16,7 @@ import shared.User;
 /**
  * Responsible all c.r.u.i.d. functionality of the {@link User}
  * 
- * @author yannis
+ * @author John Kolovos
  * 
  */
 public class DBUser {
@@ -122,7 +122,7 @@ public class DBUser {
 				+ isActive.toString() + "' ,TYPE='" + type.toString()
 				+ "', PASSWORD='" + pass + "'  WHERE NAME='" + name + "'");
 		if (status == 1) {
- 			return user;
+			return user;
 		}
 
 		return null;

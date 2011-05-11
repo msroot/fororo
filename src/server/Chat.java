@@ -10,6 +10,8 @@ import shared.ForumClientInterface;
  * "clients in current topic" are holding in forum class. Each topic have a chat
  * object in <Forum> and chat object hold all the clients must broadcast the
  * message
+ * 
+ * @author John Kolovos
  */
 public class Chat {
 

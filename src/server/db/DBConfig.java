@@ -14,7 +14,7 @@ import shared.Config;
  * basic form informations like "Welcome Message" and get all server stats like
  * total posts,users,threads etc
  * 
- * @author yannis
+ * @author John Kolovos
  * 
  */
 public class DBConfig {
