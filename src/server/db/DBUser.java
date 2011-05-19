@@ -13,13 +13,20 @@ import shared.ForumThread;
 import shared.Topic;
 import shared.User;
 
+/**
+ * Responsible all c.r.u.i.d. functionality of the {@link User}
+ * 
+ * @author John Kolovos
+ * 
+ */
 public class DBUser {
 	static DBManager db = DBManager.getInstance();
- 	static String db_user = db.db_user;
+	static String db_user = db.db_user;
 	static String db_pass = db.db_pass;
 	static String db_server = db.db_server;
 	static String db_database = db.db_database;
 	static String db_port = db.db_port;
+
 	public DBUser() {
 	}
 
@@ -40,15 +47,8 @@ public class DBUser {
 					+ findName + "'");
 
 			while (set.next()) {
-//
-//				type = (set.getString("TYPE").equalsIgnoreCase("NORMAL")) ? User.Type.NORMAL
-//						: User.Type.ADMIN;
-//				name = set.getString("NAME");
-//				pass = set.getString("PASSWORD");
-//				active = Boolean.parseBoolean(set.getString("ISACTIVE"));
-			return mapUsers(set);
+				return mapUsers(set);
 			}
-			//return new User(name, pass, type, active);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -67,12 +67,6 @@ public class DBUser {
 		try {
 			ResultSet set = db.getSet("SELECT * FROM FUSER");
 			while (set.next()) {
-
-//				User user = new User(set.getString("NAME"), set
-//						.getString("PASSWORD"), User.Type.valueOf(set
-//						.getString("TYPE")), Boolean.parseBoolean(set
-//						.getString("ISACTIVE")));
-//				userList.add(user);
 				userList.add(mapUsers(set));
 			}
 			return userList;
@@ -92,17 +86,18 @@ public class DBUser {
 	 */
 	public static User create(User user) {
 
-		
 		String name = user.name();
 		String pass = user.password();
 		int status = db
 				.updateSet("insert into FUSER (NAME, PASSWORD, TYPE, ISACTIVE, CREATED) values ('"
-						+ name + "', '" + pass + "','NORMAL','" + user.isActive() + "','"+now()+"')");
+						+ name
+						+ "', '"
+						+ pass
+						+ "','NORMAL','"
+						+ user.isActive() + "','" + now() + "')");
 		if (status == 1) {
-			//new User(name, password, type, isActive, created)
-			
-			return new User(name, pass, User.Type.NORMAL, user.isActive(), now());
-			
+			return new User(name, pass, User.Type.NORMAL, user.isActive(),
+					now());
 		}
 
 		return null;
@@ -110,7 +105,7 @@ public class DBUser {
 	}
 
 	/**
-	 * Updates user's information based on user name(ID) if user is dublicate in
+	 * Updates user's information based on user name(ID) if user is duplicate in
 	 * db will change both
 	 * 
 	 * @param <User>
@@ -127,7 +122,6 @@ public class DBUser {
 				+ isActive.toString() + "' ,TYPE='" + type.toString()
 				+ "', PASSWORD='" + pass + "'  WHERE NAME='" + name + "'");
 		if (status == 1) {
-			//return new User(name, pass, type, isActive);
 			return user;
 		}
 
@@ -141,7 +135,7 @@ public class DBUser {
 			String id = user.name();
 			Connection connection = DriverManager.getConnection(
 					"jdbc:oracle:thin:@" + db_server + ":" + db_port + ":"
-					+ db_database + "", db_user, db_pass);
+							+ db_database + "", db_user, db_pass);
 			String q = "DELETE FROM FUSER  WHERE NAME='" + id + "'";
 			Statement stmt = connection.createStatement();
 			int rowsAffected = stmt.executeUpdate(q);
@@ -156,23 +150,18 @@ public class DBUser {
 		}
 		return null;
 	}
-	
-	private static String now(){
+
+	private static String now() {
 		return Calendar.getInstance().getTime().toString();
 	}
-	 
-	private static User mapUsers(ResultSet set) throws SQLException{
-		
-		
- 		return new User(
- 				
 
-				set.getString("NAME"),
-				set.getString("PASSWORD"),
-				User.Type.valueOf(set.getString("TYPE")),
-				Boolean.parseBoolean(set.getString("ISACTIVE")),
-				set.getString("CREATED")
-				);
+	private static User mapUsers(ResultSet set) throws SQLException {
 
+		return new User(
 
-}}
+		set.getString("NAME"), set.getString("PASSWORD"), User.Type.valueOf(set
+				.getString("TYPE")), Boolean.parseBoolean(set
+				.getString("ISACTIVE")), set.getString("CREATED"));
+
+	}
+}

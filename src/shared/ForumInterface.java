@@ -3,9 +3,16 @@ package shared;
 import java.rmi.*;
 import java.util.*;
 
+
+/**
+ * Main <{@link ForumInterface} interface. Server/Client common interface for RMI
+ * 
+ * @author Victor Nava
+ * 
+ */
 public interface ForumInterface extends java.rmi.Remote{
 
-    // Users
+   /* Users*/
     public User loginUser(String userName, String password, ForumClientInterface client) throws RemoteException;
     
     public boolean logoutUser(User user) throws RemoteException;
@@ -18,7 +25,7 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public List<User> getUsers() throws RemoteException;
    
-    // Topics
+    /* Topics*/
     public List<Topic> getTopics() throws RemoteException;
     
     public Topic approveTopic(User user, Topic topic) throws RemoteException;
@@ -27,7 +34,7 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public Topic deleteTopic(User user, Topic topic) throws RemoteException;
     
-    // Threads
+    /* Threads*/
     public List<ForumThread> getThreadsByTopic(String topicId) throws RemoteException;
     
     public ForumThread getThreadById(String threadId) throws RemoteException;
@@ -36,15 +43,15 @@ public interface ForumInterface extends java.rmi.Remote{
     
     public ForumThread deleteThread(User adminUser, ForumThread threadToDelete) throws RemoteException;
     
-    // Config
+    /*Config*/
     public String getWelcomeMessage() throws RemoteException;
     
     
-    // CHAT
+   /* CHAT*/
     public void sendChatMessage(User user, String message) throws RemoteException;
     public void setChatTopic(User user, Topic topic) throws RemoteException;
     
-    // Exception test
+    /*Exception test*/
     public void throwForumException() throws RemoteException;
     
     public String ping() throws RemoteException;

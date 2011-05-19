@@ -2,6 +2,12 @@ package shared;
 
 import java.util.HashMap;
 
+/**
+ * Main <{@link User} Class. Server/Client common class for RMI
+ * 
+ * @author Victor Nava
+ * 
+ */
 public class User implements java.io.Serializable{
     public enum Type {NORMAL, ADMIN};
     private Type type = Type.NORMAL;
@@ -12,6 +18,14 @@ public class User implements java.io.Serializable{
 
     public User(){};
 
+    /**
+     * User contractor
+     * @param name
+     * @param password
+     * @param type
+     * @param isActive
+     * @param created
+     */
     public User(String name, String password, Type type, boolean isActive, String created){
         this.name = name;
         this.password = password;
@@ -37,8 +51,5 @@ public class User implements java.io.Serializable{
         return map.toString();
     }
 
-    public static void main(String[] args) {
-        User u =  new User("malaka", "tarantula", Type.ADMIN, true, "now");
-        System.out.println(u);
-    }
+    
 }

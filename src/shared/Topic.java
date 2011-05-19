@@ -1,7 +1,12 @@
 package shared;
 
 import java.util.*;
-
+/**
+ * Main <{@link Topic} Class. Server/Client common class for RMI
+ * 
+ * @author Victor Nava
+ * 
+ */
 public class Topic implements java.io.Serializable{
 	private String id = null;
 	private String name = null;
@@ -12,6 +17,15 @@ public class Topic implements java.io.Serializable{
 	
 	public Topic(){};
 		
+	/**
+	 * Topic contractor
+	 * @param id
+	 * @param name
+	 * @param description
+	 * @param isActive
+	 * @param userName
+	 * @param created
+	 */
 	public Topic(String id, String name, String description, boolean isActive, String userName, String created){
 	    this.id = id;
 	    this.name = name;
@@ -49,8 +63,5 @@ public class Topic implements java.io.Serializable{
 	    return map.toString();
 	}
 	
-	public static void main(String[] args) {
-	   Topic t =  new Topic("1", "the name", "the description", true, "malaka", "now");
-       System.out.println(t);
-	}
+	 
 }
