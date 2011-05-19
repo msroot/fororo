@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -103,12 +104,18 @@ public class LoginDialog extends JDialog implements ActionListener {
 			String userName = txtUserName.getText();
 			String password = new String(passwordField.getPassword());
 			try {
+				
+				txtUserName.setForeground(Color.BLACK);
+				passwordField.setForeground(Color.BLACK);
+				
 				Driver.forumClient.user=Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
 				this.dispose();
 				
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				txtUserName.setForeground(Color.RED);
+				passwordField.setForeground(Color.RED);
 			}
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("cancel")){

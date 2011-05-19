@@ -30,7 +30,8 @@ public class MainWindow implements ActionListener{
 	private JFrame frmMainWindow;
 	private static MainWindow window;
 	private List<Topic> topics;
-	JLabel lblAppName = new JLabel("AppName");
+	
+	JLabel lblAppName = new JLabel("Fororo");
 	JLabel lblWelcomeMsg = new JLabel("Welcome Message");
 	JButton btnNewGroup = new JButton("New Group");
 	JButton btnRegister = new JButton("Register");
@@ -95,6 +96,14 @@ public class MainWindow implements ActionListener{
 	 * status (User logged in, Admin User Logged In, etc)
 	 */
 	private void setControls() {
+		
+		//Get welcome message from db
+		try {
+			lblWelcomeMsg.setText(Driver.forumClient.forum.getWelcomeMessage());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
 		if (Driver.forumClient.user == null) { // user is not Logged in
 			btnNewGroup.setEnabled(false);
 			btnAccounts.setVisible(false);
@@ -108,6 +117,7 @@ public class MainWindow implements ActionListener{
 					.type().ADMIN) {
 				btnAccounts.setVisible(true);
 				btnRequests.setVisible(true);
+ 
 			} else {
 				btnAccounts.setVisible(false);
 				btnRequests.setVisible(false);
