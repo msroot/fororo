@@ -325,6 +325,23 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		requireAdmin(adminUser);
 		return DBForumThread.delete(thread);
 	}
+	
+	
+	public ForumThread attachDescendantsToThread(ForumThread thread) throws RemoteException {
+		return attachDesendants(thread);
+	}
+	
+	private ForumThread attachDesendants(ForumThread thread){
+	    List<ForumThread> descendants = DBForumThread.getAllByParent(thread.id());
+		if (descendants.size() == 0){
+		    return thread;
+		}
+		for(ForumThread child : descendants){    
+		    child = attachDesendants(child);
+		    thread.children.add(child);
+		}
+		return thread;
+	}
 
 	/******************** CONFIG FUNCTIONALITY ********************/
 

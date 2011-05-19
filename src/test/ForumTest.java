@@ -118,7 +118,7 @@ public class ForumTest {
             assertTrue("username shuold be: vic but is: " + user.name(), user.name().equals("vic"));
 
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
             fail("Should not throw exception: ");
         }
     }
@@ -287,6 +287,71 @@ public class ForumTest {
             fail("Should not throw exception: " + e.getStackTrace());
         }
     }
+
+
+    @Test
+    public void can_attach_descendants_to_thread() {
+        String topicId = "1";
+        User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+        ForumThread thread = new ForumThread("", "root", "content", topicId, admin.name(), "");
+        ForumThread child = null;
+        try {
+            thread = DBForumThread.create(thread);
+            child = new ForumThread("", "child of: "+thread.id(), "content", topicId, admin.name(), "", thread.id());
+
+            // add descendants to root thread
+            DBForumThread.create(child);
+            DBForumThread.create(child);
+            DBForumThread.create(child);
+
+            Forum forum = new Forum();
+
+            assertTrue("it shuold not have childs", thread.children.size() == 0);
+            thread = forum.attachDescendantsToThread(thread);
+            assertTrue("now it shuold have 3 childs", thread.children.size() == 3);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Should not throw exception: " + e.getMessage());
+        }
+    }
+    
+    @Test
+    public void can_attach_descendants_deep() {
+        String topicId = "1";
+        User admin = new User("john", "abcd1234", User.Type.ADMIN, true, "");
+        ForumThread thread = new ForumThread("", "root", "content", topicId, admin.name(), "");
+        ForumThread child = null;
+        ForumThread grandChild = null;
+        
+        try {
+            thread = DBForumThread.create(thread);
+            child = new ForumThread("", "child of: "+thread.id(), "content", topicId, admin.name(), "", thread.id());
+            
+            // add a childs to root thread
+            child = DBForumThread.create(child);
+            
+            grandChild = new ForumThread("", "child of: "+child.id(), "content", topicId, admin.name(), "", child.id());
+            
+            // add two grand childs thru last child
+            DBForumThread.create(grandChild);
+            DBForumThread.create(grandChild);
+
+            Forum forum = new Forum();
+
+            assertTrue("it shuold not have childs", thread.children.size() == 0);
+            thread = forum.attachDescendantsToThread(thread);
+            assertTrue("it now it shuold have 1 child", thread.children.size() == 1);
+            assertTrue("root shuold have 2 grandchilds thru: "+child.id() ,
+            		thread.children.get(0).children.size() == 2);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Should not throw exception: " + e.getMessage());
+        }
+    }
+
+
 
     /******************** CONFIG ********************/
 

@@ -68,6 +68,29 @@ public class DBForumThread {
 		}
 		return AllByTopic;
 	}
+	
+	/**
+	 * Finds all <ForumThread>s by given parentId
+	 * 
+	 * @param topicId
+	 * @return <ForumThread>
+	 */
+	public static List<ForumThread> getAllByParent(String parentId) {
+		List<ForumThread> threads = new ArrayList<ForumThread>();
+		try {
+			ResultSet set = db.getSet("SELECT * FROM FTHREAD WHERE PARENTID='"
+					+ parentId + "'");
+
+			while (set.next()) {
+				threads.add(mapThreads(set));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return threads;
+	}
+	
 
 	/**
 	 * Create a new <ForumThread>
