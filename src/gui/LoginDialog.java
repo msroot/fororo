@@ -16,6 +16,7 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
+import javax.swing.JOptionPane;
 
 public class LoginDialog extends JDialog implements ActionListener {
 
@@ -114,8 +115,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
-				txtUserName.setForeground(Color.RED);
-				passwordField.setForeground(Color.RED);
+				
+				JOptionPane.showMessageDialog( this, e.getCause().getMessage(),
+						"Invalid Login", JOptionPane.ERROR_MESSAGE );
 			}
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("cancel")){

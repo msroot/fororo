@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -112,10 +113,8 @@ public class RegisterView extends JDialog implements ActionListener{
 				this.dispose();
 				
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				
-				txtUserName.setForeground(Color.RED);
-				passwordField.setForeground(Color.RED);
+				JOptionPane.showMessageDialog( this, e.getCause().getMessage(),
+						"Registration Error", JOptionPane.ERROR_MESSAGE );
 			}
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("cancel")){

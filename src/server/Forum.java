@@ -86,7 +86,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		}
 
 		if (!user.isActive()) {
-			throw new ForumException("User is inactive, can't login");
+			throw new ForumException("Your account has been suspended.");
 		}
 
 		if (user.name().equals(username) && user.password().equals(password)) {
