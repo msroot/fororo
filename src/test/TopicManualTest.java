@@ -1,10 +1,11 @@
-package server.db;
+package test;
 
 import java.util.List;
 
+import server.db.DBTopic;
 import shared.Topic;
 
-public class getTopicTest {
+public class TopicManualTest {
 	public static void main(String[] args) {
 
 		/* getByName */

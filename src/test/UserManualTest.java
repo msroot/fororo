@@ -1,10 +1,11 @@
-package server.db;
+package test;
 
 import java.util.List;
 
+import server.db.DBUser;
 import shared.*;
 
-public class getUserTest {
+public class UserManualTest {
 	public static void main(String[] args) {
 
 		/* create ********************************************** */

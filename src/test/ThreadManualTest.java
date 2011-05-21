@@ -1,10 +1,11 @@
-package server.db;
+package test;
 
 import java.util.List;
 
+import server.db.DBForumThread;
 import shared.ForumThread;
 
-public class getThreadTest {
+public class ThreadManualTest {
 	public static void main(String[] args) {
 
 		/* getByName get only the Thread with the id=28 */
