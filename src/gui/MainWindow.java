@@ -113,6 +113,7 @@ public class MainWindow implements ActionListener {
 			btnAccounts.setVisible(false);
 			btnRequests.setVisible(false);
 			btnRegister.setEnabled(true);
+			btnMsg.setVisible(false);
 		} else {
 			btnNewGroup.setEnabled(true);
 			btnLogin.setText("Logout");
@@ -121,10 +122,12 @@ public class MainWindow implements ActionListener {
 					.type().ADMIN) {
 				btnAccounts.setVisible(true);
 				btnRequests.setVisible(true);
+				btnMsg.setVisible(true);
 
 			} else {
 				btnAccounts.setVisible(false);
 				btnRequests.setVisible(false);
+				btnMsg.setVisible(false);
 			}
 		}
 	}
