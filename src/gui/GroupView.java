@@ -208,7 +208,7 @@ public class GroupView implements ActionListener{
 				String[] args = new String[] { id, title, content };
 				// Driver.openGroup(args);
 				close();
-				ThreadView.main(args);
+				ThreadView.open(topic);
 			}
 		});
 		
@@ -251,7 +251,20 @@ public class GroupView implements ActionListener{
 		}
 		if(ev.getActionCommand().equalsIgnoreCase("delete")){
 			try {
-				Driver.forumClient.forum.deleteTopic(Driver.forumClient.user, topic);
+				Object[] options = {"Yes","No"};
+				int response = JOptionPane.showOptionDialog(frmGroup,
+				    "You are about to delete this group"
+				    + "/n Are you sure you want to delete it?",
+				    "Confirm Deletion",
+				    JOptionPane.YES_NO_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,
+				    options,
+				    options[1]);
+				if (response==0){
+					Driver.forumClient.forum.deleteTopic(Driver.forumClient.user, topic);
+				}
+				
 				frmGroup.dispose();
 				MainWindow.open();
 			} catch (RemoteException e) {

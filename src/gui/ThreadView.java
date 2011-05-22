@@ -15,12 +15,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTree;
 import javax.swing.JTextArea;
-
-public class ThreadView {
+import shared.*;
+public class ThreadView implements ActionListener{
 
 	private JFrame frmViewThread;
 	private JTable table;
-
+	private Topic topic;
+	static ThreadView window;
 	/**
 	 * Launch the application.
 	 */
@@ -28,7 +29,7 @@ public class ThreadView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ThreadView window = new ThreadView();
+					window = new ThreadView(null);
 					window.frmViewThread.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,10 +38,14 @@ public class ThreadView {
 		});
 	}
 
+	public static void open(Topic topic){
+		new ThreadView(topic);
+	}
 	/**
 	 * Create the application.
 	 */
-	public ThreadView() {
+	public ThreadView(Topic topic) {
+		this.topic = topic;
 		initialize();
 	}
 
@@ -49,6 +54,7 @@ public class ThreadView {
 	 */
 	private void initialize() {
 		frmViewThread = new JFrame();
+		frmViewThread.setVisible(true);
 		frmViewThread.setTitle("View Thread");
 		frmViewThread.getContentPane().setBackground(UIManager.getColor("Button.background"));
 		frmViewThread.setResizable(false);
@@ -68,14 +74,14 @@ public class ThreadView {
 		frmViewThread.getContentPane().add(lblDescription);
 		
 		JButton btnReply = new JButton("Reply");
+		btnReply.setActionCommand("reply");
+		btnReply.addActionListener(this);
 		btnReply.setBounds(29, 215, 107, 23);
 		frmViewThread.getContentPane().add(btnReply);
 		
 		JButton btnReturn = new JButton("Go Back");
-		btnReturn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		btnReturn.setActionCommand("go back");
+		btnReturn.addActionListener(this);
 		btnReturn.setBounds(548, 518, 107, 23);
 		frmViewThread.getContentPane().add(btnReturn);
 		
@@ -90,6 +96,9 @@ public class ThreadView {
 		frmViewThread.getContentPane().add(lblUser);
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.setActionCommand("delete");
+		btnDelete.addActionListener(this);
+		
 		btnDelete.setBounds(146, 215, 107, 23);
 		frmViewThread.getContentPane().add(btnDelete);
 		
@@ -108,5 +117,25 @@ public class ThreadView {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(28, 312, 620, 172);
 		frmViewThread.getContentPane().add(textArea);
+		
+		JTree tree = new JTree();
+		tree.setRootVisible(false);
+		tree.setBounds(332, 218, 72, 64);
+		frmViewThread.getContentPane().add(tree);
+	}
+
+	public void actionPerformed(ActionEvent ev) {
+		// TODO Auto-generated method stub
+		if (ev.getActionCommand().equalsIgnoreCase("delete")){
+			
+		}
+		if (ev.getActionCommand().equalsIgnoreCase("reply")){
+			
+		}
+		if (ev.getActionCommand().equalsIgnoreCase("go back")){
+			GroupView.open(topic);
+			frmViewThread.dispose();
+		}
+		
 	}
 }

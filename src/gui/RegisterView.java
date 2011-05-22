@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -14,10 +13,13 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+
+import shared.ForumException;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
-
+import shared.*;
 public class RegisterView extends JDialog implements ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
@@ -105,16 +107,23 @@ public class RegisterView extends JDialog implements ActionListener{
 			String userName = txtUserName.getText();
 			String password = new String(passwordField.getPassword());
 			try {
-				
-				txtUserName.setForeground(Color.BLACK);
-				passwordField.setForeground(Color.BLACK);
-				
 				Driver.forumClient.forum.registerUser(userName, password);
+				try {
+				Driver.forumClient.user = Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				this.dispose();
 				
 			} catch (RemoteException e) {
-				JOptionPane.showMessageDialog( this, e.getCause().getMessage(),
-						"Registration Error", JOptionPane.ERROR_MESSAGE );
+				// TODO Auto-generated catch block
+				if (e.getCause() instanceof ForumException){
+					JOptionPane.showMessageDialog(this, e.getCause().getMessage());
+				}else{
+					e.printStackTrace();
+				}
+				
 			}
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("cancel")){

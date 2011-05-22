@@ -135,6 +135,14 @@ public class MainWindow implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			String msg = Driver.forumClient.forum.getWelcomeMessage();
+			lblWelcomeMsg.setText(msg);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void loadTable(){
@@ -274,6 +282,7 @@ public class MainWindow implements ActionListener{
 		}
 		if (e.getActionCommand().equalsIgnoreCase("register")){
 			RegisterView.open();
+			setControls();
 		}
 		if (e.getActionCommand().equalsIgnoreCase("login")){
 			if (btnLogin.getText().equalsIgnoreCase("login")) {
