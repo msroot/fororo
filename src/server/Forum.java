@@ -174,7 +174,15 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	 * @return all users from db
 	 */
 	public List<User> getUsers() throws RemoteException {
-		return DBUser.getAll();
+        // remove default admin
+        List<User> allUsers = DBUser.getAll();
+        List<User> users = new ArrayList<User>();
+        for (User u : allUsers){
+            if (!u.name().equals("admin")){
+                users.add(u);
+            }
+        }
+		return users;
 	}
 
 	/**
