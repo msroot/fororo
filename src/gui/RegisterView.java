@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -12,10 +13,13 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+
+import shared.ForumException;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
-
+import shared.*;
 public class RegisterView extends JDialog implements ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
@@ -104,11 +108,22 @@ public class RegisterView extends JDialog implements ActionListener{
 			String password = new String(passwordField.getPassword());
 			try {
 				Driver.forumClient.forum.registerUser(userName, password);
+				try {
+				Driver.forumClient.user = Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				this.dispose();
 				
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (e.getCause() instanceof ForumException){
+					JOptionPane.showMessageDialog(this, e.getCause().getMessage());
+				}else{
+					e.printStackTrace();
+				}
+				
 			}
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("cancel")){

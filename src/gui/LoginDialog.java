@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -15,7 +16,7 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
-
+import shared.*;
 public class LoginDialog extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
@@ -107,8 +108,11 @@ public class LoginDialog extends JDialog implements ActionListener {
 				this.dispose();
 				
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (e.getCause() instanceof ForumException){
+					JOptionPane.showMessageDialog(this, e.getCause().getMessage());
+				}else{
+					e.printStackTrace();
+				}
 			}
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("cancel")){

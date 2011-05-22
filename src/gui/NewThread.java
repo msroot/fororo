@@ -97,11 +97,7 @@ public class NewThread extends JDialog implements ActionListener {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						dialog.dispose();
-					}
-				});
+				cancelButton.addActionListener(this);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -123,8 +119,9 @@ public class NewThread extends JDialog implements ActionListener {
 				e.printStackTrace();
 			}
 			//GroupView.load();
-			this.dispose();
+			
 		}
+		this.dispose();
 	}
 
 }
