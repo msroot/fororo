@@ -35,6 +35,7 @@ public class User implements java.io.Serializable{
     }
 
     public Type type() { return type; }
+    public void type(Type type) { this.type = type; }
     public String name(){ return name; }
     public String password(){ return password; }
     public boolean isActive(){ return isActive; }

@@ -127,6 +127,15 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	 */
 	public User registerUser(String userName, String password)
 			throws RemoteException, ForumException {
+		
+        if (userName.length() < 3) {
+            throw new ForumException("The username must be at least 3 characters long");
+        }
+        
+        if (password.length() < 4 ) {
+            throw new ForumException("The password must be at least 4 characters");
+        }
+		
 		User user = DBUser.getByName(userName);
 		if (user != null) {
 			throw new ForumException("User: " + userName + " already exists");
