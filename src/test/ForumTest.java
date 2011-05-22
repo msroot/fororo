@@ -146,7 +146,7 @@ public class ForumTest {
         } catch (Exception e) {
             assertTrue("Exception shuold be: ForumException but is: " + e.getClass(),
                 e instanceof ForumException);
-            assertTrue(e.getMessage().matches("User is inactive, can't login"));
+            assertTrue(e.getMessage().matches("Your account has been suspended."));
         }
     }
 
