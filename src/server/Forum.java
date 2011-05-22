@@ -86,7 +86,7 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 		}
 
 		if (!user.isActive()) {
-			throw new ForumException("User is inactive, can't login");
+			throw new ForumException("Your account has been suspended.");
 		}
 
 		if (user.name().equals(username) && user.password().equals(password)) {
@@ -324,6 +324,23 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 			throws RemoteException {
 		requireAdmin(adminUser);
 		return DBForumThread.delete(thread);
+	}
+	
+	
+	public ForumThread attachDescendantsToThread(ForumThread thread) throws RemoteException {
+		return attachDesendants(thread);
+	}
+	
+	private ForumThread attachDesendants(ForumThread thread){
+	    List<ForumThread> descendants = DBForumThread.getAllByParent(thread.id());
+		if (descendants.size() == 0){
+		    return thread;
+		}
+		for(ForumThread child : descendants){    
+		    child = attachDesendants(child);
+		    thread.children.add(child);
+		}
+		return thread;
 	}
 
 	/******************** CONFIG FUNCTIONALITY ********************/

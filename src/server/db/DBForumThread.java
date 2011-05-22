@@ -68,6 +68,29 @@ public class DBForumThread {
 		}
 		return AllByTopic;
 	}
+	
+	/**
+	 * Finds all <ForumThread>s by given parentId
+	 * 
+	 * @param topicId
+	 * @return <ForumThread>
+	 */
+	public static List<ForumThread> getAllByParent(String parentId) {
+		List<ForumThread> threads = new ArrayList<ForumThread>();
+		try {
+			ResultSet set = db.getSet("SELECT * FROM FTHREAD WHERE PARENTID='"
+					+ parentId + "'");
+
+			while (set.next()) {
+				threads.add(mapThreads(set));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return threads;
+	}
+	
 
 	/**
 	 * Create a new <ForumThread>
@@ -87,7 +110,7 @@ public class DBForumThread {
 
 			String q = "insert into FTHREAD  values ('','" + title + "', '"
 					+ description + "','" + topicId + "', '" + user + "', '"
-					+ now() + "')";
+					+ now() + "','" + thread.parentId() + "')";
 
 			Statement stmt = connection.createStatement();
 
@@ -157,7 +180,7 @@ public class DBForumThread {
 		String topicId = thread.topicId();
 
 		int status = db.updateSet("UPDATE FTHREAD  SET TITLE='" + title
-				+ "' ,DESCRIPTION='" + description + "', TOPICID='" + topicId
+				+ "' ,DESCRIPTION='" + description + "', TOPICID='" + topicId + "', PARENTID='"+thread.parentId()
 				+ "'  WHERE ID='" + id + "'");
 		if (status == 1) {
 			return thread;
@@ -179,7 +202,7 @@ public class DBForumThread {
 	private static ForumThread mapThreads(ResultSet set) throws SQLException {
 		return new ForumThread(set.getString("ID"), set.getString("TITLE"), set
 				.getString("DESCRIPTION"), set.getString("TOPICID"), set
-				.getString("USERID"), set.getString("CREATED"));
+				.getString("USERID"), set.getString("CREATED"), set.getString("PARENTID"));
 
 	}
 

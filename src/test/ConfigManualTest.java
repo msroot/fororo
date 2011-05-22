@@ -1,10 +1,11 @@
-package server.db;
+package test;
 
 import java.util.List;
 
+import server.db.DBConfig;
 import shared.*;
 
-public class getConfigTest {
+public class ConfigManualTest {
 	public static void main(String[] args) {
 
 		Config c = new Config("Welcome to fororo forum! "

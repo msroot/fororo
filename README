@@ -1,10 +1,10 @@
 ############## FROM UNI ################################################
 To run server:
 
-# from bin folder
+# from bin folder:
 rmiregistry
 
-java -cp bin:lib/ojdbc14.jar -Djava.security.policy=bin/policy server.Forum localhost 55555
+java -cp bin:lib/ojdbc14.jar -Djava.security.policy=policy server.Forum localhost 55555
 
 # To run client:
 

@@ -1,0 +1,44 @@
+####################################################################################
+
+FUSER:
+
+ID  NAME        PASSWORD    ISACTIVE    TYPE    
+0   admin       abcd1234    true        ADMIN
+1   edd         abcd1234    true        ADMIN
+2   john        abcd1234    true        ADMIN
+3   vic         abcd1234    true        NORMAL
+4   inactive    abcd1234    false       NORMAL
+
+####################################################################################
+
+FTOPIC:
+
+ID  NAME            DESCRIPTION                         ISACTIVE    USERID
+0   General         Discuss about the this forum        true        admin   
+1   Blues           From new orleans                    true        vic
+2   Jazz            Only for true jazz lovers           true        vic
+3   BossaNova       The sound that seduced the world    true        edd
+4   Electronica     dubidubi shake your body            true        john
+5   Greek           Oooooopa the bouzouki               true        john
+6   80s             if you ever had funny hair          false       vic
+
+####################################################################################
+
+FTHREAD:
+
+ID      TITLE                       DESCRIPTION                             TOPICID     USERID  PARENTID      
+0       where is bbking?            Anyone knows where is this guy?         1           vic     null
+1       origin of jazz              where does jazz come from?              2           vic     null
+2       acid jazz?                  is acid jazz a kind of jazz?            2           vic     null
+3       origin of Bossanova         where does bossanova come from?         3           edd     null            
+4       origin of electro           where does the electronica come from?   4           john    null
+5       origin of bouzouki          where does the bouzouki come from?      5           vic     null
+6       re: where is bbking?        That guy is somewhere in new orleans    1           edd     0
+7       re: origin of jazz          Jazz comes from the moon :P             2           edd     1
+8       re: acid jazz?              I don't think so                        2           john    2
+9       re: origin of Bossanova     Brazil!                                 3           edd     3
+10      re: origin of electro       From the speakers!  ((o))               4           vic     4
+11      re: origin of bouzouki      From venezuela I think                  5           vic     5
+12      re: origin of bouzouki      Are you malakas?                        5           john    11
+13      re: origin of bouzouki      Turkey maybe?                           5           edd     5
+14      re: origin of bouzouki      I think your are correct                5           john     13

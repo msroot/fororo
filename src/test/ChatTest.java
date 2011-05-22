@@ -28,9 +28,9 @@ public class ChatTest {
 			
 			c1.forum.sendChatMessage(u, "hello everybody");
 			
-			DBUser.create(new User("admin", "aaa", Type.ADMIN, true, ""));
+			DBUser.create(new User("edd", "abcd1234", Type.ADMIN, true, ""));
 			c2.connect();
-			User u2 = c2.forum.loginUser("admin", "abcd1234", c2);
+			User u2 = c2.forum.loginUser("edd", "abcd1234", c2);
 			
 			c2.forum.setChatTopic(u2, new Topic("id1", "", "", true, "", ""));
 			c2.forum.sendChatMessage(u2, "offcourse re malaka!");
