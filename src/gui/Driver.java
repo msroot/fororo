@@ -9,6 +9,7 @@ public class Driver{
 	public static ChatView chat;
 	public static void main(String[] args) {
 		try {
+			
 		    if(args.length > 1){
             	forumClient = new ForumClient(args[0], args[1]);
             }else{

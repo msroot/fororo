@@ -51,6 +51,7 @@ public class AccountsView extends JDialog implements ActionListener{
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Create the dialog.
 	 */
@@ -60,7 +61,7 @@ public class AccountsView extends JDialog implements ActionListener{
 		setTitle("Accounts");
 		setResizable(false);
 		setModal(true);
-		setBounds(100, 100, 640, 290);
+		setBounds(100, 100, 640, 309);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -192,6 +193,14 @@ public class AccountsView extends JDialog implements ActionListener{
 			contentPanel.add(lblAdminAccounts);
 		}
 		
+		JButton btnCreate = new JButton("Create Admin");
+		btnCreate.addActionListener(this);
+		btnCreate.setActionCommand("create");
+
+		
+		btnCreate.setBounds(473, 214, 125, 23);
+		contentPanel.add(btnCreate);
+		
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -212,10 +221,16 @@ public class AccountsView extends JDialog implements ActionListener{
 		}
 		this.setVisible(true);
 	}
+
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		if (ev.getActionCommand().equalsIgnoreCase("cancel")){
 			this.dispose();
+		}
+		if (ev.getActionCommand().equalsIgnoreCase("create")){
+			RegisterView.open(true);
+			this.dispose();
+
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("save")){
 			for (int i=0;i<TblUsers.getModel().getRowCount();i++){

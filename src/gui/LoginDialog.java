@@ -54,14 +54,14 @@ public class LoginDialog extends JDialog implements ActionListener {
 		contentPanel.setLayout(null);
 		{
 			JLabel label = new JLabel("User Name");
-			label.setBounds(23, 33, 61, 14);
+			label.setBounds(10, 33, 73, 14);
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
 			label.setFont(new Font("Tahoma", Font.BOLD, 11));
 			contentPanel.add(label);
 		}
 		{
 			JLabel label = new JLabel("Password");
-			label.setBounds(23, 58, 54, 14);
+			label.setBounds(10, 58, 67, 14);
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
 			label.setFont(new Font("Tahoma", Font.BOLD, 11));
 			contentPanel.add(label);

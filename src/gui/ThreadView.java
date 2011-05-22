@@ -62,7 +62,7 @@ public class ThreadView implements ActionListener{
 		frmViewThread.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmViewThread.getContentPane().setLayout(null);
 		
-		JLabel lblAppName = new JLabel("AppName");
+		JLabel lblAppName = new JLabel("Fororo");
 		lblAppName.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAppName.setBounds(21, 21, 134, 25);
 		frmViewThread.getContentPane().add(lblAppName);
@@ -106,15 +106,16 @@ public class ThreadView implements ActionListener{
 		table.setBounds(52, 90, 542, 100);
 		frmViewThread.getContentPane().add(table);
 		
-		JLabel lblThreadTitle = new JLabel("Thread Title");
+		JLabel lblThreadTitle = new JLabel(this.topic.name());
 		lblThreadTitle.setBounds(109, 250, 378, 14);
 		frmViewThread.getContentPane().add(lblThreadTitle);
 		
-		JLabel lblThreadAuthor = new JLabel("Thread Title");
+		JLabel lblThreadAuthor = new JLabel(this.topic.userName());
 		lblThreadAuthor.setBounds(109, 275, 201, 14);
 		frmViewThread.getContentPane().add(lblThreadAuthor);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setText(this.topic.description());
 		textArea.setBounds(28, 312, 620, 172);
 		frmViewThread.getContentPane().add(textArea);
 		
