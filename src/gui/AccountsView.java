@@ -60,7 +60,7 @@ public class AccountsView extends JDialog implements ActionListener{
 		setTitle("Accounts");
 		setResizable(false);
 		setModal(true);
-		setBounds(100, 100, 640, 290);
+		setBounds(100, 100, 640, 309);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -191,6 +191,10 @@ public class AccountsView extends JDialog implements ActionListener{
 			lblAdminAccounts.setBounds(412, 14, 101, 14);
 			contentPanel.add(lblAdminAccounts);
 		}
+		
+		JButton btnNewButton = new JButton("Create");
+		btnNewButton.setBounds(509, 214, 89, 23);
+		contentPanel.add(btnNewButton);
 		
 		{
 			JPanel buttonPane = new JPanel();

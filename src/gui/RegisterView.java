@@ -20,26 +20,35 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 import shared.*;
-public class RegisterView extends JDialog implements ActionListener{
+
+public class RegisterView extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUserName;
 	private JPasswordField passwordField;
 	private RegisterView dialog;
+	private boolean isAdmin;
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			RegisterView dialog  = new RegisterView();
+			RegisterView dialog = new RegisterView();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	public static void open(){
+
+	public static void open() {
 		new RegisterView();
+	}
+
+	public static void open(boolean admin) {
+		RegisterView rv = new RegisterView();
+		rv.isAdmin = true;
 	}
 
 	/**
@@ -103,30 +112,40 @@ public class RegisterView extends JDialog implements ActionListener{
 
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
-		if (ev.getActionCommand().equalsIgnoreCase("ok")){
+		if (ev.getActionCommand().equalsIgnoreCase("ok")) {
 			String userName = txtUserName.getText();
 			String password = new String(passwordField.getPassword());
 			try {
-				Driver.forumClient.forum.registerUser(userName, password);
-				try {
-				Driver.forumClient.user = Driver.forumClient.forum.loginUser(userName, password, Driver.forumClient);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				User newUser = Driver.forumClient.forum.registerUser(userName,
+						password);
+				if (this.isAdmin == true) {
+					newUser.type = User.Type.ADMIN;
+					Driver.forumClient.forum.updateUser(Driver.forumClient.user, newUser);
+					JOptionPane.showMessageDialog(this,"A New Admin User has been created!");
+				} else {
+					try {
+						Driver.forumClient.user = Driver.forumClient.forum
+								.loginUser(userName, password,
+										Driver.forumClient);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				this.dispose();
-				
+
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				if (e.getCause() instanceof ForumException){
-					JOptionPane.showMessageDialog(this, e.getCause().getMessage());
-				}else{
+				if (e.getCause() instanceof ForumException) {
+					JOptionPane.showMessageDialog(this, e.getCause()
+							.getMessage());
+				} else {
 					e.printStackTrace();
 				}
-				
+
 			}
 		}
-		if (ev.getActionCommand().equalsIgnoreCase("cancel")){
+		if (ev.getActionCommand().equalsIgnoreCase("cancel")) {
 			this.dispose();
 		}
 	}
