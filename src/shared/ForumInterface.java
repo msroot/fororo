@@ -47,6 +47,7 @@ public interface ForumInterface extends java.rmi.Remote{
     
     /*Config*/
     public String getWelcomeMessage() throws RemoteException;
+    public String updateWelcomeMessage(String message) throws RemoteException;
     
     
    /* CHAT*/
