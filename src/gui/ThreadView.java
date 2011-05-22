@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 
 import java.awt.Font;
 import javax.swing.JButton;
@@ -15,15 +16,19 @@ import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTree;
 import javax.swing.JTextArea;
 import shared.*;
+import javax.swing.JScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
-public class ThreadView implements ActionListener{
+public class ThreadView extends MouseAdapter implements ActionListener{
 
 	private JFrame frmViewThread;
 	private JTable table;
@@ -31,6 +36,10 @@ public class ThreadView implements ActionListener{
 	private Topic topic;
 	static ThreadView window;
 	List<ForumThread> threads;
+	JLabel lblThreadTitle = new JLabel();
+	JLabel lblThreadAuthor = new JLabel();
+	JTextArea textArea = new JTextArea();
+	ForumThread selectedThread;
 	/**
 	 * Launch the application.
 	 */
@@ -57,22 +66,54 @@ public class ThreadView implements ActionListener{
 		this.threads = new ArrayList<ForumThread>();
 		this.topic = topic;
 		this.thread = thread;
-		loadTable();
 		initialize();
+		loadTable();
+		
 	}
 	
 	private void loadTable(){
+		threads.clear();
+		this.threads.add(thread);
 		readChilds(thread.children);
 		for(ForumThread thread:threads){
 			System.out.println(thread.title());
 		}
 		
+		Object[][] rows = new Object[threads.size()][];
+		String[] header = new String[] { "ID", "Title", "Author","Thread" };
+
+		for (int i = 0; i < threads.size(); i++) {
+			rows[i] = new Object[] { threads.get(i).id(),
+					threads.get(i).title(), threads.get(i).userName(),threads.get(i)};
+		}
+		table.setModel(new DefaultTableModel(rows, header) {
+			boolean[] columnEditables = new boolean[] { true, false, false,false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+		table.getColumnModel().getColumn(0).setMinWidth(0);
+		table.getColumnModel().getColumn(0).setMaxWidth(0);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(400);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(2).setPreferredWidth(120);
+		
+		table.getColumnModel().getColumn(3).setPreferredWidth(0);
+		table.getColumnModel().getColumn(3).setMinWidth(0);
+		table.getColumnModel().getColumn(3).setMaxWidth(0);
+		
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 	}
 	
 	private void readChilds(List<ForumThread> childs){
 		for(ForumThread child:childs){
-			readChilds(child.children);
 			threads.add(child);
+			readChilds(child.children);
+			
 		}
 	}
 
@@ -101,6 +142,7 @@ public class ThreadView implements ActionListener{
 		frmViewThread.getContentPane().add(lblDescription);
 		
 		JButton btnReply = new JButton("Reply");
+		btnReply.setEnabled(false);
 		btnReply.setActionCommand("reply");
 		btnReply.addActionListener(this);
 		btnReply.setBounds(29, 215, 107, 23);
@@ -123,42 +165,75 @@ public class ThreadView implements ActionListener{
 		frmViewThread.getContentPane().add(lblUser);
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.setVisible(false);
 		btnDelete.setActionCommand("delete");
 		btnDelete.addActionListener(this);
 		
 		btnDelete.setBounds(146, 215, 107, 23);
 		frmViewThread.getContentPane().add(btnDelete);
 		
-		table = new JTable();
-		table.setBounds(52, 90, 542, 100);
-		frmViewThread.getContentPane().add(table);
-		
-		JLabel lblThreadTitle = new JLabel(this.thread.title());
+		lblThreadTitle.setText(this.thread.title());
 		lblThreadTitle.setBounds(109, 250, 378, 14);
 		frmViewThread.getContentPane().add(lblThreadTitle);
 		
-		JLabel lblThreadAuthor = new JLabel(this.thread.userName());
+		lblThreadAuthor.setText(this.thread.userName());
 		lblThreadAuthor.setBounds(109, 275, 201, 14);
 		frmViewThread.getContentPane().add(lblThreadAuthor);
+		textArea.setEditable(false);
 		
-		JTextArea textArea = new JTextArea();
+		
 		textArea.setText(this.thread.content());
 		textArea.setBounds(28, 312, 620, 172);
 		frmViewThread.getContentPane().add(textArea);
 		
-		JTree tree = new JTree();
-		tree.setRootVisible(false);
-		tree.setBounds(332, 218, 72, 64);
-		frmViewThread.getContentPane().add(tree);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(29, 90, 609, 100);
+		frmViewThread.getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		table.addMouseListener(this);
+		scrollPane.setViewportView(table);
+		
+		if(Driver.forumClient.user!=null){
+			btnReply.setEnabled(true);
+			if (Driver.forumClient.user.type()==User.Type.ADMIN){
+				btnDelete.setVisible(true);
+			}
+		}
 	}
-
+	public void mouseClicked(MouseEvent e){
+		
+		int row = table.getSelectedRow();
+		selectedThread = (ForumThread) table.getModel().getValueAt(row, 3);
+		lblThreadAuthor.setText(selectedThread.userName());
+		lblThreadTitle.setText(selectedThread.title());
+		textArea.setText(selectedThread.content());
+	}
+	private void reloadTable(){
+		thread.children.clear();
+		try {
+			thread = Driver.forumClient.forum.attachDescendantsToThread(thread);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		loadTable();
+	}
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		if (ev.getActionCommand().equalsIgnoreCase("delete")){
-			
+			try {
+				Driver.forumClient.forum.deleteThread(Driver.forumClient.user, selectedThread);
+				JOptionPane.showMessageDialog(frmViewThread, "Message Deleted Succesfully");
+				reloadTable();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("reply")){
-			
+			ReplyThreadView.open(selectedThread);
+			reloadTable();
 		}
 		if (ev.getActionCommand().equalsIgnoreCase("go back")){
 			GroupView.open(topic);

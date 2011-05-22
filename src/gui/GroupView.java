@@ -209,7 +209,13 @@ public class GroupView implements ActionListener{
 				// Driver.openGroup(args);
 				close();
 				ForumThread thread = (ForumThread)table.getModel().getValueAt(row, 3);
-				ThreadView.open(topic,Driver.forumClient.forum);
+				try {
+					thread = Driver.forumClient.forum.attachDescendantsToThread(thread);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ThreadView.open(topic,thread);
 			}
 		});
 		
