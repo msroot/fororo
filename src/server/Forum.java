@@ -368,6 +368,11 @@ public class Forum extends UnicastRemoteObject implements ForumInterface {
 	public String getWelcomeMessage() throws RemoteException {
 		return DBConfig.get().message();
 	}
+	
+	
+	public String updateWelcomeMessage(String message) throws RemoteException {
+		return DBConfig.update(new Config(message)).message();
+	}
 
 	/******************** CHAT FUNCTIONALITY ********************/
 
