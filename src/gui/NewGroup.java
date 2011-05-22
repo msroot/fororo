@@ -17,13 +17,21 @@ import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 
 import shared.*;
-public class NewGroup extends JDialog implements ActionListener{
+
+/**
+ * Window to be Displayed when creating a new Group/Topic
+ * 
+ * @author Eduardo Nava
+ * 
+ */
+public class NewGroup extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtName;
 	JTextArea txtDescription = new JTextArea();
+
 	/**
-	 * Launch the application.
+	 * For Design Time
 	 */
 	public static void main(String[] args) {
 		try {
@@ -34,10 +42,14 @@ public class NewGroup extends JDialog implements ActionListener{
 			e.printStackTrace();
 		}
 	}
-	
-	public static void open(){
+
+	/**
+	 * To be Called to display the Window
+	 */
+	public static void open() {
 		new NewGroup();
 	}
+
 	/**
 	 * Create the dialog.
 	 */
@@ -72,7 +84,7 @@ public class NewGroup extends JDialog implements ActionListener{
 			txtName.setColumns(10);
 		}
 		{
-			
+
 			txtDescription.setRows(10);
 			txtDescription.setLineWrap(true);
 			txtDescription.setBounds(115, 36, 332, 166);
@@ -99,12 +111,20 @@ public class NewGroup extends JDialog implements ActionListener{
 		this.setVisible(true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
-		if (ev.getActionCommand().equalsIgnoreCase("ok")){
+		if (ev.getActionCommand().equalsIgnoreCase("ok")) {
 			User user = Driver.forumClient.user;
-			//String id, String name, String description, boolean isActive, String userName, String created
-			Topic topic = new Topic("1",txtName.getText(),txtDescription.getText(),false,"","");
+			// String id, String name, String description, boolean isActive,
+			// String userName, String created
+			Topic topic = new Topic("1", txtName.getText(),
+					txtDescription.getText(), false, "", "");
 			try {
 				Driver.forumClient.forum.createTopic(user, topic);
 				this.dispose();
@@ -113,7 +133,7 @@ public class NewGroup extends JDialog implements ActionListener{
 				e1.printStackTrace();
 			}
 		}
-		if(ev.getActionCommand().equalsIgnoreCase("cancel")){
+		if (ev.getActionCommand().equalsIgnoreCase("cancel")) {
 			this.dispose();
 		}
 	}

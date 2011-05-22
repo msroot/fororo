@@ -18,18 +18,28 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import server.Chat;
 import shared.*;
+
 import java.rmi.RemoteException;
 
-public class AccountsView extends JDialog implements ActionListener{
+/**
+ * Contains all the components to display, delete and deactivate accounts
+ * 
+ * @author Eduardo Nava
+ * 
+ */
+public class AccountsView extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable TblUsers;
 	static AccountsView dialog;
 	private JTable TblAdmins;
 	List<User> users;
+
 	/**
-	 * Launch the application.
+	 * To Display it in design time
 	 */
 	public static void main(String[] args) {
 		try {
@@ -40,10 +50,18 @@ public class AccountsView extends JDialog implements ActionListener{
 			e.printStackTrace();
 		}
 	}
-	public static void open(){
+
+	/**
+	 * Method to be called to Display the frame
+	 */
+	public static void open() {
 		new AccountsView();
 	}
-	private void loadData(){
+
+	/**
+	 * Loads the data from The DataBase
+	 */
+	private void loadData() {
 		try {
 			this.users = Driver.forumClient.forum.getUsers();
 		} catch (RemoteException e) {
@@ -66,80 +84,51 @@ public class AccountsView extends JDialog implements ActionListener{
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(36, 39, 253, 164);
 		contentPanel.add(scrollPane);
-		
+
 		TblUsers = new JTable();
 		TblUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		TblUsers.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{"user1", Boolean.TRUE},
-//			},
-//			new String[] {
-//				"User", "Enabled"
-//			}
-//		) {
-//			Class[] columnTypes = new Class[] {
-//				Object.class, Boolean.class
-//			};
-//			public Class getColumnClass(int columnIndex) {
-//				return columnTypes[columnIndex];
-//			}
-//			boolean[] columnEditables = new boolean[] {
-//				false, true
-//			};
-//			public boolean isCellEditable(int row, int column) {
-//				return columnEditables[column];
-//			}
-//		});
-		
-		Object[][] usersRows = new Object[users.size()-1][];
+		Object[][] usersRows = new Object[users.size() - 1][];
 		List<User> admins = new ArrayList<User>();
-		String[] header = new String[] {"User Name", "Enabled","User"};
+		String[] header = new String[] { "User Name", "Enabled", "User" };
 		int j = 0;
 		for (int i = 0; i < users.size(); i++) {
-			if(!users.get(i).name().equalsIgnoreCase(Driver.forumClient.user.name()))
-			{
-				usersRows[j] = new Object[] {
-				users.get(i).name(),
-				users.get(i).isActive(),
-				users.get(i)};
-				if(users.get(i).type()==User.Type.ADMIN){
-//					System.out.println("Found admin");
+			if (!users.get(i).name()
+					.equalsIgnoreCase(Driver.forumClient.user.name())) {
+				usersRows[j] = new Object[] { users.get(i).name(),
+						users.get(i).isActive(), users.get(i) };
+				if (users.get(i).type() == User.Type.ADMIN) {
 					admins.add(users.get(i));
 				}
-			}else j--;
-			j++;	
+			} else
+				j--;
+			j++;
 		}
-		
+
 		Object[][] adminsRows = new Object[admins.size()][];
 		for (int i = 0; i < admins.size(); i++) {
-//			if(!users.get(i).name().equalsIgnoreCase(Driver.forumClient.user.name()))
-//			{
-				adminsRows[i] = new Object[] {
-				admins.get(i).name(),
-				false,
-				admins.get(i)};
-//			}
+			adminsRows[i] = new Object[] { admins.get(i).name(), false,
+					admins.get(i) };
 		}
-		
+
 		TblUsers = new JTable();
 		TblUsers.setModel(new DefaultTableModel(usersRows, header) {
-			boolean[] columnEditables = new boolean[] { false, true,false};
-			Class[] columnTypes = new Class[] {
-					Object.class, Boolean.class,User.class
-				};
-			
+			boolean[] columnEditables = new boolean[] { false, true, false };
+			Class[] columnTypes = new Class[] { Object.class, Boolean.class,
+					User.class };
+
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
+
 			public Class getColumnClass(int columnIndex) {
-			return columnTypes[columnIndex];
+				return columnTypes[columnIndex];
 			}
 		});
-		
+
 		TblUsers.getColumnModel().getColumn(0).setResizable(false);
 		TblUsers.getColumnModel().getColumn(0).setPreferredWidth(206);
 		TblUsers.getColumnModel().getColumn(1).setResizable(false);
@@ -147,7 +136,7 @@ public class AccountsView extends JDialog implements ActionListener{
 		TblUsers.getColumnModel().getColumn(2).setMaxWidth(0);
 		TblUsers.getColumnModel().getColumn(2).setMinWidth(0);
 		TblUsers.getColumnModel().getColumn(2).setPreferredWidth(0);
-		
+
 		scrollPane.setViewportView(TblUsers);
 		{
 			JLabel lblNewLabel = new JLabel("Users Accounts");
@@ -162,18 +151,21 @@ public class AccountsView extends JDialog implements ActionListener{
 			{
 				TblAdmins = new JTable();
 				TblAdmins.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				String[] adminHeader = new String[] {"User Name", "Delete","User"};
-				TblAdmins.setModel(new DefaultTableModel(adminsRows, adminHeader) {
-					boolean[] columnEditables = new boolean[] { false, true,false};
-					Class[] columnTypes = new Class[] {
-							Object.class, Boolean.class, User.class
-						};
-					
+				String[] adminHeader = new String[] { "User Name", "Delete",
+						"User" };
+				TblAdmins.setModel(new DefaultTableModel(adminsRows,
+						adminHeader) {
+					boolean[] columnEditables = new boolean[] { false, true,
+							false };
+					Class[] columnTypes = new Class[] { Object.class,
+							Boolean.class, User.class };
+
 					public boolean isCellEditable(int row, int column) {
 						return columnEditables[column];
 					}
+
 					public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
+						return columnTypes[columnIndex];
 					}
 				});
 				TblAdmins.getColumnModel().getColumn(0).setResizable(false);
@@ -192,15 +184,14 @@ public class AccountsView extends JDialog implements ActionListener{
 			lblAdminAccounts.setBounds(412, 14, 101, 14);
 			contentPanel.add(lblAdminAccounts);
 		}
-		
+
 		JButton btnCreate = new JButton("Create Admin");
 		btnCreate.addActionListener(this);
 		btnCreate.setActionCommand("create");
 
-		
 		btnCreate.setBounds(473, 214, 125, 23);
 		contentPanel.add(btnCreate);
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -222,43 +213,52 @@ public class AccountsView extends JDialog implements ActionListener{
 		this.setVisible(true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * Controls actions based on the control that fires it
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
-		if (ev.getActionCommand().equalsIgnoreCase("cancel")){
+		if (ev.getActionCommand().equalsIgnoreCase("cancel")) {
 			this.dispose();
 		}
-		if (ev.getActionCommand().equalsIgnoreCase("create")){
+		if (ev.getActionCommand().equalsIgnoreCase("create")) {
 			RegisterView.open(true);
 			this.dispose();
 
 		}
-		if (ev.getActionCommand().equalsIgnoreCase("save")){
-			for (int i=0;i<TblUsers.getModel().getRowCount();i++){
+		if (ev.getActionCommand().equalsIgnoreCase("save")) {
+			for (int i = 0; i < TblUsers.getModel().getRowCount(); i++) {
 				System.out.print("Entered user");
-				User user = (User)TblUsers.getModel().getValueAt(i, 2);
-				user.isActive((Boolean)TblUsers.getModel().getValueAt(i, 1));
+				User user = (User) TblUsers.getModel().getValueAt(i, 2);
+				user.isActive((Boolean) TblUsers.getModel().getValueAt(i, 1));
 				try {
-					Driver.forumClient.forum.updateUser(Driver.forumClient.user, user);
+					Driver.forumClient.forum.updateUser(
+							Driver.forumClient.user, user);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			for (int i=0;i<TblAdmins.getModel().getRowCount();i++){
-				if ((Boolean)TblAdmins.getModel().getValueAt(i, 1)){
+			for (int i = 0; i < TblAdmins.getModel().getRowCount(); i++) {
+				if ((Boolean) TblAdmins.getModel().getValueAt(i, 1)) {
 					System.out.print("Entered admin");
-					User admin = (User)TblAdmins.getModel().getValueAt(i, 2);
+					User admin = (User) TblAdmins.getModel().getValueAt(i, 2);
 					try {
-						Driver.forumClient.forum.deleteUser(Driver.forumClient.user, admin);
+						Driver.forumClient.forum.deleteUser(
+								Driver.forumClient.user, admin);
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
-				
+
 			}
 			this.dispose();
 		}
-		
+
 	}
 }

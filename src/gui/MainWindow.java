@@ -25,24 +25,30 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
 
-public class MainWindow implements ActionListener{
+/**
+ * Contains the controls for the Main Window
+ * 
+ * @author Eduardo Nava
+ * 
+ */
+public class MainWindow implements ActionListener {
 
 	private JFrame frmMainWindow;
 	private static MainWindow window;
 	private List<Topic> topics;
-	
+
 	JLabel lblAppName = new JLabel("Fororo");
 	JLabel lblWelcomeMsg = new JLabel("Welcome Message");
 	JButton btnNewGroup = new JButton("New Group");
 	JButton btnRegister = new JButton("Register");
 	JButton btnLogin = new JButton("Login");
 	JButton btnAccounts = new JButton("Accounts");
-	 JButton btnRequests = new JButton("Requests");
+	JButton btnRequests = new JButton("Requests");
 	private final JScrollPane scrollPane_1 = new JScrollPane();
 	private final JTable table = new JTable();
 
 	/**
-	 * Launch the application.
+	 * To Display in Design Time
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -58,9 +64,14 @@ public class MainWindow implements ActionListener{
 			}
 		});
 	}
-	public static void open(){
+
+	/**
+	 * To Display the Window
+	 */
+	public static void open() {
 		new MainWindow();
 	}
+
 	/**
 	 * Create the application.
 	 */
@@ -76,34 +87,26 @@ public class MainWindow implements ActionListener{
 	public void close() {
 
 		try {
-			// window.frame.dispose();
 			frmMainWindow.setVisible(false);
-			// window.finalize();
-			// window.close();
+
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-//	public static void open() {
-//		window.frmMainWindow.setVisible(true);
-//		setControls();
-//	}
 
 	/**
 	 * Configure the appearance and enables/disables controls depending on
 	 * status (User logged in, Admin User Logged In, etc)
 	 */
 	private void setControls() {
-		
-		//Get welcome message from db
+
 		try {
 			lblWelcomeMsg.setText(Driver.forumClient.forum.getWelcomeMessage());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (Driver.forumClient.user == null) { // user is not Logged in
 			btnNewGroup.setEnabled(false);
 			btnAccounts.setVisible(false);
@@ -117,7 +120,7 @@ public class MainWindow implements ActionListener{
 					.type().ADMIN) {
 				btnAccounts.setVisible(true);
 				btnRequests.setVisible(true);
- 
+
 			} else {
 				btnAccounts.setVisible(false);
 				btnRequests.setVisible(false);
@@ -135,7 +138,7 @@ public class MainWindow implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
 			String msg = Driver.forumClient.forum.getWelcomeMessage();
 			lblWelcomeMsg.setText(msg);
@@ -144,37 +147,41 @@ public class MainWindow implements ActionListener{
 			e.printStackTrace();
 		}
 	}
-	
-	private void loadTable(){
+
+	/**
+	 * Displays the loaded data in the Table
+	 */
+	private void loadTable() {
 		List<Topic> activeTopics = new ArrayList<Topic>();
-		for (Topic t:this.topics){
-			if (t.isActive()){
+		for (Topic t : this.topics) {
+			if (t.isActive()) {
 				activeTopics.add(t);
 			}
 		}
-		
+
 		Object[][] rows = new Object[activeTopics.size()][];
-		String[] header = new String[] { "ID", "Group", "Description","Topic" };
+		String[] header = new String[] { "ID", "Group", "Description", "Topic" };
 
 		for (int i = 0; i < activeTopics.size(); i++) {
-				rows[i] = new Object[] { activeTopics.get(i).id(),
-						activeTopics.get(i).name(),
-						activeTopics.get(i).description(),
-						activeTopics.get(i)};
+			rows[i] = new Object[] { activeTopics.get(i).id(),
+					activeTopics.get(i).name(),
+					activeTopics.get(i).description(), activeTopics.get(i) };
 		}
-		
+
 		table.setModel(new DefaultTableModel(rows, header) {
-			boolean[] columnEditables = new boolean[] { true, false, false,false };
-			Class[] columnTypes = new Class[] {
-					Object.class, Object.class, Object.class, Topic.class
-				};
+			boolean[] columnEditables = new boolean[] { true, false, false,
+					false };
+			Class[] columnTypes = new Class[] { Object.class, Object.class,
+					Object.class, Topic.class };
+
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-				}
+			}
+
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
-		});	
+		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(0);
 		table.getColumnModel().getColumn(0).setMinWidth(0);
 		table.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -210,11 +217,6 @@ public class MainWindow implements ActionListener{
 		lblWelcomeMsg.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblWelcomeMsg.setBounds(53, 57, 542, 52);
 		frmMainWindow.getContentPane().add(lblWelcomeMsg);
-//		btnNewGroup.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				NewGroup.main(null);
-//			}
-//		});
 		btnNewGroup.addActionListener(this);
 
 		btnNewGroup.setBounds(27, 121, 107, 23);
@@ -244,63 +246,70 @@ public class MainWindow implements ActionListener{
 		btnExit.addActionListener(this);
 		btnExit.setBounds(548, 521, 107, 23);
 		frmMainWindow.getContentPane().add(btnExit);
-		// frame.getContentPane().add(table);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		loadTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			int row = table.getSelectedRow();
-			//JOptionPane.showMessageDialog(null, table.getModel().getValueAt(row, 1));
-			String id = (String) table.getModel().getValueAt(row, 0);
-			String name = (String) table.getModel().getValueAt(row, 1);
-			String description = (String) table.getModel().getValueAt(row, 2);
-			String[] args = new String[]{id,name,description};
-//			Driver.openGroup(args);
-			frmMainWindow.dispose();
-			GroupView.open((Topic) table.getModel().getValueAt(row, 3));
-
-//			close();
-//			GroupView.main(args);
+				int row = table.getSelectedRow();
+				String id = (String) table.getModel().getValueAt(row, 0);
+				String name = (String) table.getModel().getValueAt(row, 1);
+				String description = (String) table.getModel().getValueAt(row,
+						2);
+				String[] args = new String[] { id, name, description };
+				frmMainWindow.dispose();
+				GroupView.open((Topic) table.getModel().getValueAt(row, 3));
 			}
-			});
+		});
 
 		scrollPane_1.setBounds(21, 163, 611, 331);
 		frmMainWindow.getContentPane().add(scrollPane_1);
 		scrollPane_1.setViewportView(table);
-		
+
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-//		System.out.println(e);
-		if (e.getActionCommand().equalsIgnoreCase("new group")){
+		if (e.getActionCommand().equalsIgnoreCase("new group")) {
 			NewGroup.open();
 		}
-		if (e.getActionCommand().equalsIgnoreCase("register")){
+		if (e.getActionCommand().equalsIgnoreCase("register")) {
 			RegisterView.open(false);
 			setControls();
 		}
-		if (e.getActionCommand().equalsIgnoreCase("login")){
+		if (e.getActionCommand().equalsIgnoreCase("login")) {
 			if (btnLogin.getText().equalsIgnoreCase("login")) {
 				LoginDialog.open();
-				} else {
-				Driver.forumClient.user = null;
-				btnLogin.setText("Login");
+			} else {
+				try {
+					Driver.forumClient.forum
+							.logoutUser(Driver.forumClient.user);
+					Driver.forumClient.user = null;
+					btnLogin.setText("Login");
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+			}
 			setControls();
 		}
-		if (e.getActionCommand().equalsIgnoreCase("accounts")){
+		if (e.getActionCommand().equalsIgnoreCase("accounts")) {
 			AccountsView.open();
 		}
-		if (e.getActionCommand().equalsIgnoreCase("exit")){
+		if (e.getActionCommand().equalsIgnoreCase("exit")) {
 			System.exit(0);
 		}
-		if (e.getActionCommand().equalsIgnoreCase("requests")){
+		if (e.getActionCommand().equalsIgnoreCase("requests")) {
 			RequestsView.open();
 			loadData();
 			loadTable();
 		}
-		
+
 	}
 }

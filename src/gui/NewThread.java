@@ -17,6 +17,12 @@ import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 import shared.*;
 
+/**
+ * Window to be Displayed when creating a new Thread
+ * 
+ * @author Eduardo Nava
+ * 
+ */
 public class NewThread extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
@@ -25,24 +31,28 @@ public class NewThread extends JDialog implements ActionListener {
 	JTextArea txtContent = new JTextArea();
 	String[] args;
 	Topic topic;
+
 	/**
-	 * Launch the application.
+	 * For Design Time
 	 */
 	public static void main(String[] args) {
 		try {
-			
-//			dialog = new NewThread(args);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.args = args;
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	public static void open(Topic topic){
+
+	/**
+	 * To be Called to display the Window
+	 */
+	public static void open(Topic topic) {
 		new NewThread(topic);
 	}
+
 	/**
 	 * Create the dialog.
 	 */
@@ -78,7 +88,7 @@ public class NewThread extends JDialog implements ActionListener {
 			txtTitle.setColumns(10);
 		}
 		{
-			
+
 			txtContent.setRows(10);
 			txtContent.setLineWrap(true);
 			txtContent.setBounds(115, 36, 332, 166);
@@ -104,22 +114,32 @@ public class NewThread extends JDialog implements ActionListener {
 		}
 		this.setVisible(true);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
-		if (ev.getActionCommand().equalsIgnoreCase("save")){
+		if (ev.getActionCommand().equalsIgnoreCase("save")) {
 			String topicId = topic.id();
 			String title = txtTitle.getText();
 			String content = txtContent.getText();
-//			String userId = Driver.forumClient.user.id();
+			// String userId = Driver.forumClient.user.id();
 			try {
-//				Driver.forumClient.forum.createThread("1", title, content, topicId);
-				Driver.forumClient.forum.createThread(Driver.forumClient.user, new ForumThread("",title,content,topicId,Driver.forumClient.user.name(),""));
+				// Driver.forumClient.forum.createThread("1", title, content,
+				// topicId);
+				Driver.forumClient.forum.createThread(Driver.forumClient.user,
+						new ForumThread("", title, content, topicId,
+								Driver.forumClient.user.name(), ""));
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//GroupView.load();
-			
+			// GroupView.load();
+
 		}
 		this.dispose();
 	}

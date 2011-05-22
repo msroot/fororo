@@ -21,6 +21,12 @@ import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 import shared.*;
 
+/**
+ * Window to be Displayed when Registering a New User
+ * 
+ * @author Eduardo Nava
+ * 
+ */
 public class RegisterView extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
@@ -30,7 +36,7 @@ public class RegisterView extends JDialog implements ActionListener {
 	private boolean isAdmin;
 
 	/**
-	 * Launch the application.
+	 * For Design Time
 	 */
 	public static void main(String[] args) {
 		try {
@@ -42,10 +48,13 @@ public class RegisterView extends JDialog implements ActionListener {
 		}
 	}
 
+	/**
+	 * To be Called to display the Window
+	 */
 	public static void open(boolean admin) {
 		new RegisterView(admin);
 	}
-	
+
 	/**
 	 * Create the dialog.
 	 */
@@ -106,6 +115,12 @@ public class RegisterView extends JDialog implements ActionListener {
 		this.setVisible(true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		if (ev.getActionCommand().equalsIgnoreCase("ok")) {
@@ -116,8 +131,10 @@ public class RegisterView extends JDialog implements ActionListener {
 						password);
 				if (this.isAdmin == true) {
 					newUser.type(User.Type.ADMIN);
-					Driver.forumClient.forum.updateUser(Driver.forumClient.user, newUser);
-					JOptionPane.showMessageDialog(this,"A New Admin User has been created!");
+					Driver.forumClient.forum.updateUser(
+							Driver.forumClient.user, newUser);
+					JOptionPane.showMessageDialog(this,
+							"A New Admin User has been created!");
 				} else {
 					try {
 						Driver.forumClient.user = Driver.forumClient.forum

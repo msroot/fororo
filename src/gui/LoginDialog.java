@@ -17,14 +17,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.rmi.RemoteException;
 import shared.*;
+/**
+ * Displays the Login Window
+ * @author Eduardo Nava
+ *
+ */
+
 public class LoginDialog extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUserName;
 	private JPasswordField passwordField;
 	static LoginDialog dialog;
+	
 	/**
-	 * Launch the application.
+	 * To display it in design time
 	 */
 	public static void main(String[] args) {
 		try {
@@ -36,9 +43,13 @@ public class LoginDialog extends JDialog implements ActionListener {
 		}
 	}
 	
+	/**
+	 * To show the windows
+	 */
 	public static void open(){
 		new LoginDialog();
 	}
+	
 	/**
 	 * Create the dialog.
 	 */
@@ -98,6 +109,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 		this.setVisible(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		if (ev.getActionCommand().equalsIgnoreCase("ok")){

@@ -25,7 +25,13 @@ import shared.*;
 import java.awt.ScrollPane;
 import javax.swing.JScrollPane;
 
-public class GroupView implements ActionListener{
+/**
+ * Displays Information about Groups or Topics
+ * 
+ * @author Eduardo Nava
+ * 
+ */
+public class GroupView implements ActionListener {
 
 	private JFrame frmGroup;
 	GroupView window;
@@ -36,14 +42,15 @@ public class GroupView implements ActionListener{
 	JButton btnDelete = new JButton("Delete");
 	JTable table;
 	Topic topic;
+
 	/**
-	 * Launch the application.
+	 * To Display it in Design Time
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					static GroupView window;
+					// static GroupView window;
 					GroupView window = new GroupView(null);
 					window.frmGroup.setVisible(true);
 				} catch (Exception e) {
@@ -51,24 +58,30 @@ public class GroupView implements ActionListener{
 				}
 			}
 		});
-//		window.args = args;
+		// window.args = args;
 	}
 
-	public static void open(Topic topic){
+	/**
+	 * Shows the Group Window
+	 * 
+	 * @param topic
+	 *            The Topic or Group to show
+	 */
+	public static void open(Topic topic) {
 		new GroupView(topic);
 	}
+
 	/**
-	 * Create the application.
+	 * Constructor
 	 */
 	public GroupView(Topic topic) {
 		this.topic = topic;
-//		loadData();
-//		initialize();
-//		setControls();
-//		frmGroup.setVisible(true);
 		load();
 	}
 
+	/**
+	 * Load the Data From DB and Create Controls
+	 */
 	public void load() {
 		loadData();
 		initialize();
@@ -126,7 +139,7 @@ public class GroupView implements ActionListener{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		if (Driver.forumClient.user!=null){
+		if (Driver.forumClient.user != null) {
 			Driver.setChatTopic(topic);
 		}
 		frmGroup = new JFrame();
@@ -138,7 +151,7 @@ public class GroupView implements ActionListener{
 		frmGroup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmGroup.getContentPane().setLayout(null);
 
-		JLabel lblAppName = new JLabel("AppName");
+		JLabel lblAppName = new JLabel("Fororo");
 		lblAppName.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAppName.setBounds(21, 21, 134, 25);
 		frmGroup.getContentPane().add(lblAppName);
@@ -157,12 +170,8 @@ public class GroupView implements ActionListener{
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				close();
-
-				// MainWindow.main(args);
 				MainWindow.open();
-//				Driver.close();
-				// MainWindow.setControls();
-				// FrameTest.main(null);
+
 			}
 		});
 		btnReturn.setBounds(548, 518, 107, 23);
@@ -200,40 +209,43 @@ public class GroupView implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = table.getSelectedRow();
-				// JOptionPane.showMessageDialog(null,
-				// table.getModel().getValueAt(row, 1));
 				String id = (String) table.getModel().getValueAt(row, 0);
 				String title = (String) table.getModel().getValueAt(row, 1);
 				String content = (String) table.getModel().getValueAt(row, 2);
 				String[] args = new String[] { id, title, content };
-				// Driver.openGroup(args);
 				close();
-				ForumThread thread = (ForumThread)table.getModel().getValueAt(row, 3);
+				ForumThread thread = (ForumThread) table.getModel().getValueAt(
+						row, 3);
 				try {
-					thread = Driver.forumClient.forum.attachDescendantsToThread(thread);
+					thread = Driver.forumClient.forum
+							.attachDescendantsToThread(thread);
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				ThreadView.open(topic,thread);
+				ThreadView.open(topic, thread);
 			}
 		});
-		
 
 		scrollPane.setViewportView(table);
 		// frame.getContentPane().add(table);
 	}
 
-	private void loadTable(){
+	/**
+	 * Displays the Loaded data in the table
+	 */
+	private void loadTable() {
 		Object[][] rows = new Object[threads.size()][];
-		String[] header = new String[] { "ID", "Title", "Content","Thread" };
+		String[] header = new String[] { "ID", "Title", "Content", "Thread" };
 
 		for (int i = 0; i < threads.size(); i++) {
 			rows[i] = new Object[] { threads.get(i).id(),
-					threads.get(i).title(), threads.get(i).content(),threads.get(i)};
+					threads.get(i).title(), threads.get(i).content(),
+					threads.get(i) };
 		}
 		table.setModel(new DefaultTableModel(rows, header) {
-			boolean[] columnEditables = new boolean[] { true, false, false,false };
+			boolean[] columnEditables = new boolean[] { true, false, false,
+					false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -246,37 +258,44 @@ public class GroupView implements ActionListener{
 		table.getColumnModel().getColumn(1).setPreferredWidth(120);
 		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(2).setPreferredWidth(400);
-		
+
 		table.getColumnModel().getColumn(3).setPreferredWidth(0);
 		table.getColumnModel().getColumn(3).setMinWidth(0);
 		table.getColumnModel().getColumn(3).setMaxWidth(0);
-		
+
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		System.out.print("Test");
-		if(ev.getActionCommand().equalsIgnoreCase("new thread")){
+		if (ev.getActionCommand().equalsIgnoreCase("new thread")) {
 			NewThread.open(topic);
 			loadData();
 			loadTable();
 		}
-		if(ev.getActionCommand().equalsIgnoreCase("delete")){
+		if (ev.getActionCommand().equalsIgnoreCase("delete")) {
 			try {
-				Object[] options = {"Yes","No"};
-				int response = JOptionPane.showOptionDialog(frmGroup,
-				    "You are about to delete this group"
-				    + "/n Are you sure you want to delete it?",
-				    "Confirm Deletion",
-				    JOptionPane.YES_NO_OPTION,
-				    JOptionPane.QUESTION_MESSAGE,
-				    null,
-				    options,
-				    options[1]);
-				if (response==0){
-					Driver.forumClient.forum.deleteTopic(Driver.forumClient.user, topic);
+				Object[] options = { "Yes", "No" };
+				int response = JOptionPane
+						.showOptionDialog(
+								frmGroup,
+								"You are about to delete this group"
+										+ "\n Are you sure you want to delete it?",
+								"Confirm Deletion", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[1]);
+				if (response == 0) {
+					Driver.forumClient.forum.deleteTopic(
+							Driver.forumClient.user, topic);
 				}
-				
+
 				frmGroup.dispose();
 				MainWindow.open();
 			} catch (RemoteException e) {
@@ -284,16 +303,15 @@ public class GroupView implements ActionListener{
 				e.printStackTrace();
 			}
 		}
-		
-		if(ev.getActionCommand().equalsIgnoreCase("go back")){
+
+		if (ev.getActionCommand().equalsIgnoreCase("go back")) {
 			frmGroup.dispose();
 			MainWindow.open();
 		}
-		if(ev.getActionCommand().equalsIgnoreCase("chat")){
+		if (ev.getActionCommand().equalsIgnoreCase("chat")) {
 			System.out.print("chat");
 			Driver.openChat(topic);
 		}
-		
-		
+
 	}
 }

@@ -23,14 +23,22 @@ import java.awt.event.KeyEvent;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+
+/**
+ * Displays the Chat Window
+ * 
+ * @author Eduardo Nava
+ * 
+ */
 public class ChatView extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtInput;
 	static JLabel lblGroupName = new JLabel("Group Name");
 	static JTextArea txtChat = new JTextArea();
+
 	/**
-	 * Launch the application.
+	 * Only to display it in design time
 	 */
 	public static void main(String[] args) {
 		try {
@@ -41,35 +49,63 @@ public class ChatView extends JDialog implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-	
-	public void open(Topic topic){
+
+	/**
+	 * To Be Called to show the window
+	 * 
+	 * @param topic
+	 *            To Join the specific chat room
+	 */
+	public void open(Topic topic) {
 		lblGroupName.setText(topic.name());
 		txtChat.setText("");
 		this.setVisible(true);
 	}
-	public void close(){
+
+	/**
+	 * To Hide The Chat window while keeping the class alive
+	 */
+	public void close() {
 		this.setVisible(false);
 	}
-	public static void newMessage(String message){
+
+	/**
+	 * Called from the interface when a message arrives
+	 * 
+	 * @param message
+	 *            The message to be displayed
+	 */
+	public static void newMessage(String message) {
 		txtChat.append(message + "\n");
 		txtChat.setCaretPosition(txtChat.getDocument().getLength());
 
 	}
-	public void setTopic(Topic topic){
+
+	/**
+	 * Changes the chat Room
+	 * 
+	 * @param topic
+	 *            The room to Join
+	 */
+	public void setTopic(Topic topic) {
 		txtChat.setText("");
 		lblGroupName.setText(topic.name());
 	}
-	
-	private void submitMessage(){
+
+	/**
+	 * Sends a message to the server
+	 */
+	private void submitMessage() {
 		try {
-			Driver.forumClient.forum.sendChatMessage(Driver.forumClient.user, txtInput.getText());
+			Driver.forumClient.forum.sendChatMessage(Driver.forumClient.user,
+					txtInput.getText());
 			txtInput.setText("");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Create the dialog.
 	 */
@@ -88,17 +124,17 @@ public class ChatView extends JDialog implements ActionListener {
 			contentPanel.add(lblGroup);
 		}
 		{
-			
+
 			lblGroupName.setBounds(82, 11, 412, 14);
 			contentPanel.add(lblGroupName);
 		}
-		
+
 		txtInput = new JTextField();
 		txtInput.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent key) {
-//				System.out.println(key.getKeyCode()); //Return = 10;
-				if (key.getKeyCode()==10){
+				// System.out.println(key.getKeyCode()); //Return = 10;
+				if (key.getKeyCode() == 10) {
 					submitMessage();
 				}
 			}
@@ -106,7 +142,7 @@ public class ChatView extends JDialog implements ActionListener {
 		txtInput.setBounds(20, 314, 375, 20);
 		contentPanel.add(txtInput);
 		txtInput.setColumns(10);
-		
+
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.setActionCommand("submit");
 		btnSubmit.addActionListener(this);
@@ -119,7 +155,7 @@ public class ChatView extends JDialog implements ActionListener {
 
 			contentPanel.add(scrollPane);
 			{
-				
+
 				txtChat.setEditable(false);
 				scrollPane.setViewportView(txtChat);
 			}
@@ -137,12 +173,18 @@ public class ChatView extends JDialog implements ActionListener {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
-		if (ev.getActionCommand().equalsIgnoreCase("submit")){
+		if (ev.getActionCommand().equalsIgnoreCase("submit")) {
 			submitMessage();
 		}
-		if (ev.getActionCommand().equalsIgnoreCase("close")){
+		if (ev.getActionCommand().equalsIgnoreCase("close")) {
 			this.setVisible(false);
 		}
 	}

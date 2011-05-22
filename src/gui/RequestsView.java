@@ -20,14 +20,19 @@ import client.ForumClient;
 import java.rmi.RemoteException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/**
+ * Window to be Displayed when Requesting a Group/Topic Creation
+ * 
+ * @author Eduardo Nava
+ * 
+ */
 public class RequestsView extends JDialog implements ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	List<Topic> topics;
 	/**
-	 * Launch the application.
+	 * For Design Time
 	 */
 	public static void main(String[] args) {
 		try {
@@ -38,6 +43,10 @@ public class RequestsView extends JDialog implements ActionListener{
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * To be Called to display the Window
+	 */
 	public static void open(){
 		
 		new RequestsView();
@@ -110,27 +119,6 @@ public class RequestsView extends JDialog implements ActionListener{
 					return columnTypes[columnIndex];
 					}
 				});
-//				table.setModel(new DefaultTableModel(
-//					new Object[][] {
-//						{null, null, null, null},
-//					},
-//					new String[] {
-//						"id", "Group Name", "Author", "Authorised"
-//					}
-//				) {
-//					Class[] columnTypes = new Class[] {
-//						Object.class, Object.class, Object.class, Boolean.class
-//					};
-//					public Class getColumnClass(int columnIndex) {
-//						return columnTypes[columnIndex];
-//					}
-//					boolean[] columnEditables = new boolean[] {
-//						true, false, false, true
-//					};
-//					public boolean isCellEditable(int row, int column) {
-//						return columnEditables[column];
-//					}
-//				});
 				table.getColumnModel().getColumn(0).setPreferredWidth(0);
 				table.getColumnModel().getColumn(0).setMinWidth(0);
 				table.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -166,6 +154,9 @@ public class RequestsView extends JDialog implements ActionListener{
 		}
 		this.setVisible(true);
 	}
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		// TODO Auto-generated method stub
 		if (ev.getActionCommand().equalsIgnoreCase("save")){
