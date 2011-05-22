@@ -9,9 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import shared.Comment;
-import shared.ForumThread;
 import shared.Topic;
 
 /**
