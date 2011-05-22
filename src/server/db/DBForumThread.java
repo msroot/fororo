@@ -57,7 +57,7 @@ public class DBForumThread {
 		List<ForumThread> AllByTopic = new ArrayList<ForumThread>();
 		try {
 			ResultSet set = db.getSet("SELECT * FROM FTHREAD WHERE TOPICID='"
-					+ topicId + "'");
+					+ topicId + "' AND PARENTID IS NULL");
 
 			while (set.next()) {
 				AllByTopic.add(mapThreads(set));
