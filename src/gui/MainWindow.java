@@ -271,9 +271,9 @@ public class MainWindow implements ActionListener {
 		scrollPane_1.setViewportView(table);
 		btnMsg.setActionCommand("msg");
 		btnMsg.addActionListener(this);
-		
+
 		btnMsg.setBounds(521, 23, 134, 23);
-		
+
 		frmMainWindow.getContentPane().add(btnMsg);
 
 	}
@@ -313,28 +313,24 @@ public class MainWindow implements ActionListener {
 			AccountsView.open();
 		}
 		if (e.getActionCommand().equalsIgnoreCase("msg")) {
-			
-			String s = (String)JOptionPane.showInputDialog(
-					frmMainWindow,
-                    "Enter The New Welcome Message:\n",
-                    "Welcome Message",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    lblWelcomeMsg.getText());
 
-//If a string was returned, say so.
-if ((s != null) && (s.length() > 0)) {
-	try {
-		Driver.forumClient.forum.updateWelcomeMessage(s);
-		lblWelcomeMsg.setText(s);
-	} catch (RemoteException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-	
-    return;
-}
+			String s = (String) JOptionPane.showInputDialog(frmMainWindow,
+					"Enter The New Welcome Message:\n", "Welcome Message",
+					JOptionPane.PLAIN_MESSAGE, null, null,
+					lblWelcomeMsg.getText());
+
+			// If a string was returned, say so.
+			if ((s != null) && (s.length() > 0)) {
+				try {
+					Driver.forumClient.forum.updateWelcomeMessage(s);
+					lblWelcomeMsg.setText(s);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				return;
+			}
 		}
 		if (e.getActionCommand().equalsIgnoreCase("exit")) {
 			System.exit(0);
