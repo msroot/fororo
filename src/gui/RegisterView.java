@@ -34,7 +34,7 @@ public class RegisterView extends JDialog implements ActionListener {
 	 */
 	public static void main(String[] args) {
 		try {
-			RegisterView dialog = new RegisterView();
+			RegisterView dialog = new RegisterView(false);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -42,19 +42,15 @@ public class RegisterView extends JDialog implements ActionListener {
 		}
 	}
 
-	public static void open() {
-		new RegisterView();
-	}
-
 	public static void open(boolean admin) {
-		RegisterView rv = new RegisterView();
-		rv.isAdmin = true;
+		new RegisterView(admin);
 	}
-
+	
 	/**
 	 * Create the dialog.
 	 */
-	public RegisterView() {
+	public RegisterView(boolean admin) {
+		this.isAdmin = admin;
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Register");
 		setResizable(false);
@@ -66,14 +62,14 @@ public class RegisterView extends JDialog implements ActionListener {
 		contentPanel.setLayout(null);
 		{
 			JLabel label = new JLabel("User Name");
-			label.setBounds(23, 33, 61, 14);
+			label.setBounds(10, 33, 74, 14);
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
 			label.setFont(new Font("Tahoma", Font.BOLD, 11));
 			contentPanel.add(label);
 		}
 		{
 			JLabel label = new JLabel("Password");
-			label.setBounds(23, 58, 54, 14);
+			label.setBounds(10, 58, 67, 14);
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
 			label.setFont(new Font("Tahoma", Font.BOLD, 11));
 			contentPanel.add(label);
@@ -119,7 +115,7 @@ public class RegisterView extends JDialog implements ActionListener {
 				User newUser = Driver.forumClient.forum.registerUser(userName,
 						password);
 				if (this.isAdmin == true) {
-					newUser.type = User.Type.ADMIN;
+					newUser.type(User.Type.ADMIN);
 					Driver.forumClient.forum.updateUser(Driver.forumClient.user, newUser);
 					JOptionPane.showMessageDialog(this,"A New Admin User has been created!");
 				} else {

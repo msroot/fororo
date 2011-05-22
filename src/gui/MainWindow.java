@@ -199,7 +199,7 @@ public class MainWindow implements ActionListener{
 				UIManager.getColor("Button.background"));
 		frmMainWindow.setResizable(false);
 		frmMainWindow.setBounds(100, 100, 679, 580);
-		frmMainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmMainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMainWindow.getContentPane().setLayout(null);
 
 		lblAppName.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -240,11 +240,8 @@ public class MainWindow implements ActionListener{
 		frmMainWindow.getContentPane().add(btnRequests);
 
 		JButton btnExit = new JButton("Exit");
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				close();
-			}
-		});
+		btnExit.setActionCommand("exit");
+		btnExit.addActionListener(this);
 		btnExit.setBounds(548, 521, 107, 23);
 		frmMainWindow.getContentPane().add(btnExit);
 		// frame.getContentPane().add(table);
@@ -281,7 +278,7 @@ public class MainWindow implements ActionListener{
 			NewGroup.open();
 		}
 		if (e.getActionCommand().equalsIgnoreCase("register")){
-			RegisterView.open();
+			RegisterView.open(false);
 			setControls();
 		}
 		if (e.getActionCommand().equalsIgnoreCase("login")){
@@ -295,6 +292,9 @@ public class MainWindow implements ActionListener{
 		}
 		if (e.getActionCommand().equalsIgnoreCase("accounts")){
 			AccountsView.open();
+		}
+		if (e.getActionCommand().equalsIgnoreCase("exit")){
+			System.exit(0);
 		}
 		if (e.getActionCommand().equalsIgnoreCase("requests")){
 			RequestsView.open();
