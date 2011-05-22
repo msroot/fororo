@@ -208,7 +208,8 @@ public class GroupView implements ActionListener{
 				String[] args = new String[] { id, title, content };
 				// Driver.openGroup(args);
 				close();
-				ThreadView.open(topic);
+				ForumThread thread = (ForumThread)table.getModel().getValueAt(row, 3);
+				ThreadView.open(topic,Driver.forumClient.forum);
 			}
 		});
 		
@@ -219,14 +220,14 @@ public class GroupView implements ActionListener{
 
 	private void loadTable(){
 		Object[][] rows = new Object[threads.size()][];
-		String[] header = new String[] { "ID", "Title", "Content" };
+		String[] header = new String[] { "ID", "Title", "Content","Thread" };
 
 		for (int i = 0; i < threads.size(); i++) {
-			rows[i] = new String[] { threads.get(i).id(),
-					threads.get(i).title(), threads.get(i).content() };
+			rows[i] = new Object[] { threads.get(i).id(),
+					threads.get(i).title(), threads.get(i).content(),threads.get(i)};
 		}
 		table.setModel(new DefaultTableModel(rows, header) {
-			boolean[] columnEditables = new boolean[] { true, false, false };
+			boolean[] columnEditables = new boolean[] { true, false, false,false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -239,6 +240,11 @@ public class GroupView implements ActionListener{
 		table.getColumnModel().getColumn(1).setPreferredWidth(120);
 		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(2).setPreferredWidth(400);
+		
+		table.getColumnModel().getColumn(3).setPreferredWidth(0);
+		table.getColumnModel().getColumn(3).setMinWidth(0);
+		table.getColumnModel().getColumn(3).setMaxWidth(0);
+		
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 	public void actionPerformed(ActionEvent ev) {

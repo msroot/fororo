@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -13,15 +15,22 @@ import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JTree;
 import javax.swing.JTextArea;
 import shared.*;
+
+
 public class ThreadView implements ActionListener{
 
 	private JFrame frmViewThread;
 	private JTable table;
+	private ForumThread thread;
 	private Topic topic;
 	static ThreadView window;
+	List<ForumThread> threads;
 	/**
 	 * Launch the application.
 	 */
@@ -29,7 +38,7 @@ public class ThreadView implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					window = new ThreadView(null);
+					window = new ThreadView(null,null);
 					window.frmViewThread.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,15 +47,33 @@ public class ThreadView implements ActionListener{
 		});
 	}
 
-	public static void open(Topic topic){
-		new ThreadView(topic);
+	public static void open(Topic topic,ForumThread thread){
+		new ThreadView(topic,thread);
 	}
 	/**
 	 * Create the application.
 	 */
-	public ThreadView(Topic topic) {
+	public ThreadView(Topic topic, ForumThread thread) {
+		this.threads = new ArrayList<ForumThread>();
 		this.topic = topic;
+		this.thread = thread;
+		loadTable();
 		initialize();
+	}
+	
+	private void loadTable(){
+		readChilds(thread.children);
+		for(ForumThread thread:threads){
+			System.out.println(thread.title());
+		}
+		
+	}
+	
+	private void readChilds(List<ForumThread> childs){
+		for(ForumThread child:childs){
+			readChilds(child.children);
+			threads.add(child);
+		}
 	}
 
 	/**
@@ -106,16 +133,16 @@ public class ThreadView implements ActionListener{
 		table.setBounds(52, 90, 542, 100);
 		frmViewThread.getContentPane().add(table);
 		
-		JLabel lblThreadTitle = new JLabel(this.topic.name());
+		JLabel lblThreadTitle = new JLabel(this.thread.title());
 		lblThreadTitle.setBounds(109, 250, 378, 14);
 		frmViewThread.getContentPane().add(lblThreadTitle);
 		
-		JLabel lblThreadAuthor = new JLabel(this.topic.userName());
+		JLabel lblThreadAuthor = new JLabel(this.thread.userName());
 		lblThreadAuthor.setBounds(109, 275, 201, 14);
 		frmViewThread.getContentPane().add(lblThreadAuthor);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setText(this.topic.description());
+		textArea.setText(this.thread.content());
 		textArea.setBounds(28, 312, 620, 172);
 		frmViewThread.getContentPane().add(textArea);
 		
