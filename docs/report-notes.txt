@@ -1,0 +1,52 @@
+• A file called readme.txt which contains the following information:
+
+– Yallara username, full name, and student number of each team member
+– A breakdown of each students contribution
+– A list of incomplete functionality and known bugs
+– Class descriptions to aid understanding of your code. You may use plain English to describe important     relationships between classes for instance.
+– Information about your database schema.
+– Instructions for compiling and running your program, including database preparation (if required), rmiregistry, server, and clients, on Yallara or Blowfly. (Your submission must run on Yallara or Blowfly. You will lose up to 5 marks if markers are unable to run your program successfully according to your instructions.)
+
+• The client and server code, divided into appropriate packages; and all test classes. These must be com- mented, specifying who worked on each of the classes.
+
+• Source code for database preparation (if not incorporated into the Server) which will create the necessary tables and populate them with demonstration data, as well as data files with sample data.
+
+############## FROM UNI ################################################
+
+To run server:
+
+
+# from bin folder:
+rmiregistry
+
+java -cp bin:lib/ojdbc14.jar -Djava.security.policy=policy server.Forum [host] [port]
+
+java -cp bin:lib/ojdbc14.jar -Djava.security.policy=policy server.Forum
+
+# To run client:
+
+java ForumClient host port
+
+
+# To run tests Setting the classpath:
+
+export CLASSPATH=bin:lib/junit-4.8.2.jar:lib/ojdbc14.jar
+
+java org.junit.runner.JUnitCore test.ForumTest
+
+
+# To run tests passing the classpath directly:
+
+java -cp bin:lib/junit-4.8.2.jar:lib/ojdbc14.jar org.junit.runner.JUnitCore test.ForumTest
+
+############## ECLIPSE  ################################################
+
+eclipse>run configurations>arguments>VM args
+
+-Djava.security.policy="file:/${workspace_loc}/SADI2/policy"
+-Djava.rmi.server.codebase="file:/${workspace_loc}/SADI2/bin/"
+
+
+on mac
+
+-Djava.security.policy=/Users/vic/rmit/sadi/code/forum/policy

@@ -1,0 +1,18 @@
+# Server
+
+javac   -sourcepath src \
+        -classpath bin:lib/*.jar \
+        -d bin \
+        src/shared/*.java \
+        src/server/*.java \
+        src/server/db/*.java \
+        src/server/utils/*.java
+
+# Client
+
+javac   -sourcepath src \
+        -classpath bin:lib/*.jar \
+        -d bin \
+        src/shared/*.java \
+        src/client/*.java \
+        src/gui/*.java
