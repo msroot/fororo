@@ -97,28 +97,47 @@ john    abcd1234    admin
 
 INSTRUCTIONS FOR COMPILING AND RUNNING THE PROGRAM
 
-Form the eclipse:
+FROM THE ECLIPSE:
 
-* Compile from eclipse
-    - Run the registry from the bin (very important) dir:
+* Run the registry from the bin (very important) dir:
+    $ cd path_to_forum_dir/bin    
+    $ rmiregistry [port]
         
-        $ cd path_to_forum_dir/bin    
-        $ rmiregistry [port]
-        
-    - Include the jar files located in the lib dir to the buildpath
-    - Set to running VM arguments to:
-        
-        Djava.security.policy="file:/${workspace_loc}/forum/policy"
-        Djava.rmi.server.codebase="file:/${workspace_loc}/forum/bin/"
-    - Run the server first then run the client
+* Include the jar files located in the lib dir to the buildpath
 
-Form the command line:
+* Set to running VM arguments to:
+    Djava.security.policy="file:/${workspace_loc}/forum/policy"
+    Djava.rmi.server.codebase="file:/${workspace_loc}/forum/bin/"
+
+* Run the server first then run the client
+
+
+FROM THE COMMAND LINE:
 
 * Run the registry from the bin (very important) dir:
     $ cd path_to_forum_dir/bin
     $ rmiregistry [port]
-
-* To run the server (leave host and port black to use defaults):
+    
+* Compile the server:
+    $ cd path_to_forum_dir
+    $ javac -sourcepath src \
+            -classpath bin:lib/*.jar \
+            -d bin \
+            src/shared/*.java \
+            src/server/*.java \
+            src/server/db/*.java \
+            src/server/utils/*.java
+            
+* Compile the client:
+    $ cd path_to_forum_dir
+    $ javac -sourcepath src \
+            -classpath bin:lib/*.jar \
+            -d bin \
+            src/shared/*.java \        
+            src/client/*.java \
+            src/gui/*.java
+            
+* Run the server (leave host and port black to use defaults):
     $ cd path_to_forum_dir
     $ java -cp bin:lib/ojdbc14.jar -Djava.security.policy=policy server.Forum [host] [port]
     
