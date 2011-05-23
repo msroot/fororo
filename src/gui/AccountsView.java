@@ -91,22 +91,41 @@ public class AccountsView extends JDialog implements ActionListener {
 
 		TblUsers = new JTable();
 		TblUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		Object[][] usersRows = new Object[users.size() - 1][];
+		User myself = null;
+		for(User u:users){
+			if (u.name().equalsIgnoreCase(Driver.forumClient.user.name())){
+				myself = u;
+			}
+		}
+		if (myself!=null)users.remove(myself);
+		
+		Object[][] usersRows = new Object[users.size()][];
 		List<User> admins = new ArrayList<User>();
 		String[] header = new String[] { "User Name", "Enabled", "User" };
 		int j = 0;
-		for (int i = 0; i < users.size(); i++) {
-			if (!users.get(i).name()
-					.equalsIgnoreCase(Driver.forumClient.user.name())) {
-				usersRows[j] = new Object[] { users.get(i).name(),
-						users.get(i).isActive(), users.get(i) };
-				if (users.get(i).type() == User.Type.ADMIN) {
-					admins.add(users.get(i));
+		System.out.println(usersRows.length);
+		
+		for (User u:users) {
+				System.out.println(j);
+				usersRows[j] = new Object[] { u.name(),u.isActive(), u };
+				if (u.type() == User.Type.ADMIN) {
+					admins.add(u);
 				}
-			} else
-				j--;
-			j++;
+			j++;			
 		}
+		
+//		for (int i = 0; i < users.size(); i++) {
+//			if (!users.get(i).name()
+//					.equalsIgnoreCase(Driver.forumClient.user.name())) {
+//				usersRows[j] = new Object[] { users.get(i).name(),
+//						users.get(i).isActive(), users.get(i) };
+//				if (users.get(i).type() == User.Type.ADMIN) {
+//					admins.add(users.get(i));
+//				}
+//			} else
+//				j--;
+//			j++;
+//		}
 
 		Object[][] adminsRows = new Object[admins.size()][];
 		for (int i = 0; i < admins.size(); i++) {
