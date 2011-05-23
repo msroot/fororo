@@ -104,7 +104,7 @@ In addition the file "export.sql" was provided to recreate the db.
 
 INSTRUCTIONS FOR COMPILING AND RUNNING THE PROGRAM
 
-FROM THE ECLIPSE:
+FROM ECLIPSE:
 
 * Create project and import the "forum" dir
 
@@ -127,7 +127,7 @@ FROM THE COMMAND LINE (YALLARA):
 
 * Notes:
     - Make sure the directory forum/bin exists before compiling
-    - Make user X11 is enabled when running the GUI from yallara (ssh -X yallara)
+    - Make sure X11 is enabled when running the GUI from yallara (ssh -X yallara)
     - The database should be ready to go, to recreate the db use export.sql
     - The database should be ready to go, to recreate the db use export.sql
 
