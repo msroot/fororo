@@ -37,10 +37,11 @@ FUNCTIONALITY ACHIEVED
 * Allow message replies
 * Allow admins to modify the welcome message
 
-KNOWN BUGS
+KNOWN ISSUES
 
 * There is an issue with sql: there can not be any quote (') char in the anywhare
 Thread, Topic, User, Welcome message.
+* The GUI might runs a bit slow if ran from yallara thru ssh
 
 
 ################################################################################
@@ -116,43 +117,49 @@ FROM THE ECLIPSE:
 * build the project
 
 * Run the registry from the bin (very important) dir:
-        $ cd path_to_forum_dir/bin    
-        $ rmiregistry [port]
+    cd path_to_forum_dir/bin    
+    rmiregistry [port]
 
 * Run the server first then run the client
 
 
 FROM THE COMMAND LINE (YALLARA):
 
-* Compile the server:
-    $ cd path_to_forum_dir
-    $ javac -sourcepath src \
-            -classpath bin:lib/*.jar \
+* Notes:
+    - Make sure the directory forum/bin exists before compiling
+    - Make user X11 is enabled when running the GUI from yallara (ssh -X yallara)
+    - The database should be ready to go, to recreate the db use export.sql
+    - The database should be ready to go, to recreate the db use export.sql
+
+* Compile the server: 
+    cd path_to_forum_dir
+    mkdir bin
+    javac   -sourcepath src \
             -d bin \
+            -classpath bin:lib/*.jar \
             src/shared/*.java \
             src/server/*.java \
             src/server/db/*.java \
             src/server/utils/*.java
             
 * Compile the client:
-    $ cd path_to_forum_dir
-    $ javac -sourcepath src \
-            -classpath bin:lib/*.jar \
+    cd path_to_forum_dir
+    mkdir bin
+    javac   -sourcepath src \
             -d bin \
+            -classpath bin:lib/*.jar \
             src/shared/*.java \
             src/client/*.java \
             src/gui/*.java
             
 * Run the registry from the bin (very important) dir:
-    $ cd path_to_forum_dir/bin
-    $ rmiregistry [port]
+    cd path_to_forum_dir/bin
+    rmiregistry [port]
 
 * Run the server:
-    $ cd path_to_forum_dir
-    $ java -cp bin:lib/ojdbc14.jar -Djava.security.policy=policy server.Forum [host] [port]
+    cd path_to_forum_dir
+    java -cp bin:lib/ojdbc14.jar -Djava.security.policy=policy server.Forum [host] [port]
     
 * To run the client:
-    $ cd path_to_forum_folder
-    $ java -cp bin gui.Driver [host] [port]
-        
-NOTE: The database should be ready to go, to recreate the db use export.sql
+    cd path_to_forum_folder
+    java -cp bin gui.Driver [host] [port]
