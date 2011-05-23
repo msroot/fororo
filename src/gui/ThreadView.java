@@ -45,7 +45,7 @@ public class ThreadView extends MouseAdapter implements ActionListener {
 	JLabel lblThreadAuthor = new JLabel();
 	JTextArea textArea = new JTextArea();
 	ForumThread selectedThread;
-
+	JButton btnReply = new JButton("Reply");
 	/**
 	 * For Design Time
 	 */
@@ -162,7 +162,7 @@ public class ThreadView extends MouseAdapter implements ActionListener {
 		lblDescription.setBounds(52, 57, 542, 25);
 		frmViewThread.getContentPane().add(lblDescription);
 
-		JButton btnReply = new JButton("Reply");
+		
 		btnReply.setEnabled(false);
 		btnReply.setActionCommand("reply");
 		btnReply.addActionListener(this);
@@ -218,7 +218,7 @@ public class ThreadView extends MouseAdapter implements ActionListener {
 				textArea.setText(this.thread.content().trim());
 
 		if (Driver.forumClient.user != null) {
-			btnReply.setEnabled(true);
+//			btnReply.setEnabled(true);
 			if (Driver.forumClient.user.type() == User.Type.ADMIN) {
 				btnDelete.setVisible(true);
 			}
@@ -237,6 +237,9 @@ public class ThreadView extends MouseAdapter implements ActionListener {
 		lblThreadAuthor.setText(selectedThread.userName());
 		lblThreadTitle.setText(selectedThread.title().trim());
 		textArea.setText(selectedThread.content());
+		if (Driver.forumClient.user != null) {
+			btnReply.setEnabled(true);
+		}
 	}
 
 	/**
