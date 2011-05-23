@@ -13,27 +13,34 @@ MEMBER CONTRIBUTION
 
 John:
 
-- General design
-- Design and Implementation of all database classes and chat class
-- Database Test Classes
+* General design
+* Design and Implementation of all database classes and chat class
+* Database Test Classes
 
 Eduardo:
-- General design
-- Design And Implementation of the GUI
+
+* General design
+* Design And Implementation of the GUI
     
 Victor:
-- General design
-- Design and Implementation of Forum and ForumClient classes and Interfaces
-- Forum Test Classes
+
+* General design
+* Design and Implementation of Forum and ForumClient classes and Interfaces
+* Forum Test Classes
     
 
 ################################################################################
 
 FUNCTIONALITY ACHIEVED
 
-- The software performs all the basic functionality requested plus:
-- Allow message replies
-- Allow admins to modify the welcome message
+* The software performs all the basic functionality requested plus:
+* Allow message replies
+* Allow admins to modify the welcome message
+
+KNOWN BUGS
+
+* There is an issue with sql: there can not be any quote (') char in the anywhare
+Thread, Topic, User, Welcome message.
 
 
 ################################################################################
