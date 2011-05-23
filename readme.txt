@@ -1,5 +1,5 @@
 Software Architecture Design And Implementation
-Assignment #2 Battleships Game
+Assignment #2 Forum
 
 
 TEAM MEMBERS
