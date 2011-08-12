@@ -1,5 +1,5 @@
 Software Architecture Design And Implementation
-Assignment #2 Forum
+Assignment #2 Forum 
 
 
 TEAM MEMBERS
@@ -9,7 +9,7 @@ Victor Nava S3252905
 John Kolovos S3289732
 
 
-MEMBER CONTRIBUTION 
+-- MEMBER CONTRIBUTION --
 
 John:
 
